@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/pehlwan-juice-corner/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Shake & Juice Builder | Pehlwan Juice Corner, Israna</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pehlwan: {
+                            dark: '#000000',
+                            card: '#ffffff',
+                            cardLight: '#f8fafc',
+                            cardDark: '#09090b',
+                            gold: '#000000',
+                            goldLight: '#f4f4f5',
+                            goldDark: '#18181b',
+                            amber: '#000000',
+                            saffron: '#18181b',
+                            green: '#000000',
+                            emerald: '#000000',
+                            mint: '#27272a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        heading: ['"Cinzel"', 'serif'],
+                        body: ['"Outfit"', 'sans-serif'],
+                        classic: ['"Cinzel"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" type="image/png" href="static/images/pehlwan_logo.png">
+</head>
+<body class="bg-white text-black font-sans min-h-screen flex flex-col selection:bg-black selection:text-white">
+
+    <!-- Top Minimalist Ticker Bar (Jet Black, Crisp White Text - Ultra Compact) -->
+    <div class="bg-black text-white border-b border-neutral-800 py-1 px-3 sm:px-6 text-[10px] sm:text-[11px] font-semibold">
+        <!-- Desktop / Laptop View (md+) -->
+        <div class="max-w-7xl mx-auto hidden md:flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                <span data-i18n="topLocation">📍 Location: Near Punjab National Bank, Main Road, Israna</span>
+            </div>
+            <div class="flex items-center gap-4 text-neutral-300">
+                <div class="flex items-center gap-1.5">
+                    <i data-lucide="clock" class="w-3 h-3 text-white"></i>
+                    <span data-i18n="topTiming">Open Daily: 9:00 AM – 9:30 PM</span>
+                    <span class="inline-flex items-center px-1.5 py-0.2 rounded-full text-[8.5px] font-extrabold bg-white text-black ml-1">OPEN</span>
+                </div>
+                <span class="text-neutral-600">•</span>
+                <a href="https://wa.me/919588351884" target="_blank" class="hover:text-white flex items-center gap-1 text-white">
+                    <i data-lucide="phone" class="w-3 h-3"></i>
+                    <span>+91 95883 51884</span>
+                </a>
+                <span class="text-neutral-600">•</span>
+                <span data-i18n="topTagline" class="text-neutral-400">100% Pure & Fresh</span>
+            </div>
+        </div>
+
+        <!-- Phone / Mobile View (< md) -->
+        <div class="flex md:hidden items-center justify-between gap-2 max-w-lg mx-auto text-[10px]">
+            <div class="flex items-center gap-1 text-neutral-200 truncate">
+                <span class="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0"></span>
+                <span class="truncate">📍 Israna (Near PNB)</span>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0 text-white font-medium">
+                <span>9 AM – 9:30 PM</span>
+                <span class="inline-flex items-center px-1.5 py-0.2 rounded-full text-[8.5px] font-black bg-white text-black">OPEN</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header Bar (Compact & Sleek, Pure Black & White) -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-neutral-200 transition-all shadow-sm">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
+                
+                <!-- Brand Logo (Compact, Crisp, Non-Wrapping) -->
+                <a href="index.html" class="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
+                    <div class="relative w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 flex items-center justify-center flex-shrink-0 rounded-full border border-neutral-200 p-0.5 bg-neutral-50 group-hover:border-black transition-all">
+                        <img src="static/images/pehlwan_logo.png" alt="Pehlwan Juice Corner Logo" class="w-full h-full object-contain rounded-full">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-classic font-black text-xs sm:text-sm lg:text-base tracking-wider text-black uppercase leading-tight">
+                            <span data-i18n="heroTitlePehlwan">PEHLWAN</span>
+                        </span>
+                        <span class="font-classic text-neutral-600 text-[8px] sm:text-[9px] lg:text-[10px] font-bold tracking-[0.16em] uppercase leading-tight">
+                            <span data-i18n="heroTitleJuice">JUICE CORNER</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links (Laptop / PC: lg+ only) -->
+                <nav class="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-bold tracking-wide">
+                    <a href="index.html" class="px-2.5 py-1 rounded-full transition-all flex items-center gap-1 text-neutral-700 hover:text-black hover:bg-neutral-100" data-i18n="navHome">
+                        <span>Home</span>
+                    </a>
+                    <a href="menu.html" class="px-2.5 py-1 rounded-full transition-all flex items-center gap-1 text-neutral-700 hover:text-black hover:bg-neutral-100">
+                        <span data-i18n="navMenu">Menu</span>
+                    </a>
+                    <a href="calculator.html" class="px-2.5 py-1 rounded-full transition-all flex items-center gap-1.5 text-neutral-700 hover:text-black hover:bg-neutral-100">
+                        <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="navCalculator">Calculator</span>
+                    </a>
+                    <a href="custom_shake.html" class="px-2.5 py-1 rounded-full transition-all flex items-center gap-1.5 bg-black text-white font-extrabold shadow-sm">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="navCustomShake">Custom Shake</span>
+                    </a>
+                    <a href="location.html" class="px-2.5 py-1 rounded-full transition-all flex items-center gap-1.5 text-neutral-700 hover:text-black hover:bg-neutral-100">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="navLocation">Location</span>
+                    </a>
+                </nav>
+
+                <!-- Header Actions (Compact, Settled, Non-Colliding) -->
+                <div class="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
+                    
+                    <!-- 3-WAY LANGUAGE SWITCHER (EN | HING | हिन्दी) -->
+                    <div class="flex items-center">
+                        <div id="lang-switch-track" class="glossy-switch-track compact w-[78px] sm:w-[94px] h-[22px] sm:h-[24px]" data-pos="center" title="Switch Language">
+                            <div class="glossy-thumb"></div>
+                            <div class="switch-segment segment-en" data-lang="en">EN</div>
+                            <div class="switch-segment segment-hinglish" data-lang="hinglish">HING</div>
+                            <div class="switch-segment segment-hi" data-lang="hi">हिन्दी</div>
+                        </div>
+                    </div>
+
+                    <!-- Diet Tray Trigger (Icon on Phone, Metric Pill on Laptop) -->
+                    <button onclick="togglePehlwanTray()" class="relative flex items-center gap-1.5 sm:gap-2 bg-neutral-100 hover:bg-neutral-200 text-black p-1.5 sm:px-2.5 sm:py-1 rounded-full border border-neutral-300 hover:border-black transition-all shadow-sm" title="View Diet Tray">
+                        <div class="relative">
+                            <i data-lucide="shopping-bag" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black"></i>
+                            <span id="pehlwan-tray-count" class="absolute -top-1 -right-1 bg-black text-white text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
+                        </div>
+                        <div class="text-left hidden md:block">
+                            <div class="text-[8.5px] text-neutral-500 uppercase font-bold tracking-wider leading-none" data-i18n="navTray">Diet Thali</div>
+                            <div class="text-[9.5px] font-bold text-black leading-tight flex items-center gap-1 mt-0.5">
+                                <span id="tray-header-calories" class="font-extrabold">0</span> kcal
+                                <span class="text-neutral-400">•</span>
+                                <span id="tray-header-protein" class="font-extrabold">0g</span> P
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- WhatsApp Order Button -->
+                    <a href="https://wa.me/919588351884?text=Hello%20Pehlwan%20Juice%20Corner!%20I%20want%20to%20order." target="_blank" class="inline-flex items-center justify-center gap-1.5 bg-black hover:bg-neutral-800 text-white font-black text-xs p-1.5 sm:px-3.5 sm:py-1.5 rounded-full transition-all shadow-sm flex-shrink-0" title="Order via WhatsApp">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                        <span class="hidden sm:inline" data-i18n="navOrderWhatsApp">WhatsApp Order</span>
+                    </a>
+
+                    <!-- Mobile Hamburger (Visible on Phone/Tablet, Hidden on Laptop) -->
+                    <button onclick="toggleMobileNav()" class="lg:hidden p-1.5 text-black hover:bg-neutral-100 rounded-full focus:outline-none transition-colors border border-neutral-200" title="Open Navigation Menu">
+                        <i data-lucide="menu" class="w-4 h-4 stroke-[2.5]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu Drawer (Clean Modern White & Black App Drawer) -->
+        <div id="mobile-nav" class="hidden lg:hidden bg-white/98 backdrop-blur-2xl border-b-2 border-black px-4 pt-4 pb-6 space-y-4 shadow-2xl">
+            <!-- Quick Action Buttons -->
+            <div class="grid grid-cols-2 gap-2.5 pb-2 border-b border-neutral-200">
+                <a href="https://wa.me/919588351884?text=Hello%20Pehlwan%20Juice%20Corner!%20I%20want%20to%20order." target="_blank" class="bg-black text-white font-black text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-md">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>WhatsApp Order</span>
+                </a>
+                <a href="tel:+91 95883 51884" class="bg-white border-2 border-black text-black font-black text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors">
+                    <i data-lucide="phone" class="w-4 h-4"></i>
+                    <span>Call Dukaan</span>
+                </a>
+            </div>
+
+            <!-- Main Nav Links with Icons -->
+            <div class="space-y-1 text-sm font-bold">
+                <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-neutral-100 text-neutral-800" data-i18n="navHome">
+                    <i data-lucide="home" class="w-4 h-4"></i>
+                    <span>Home</span>
+                </a>
+                <a href="menu.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-neutral-100 text-neutral-800">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="cup-soda" class="w-4 h-4"></i>
+                        <span data-i18n="navMenu">Menu & Nutrition</span>
+                    </div>
+                    <span class="text-[9px] bg-neutral-200 text-black px-2 py-0.5 rounded-full font-black">16 ITEMS</span>
+                </a>
+                <a href="calculator.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-neutral-100 text-neutral-800" data-i18n="navCalculator">
+                    <i data-lucide="calculator" class="w-4 h-4"></i>
+                    <span>Diet Calculator</span>
+                </a>
+                <a href="custom_shake.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-neutral-100 bg-black text-white font-black">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        <span data-i18n="navCustomShake">Custom Shake & Juice</span>
+                    </div>
+                    <span class="text-[9px] bg-black text-white px-2 py-0.5 rounded-full font-black">DIY LAB</span>
+                </a>
+                <a href="location.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-neutral-100 text-neutral-800" data-i18n="navLocation">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                    <span>Location & Timings</span>
+                </a>
+            </div>
+
+            <!-- Shop Info in Drawer -->
+            <div class="pt-3 border-t border-neutral-200 text-xs text-neutral-600 flex items-center justify-between font-medium">
+                <span>⏰ 9:00 AM – 9:30 PM (Daily)</span>
+                <span class="text-black font-black text-[10px] bg-neutral-200 px-2 py-0.5 rounded-full">● OPEN NOW</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow pb-20 sm:pb-8">
+        
+<div class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Hero Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
+        <div class="classic-ornament justify-center text-[10px]">❖ PEHLWAN SHAKE & JUICE LAB ❖</div>
+        <div class="inline-flex items-center gap-2 bg-neutral-100 border border-neutral-300 px-4 py-1 rounded-full text-xs font-bold text-black">
+            <span>✨ 100% PURE INGREDIENTS • LIVE MACROS & BILL</span>
+        </div>
+        <h1 class="font-classic font-black text-3xl sm:text-5xl text-black tracking-wide" data-i18n="customShakeTitle">
+            BUILD YOUR CUSTOM SHAKE & JUICE
+        </h1>
+        <p class="text-neutral-600 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed" data-i18n="customShakeSub">
+            Apni marzi ke taaza fruit, silbatte ke dry fruit, pure farm milk aur whey protein ko mix karke apna custom athletic power drink khud banayein.
+        </p>
+
+        <!-- Highlights Pills -->
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-2 text-[11px] text-neutral-700 font-medium">
+            <span class="bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">🥛 6 Base Choices</span>
+            <span class="bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">🍓 10+ Taaza Fruits</span>
+            <span class="bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">🌰 7 Akhada Dry Fruits</span>
+            <span class="bg-black text-white font-bold px-3 py-1 rounded-full">⚡ +24g Whey Protein Option</span>
+        </div>
+    </div>
+
+    <!-- Main Builder Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: The 6 Steps Builder (7 Cols) -->
+        <div class="lg:col-span-7 space-y-8">
+            
+            <!-- STEP 1: LIQUID BASE -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">1</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepBase">
+                            Step 1: Choose Your Liquid Base
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-black font-bold uppercase tracking-wider bg-neutral-100 px-2.5 py-1 rounded-full border border-neutral-300">Required (Pick 1)</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="builder-bases-container">
+                    
+                    <div 
+                        onclick="selectCustomBase('base-buffalo-milk')"
+                        id="card-base-buffalo-milk"
+                        data-id="base-buffalo-milk"
+                        data-name-en="Desi Buffalo Full Cream Milk"
+                        data-name-hinglish="Desi Bhains ka Gaadha Doodh"
+                        data-name-hi="देसी भैंस का गाढ़ा फुल क्रीम दूध"
+                        data-price="35"
+                        data-cal="160"
+                        data-protein="8.0"
+                        data-fats="9.0"
+                        data-carbs="12.0"
+                        data-color="#FFFBEB"
+                        class="pehlwan-builder-chip base-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 selected border-black bg-black text-white"
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">🥛</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug base-name">Desi Buffalo Full Cream Milk</div>
+                                    <span class="text-[10px] font-medium opacity-80">High Protein &amp; Energy</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm opacity-100">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">₹35</span>
+                            <span class="text-[10px] opacity-80 font-semibold">160 kcal • 8.0g P</span>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="selectCustomBase('base-cow-milk')"
+                        id="card-base-cow-milk"
+                        data-id="base-cow-milk"
+                        data-name-en="Pure Cow Toned Milk"
+                        data-name-hinglish="Shuddh Gaay ka Toned Doodh"
+                        data-name-hi="शुद्ध गाय का टोंड दूध"
+                        data-price="25"
+                        data-cal="110"
+                        data-protein="6.0"
+                        data-fats="3.0"
+                        data-carbs="10.0"
+                        data-color="#FEF3C7"
+                        class="pehlwan-builder-chip base-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 "
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">🥛</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug base-name">Pure Cow Toned Milk</div>
+                                    <span class="text-[10px] font-medium opacity-80">Light &amp; Lean</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm ">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">₹25</span>
+                            <span class="text-[10px] opacity-80 font-semibold">110 kcal • 6.0g P</span>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="selectCustomBase('base-coconut-water')"
+                        id="card-base-coconut-water"
+                        data-id="base-coconut-water"
+                        data-name-en="Fresh Tender Coconut Water"
+                        data-name-hinglish="Taaza Nariyal Paani"
+                        data-name-hi="ताज़ा नारियल पानी"
+                        data-price="40"
+                        data-cal="45"
+                        data-protein="1.5"
+                        data-fats="0.2"
+                        data-carbs="9.0"
+                        data-color="#ECFDF5"
+                        class="pehlwan-builder-chip base-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 "
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">🥥</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug base-name">Fresh Tender Coconut Water</div>
+                                    <span class="text-[10px] font-medium opacity-80">Electrolytes</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm ">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">₹40</span>
+                            <span class="text-[10px] opacity-80 font-semibold">45 kcal • 1.5g P</span>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="selectCustomBase('base-coconut-malai')"
+                        id="card-base-coconut-malai"
+                        data-id="base-coconut-malai"
+                        data-name-en="Tender Coconut Malai Puree"
+                        data-name-hinglish="Taazi Nariyal Malai Puree"
+                        data-name-hi="ताज़ा नारियल मलाई बेस"
+                        data-price="60"
+                        data-cal="180"
+                        data-protein="3.0"
+                        data-fats="14.0"
+                        data-carbs="11.0"
+                        data-color="#F8FAFC"
+                        class="pehlwan-builder-chip base-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 "
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">🥥</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug base-name">Tender Coconut Malai Puree</div>
+                                    <span class="text-[10px] font-medium opacity-80">Ultra Velvety</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm ">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">₹60</span>
+                            <span class="text-[10px] opacity-80 font-semibold">180 kcal • 3.0g P</span>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="selectCustomBase('base-mosambi-juice')"
+                        id="card-base-mosambi-juice"
+                        data-id="base-mosambi-juice"
+                        data-name-en="Cold-Pressed Mosambi Juice"
+                        data-name-hinglish="Taaza Mosambi Juice Base"
+                        data-name-hi="मौसंबी का शुद्ध ताज़ा रस"
+                        data-price="40"
+                        data-cal="80"
+                        data-protein="1.5"
+                        data-fats="0.2"
+                        data-carbs="18.0"
+                        data-color="#FEF08A"
+                        class="pehlwan-builder-chip base-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 "
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">🍊</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug base-name">Cold-Pressed Mosambi Juice</div>
+                                    <span class="text-[10px] font-medium opacity-80">Pure Citrus</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm ">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">₹40</span>
+                            <span class="text-[10px] opacity-80 font-semibold">80 kcal • 1.5g P</span>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="selectCustomBase('base-ice-water')"
+                        id="card-base-ice-water"
+                        data-id="base-ice-water"
+                        data-name-en="Chilled Mineral Ice &amp; Water"
+                        data-name-hinglish="Chilled Ice &amp; Mineral Water"
+                        data-name-hi="चिल्ड बर्फ व मिनरल वाटर"
+                        data-price="15"
+                        data-cal="0"
+                        data-protein="0.0"
+                        data-fats="0.0"
+                        data-carbs="0.0"
+                        data-color="#E0F2FE"
+                        class="pehlwan-builder-chip base-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 "
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">🧊</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug base-name">Chilled Mineral Ice &amp; Water</div>
+                                    <span class="text-[10px] font-medium opacity-80">Zero Calorie</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm ">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">₹15</span>
+                            <span class="text-[10px] opacity-80 font-semibold">0 kcal • 0.0g P</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- STEP 2: FRESH FRUITS (MULTI-SELECT) -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">2</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepFruit">
+                            Step 2: Pick Fresh Fruits
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-neutral-500 font-medium">Multi-Select (Choose any)</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="builder-fruits-container">
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-banana')"
+                        id="card-fruit-banana"
+                        data-id="fruit-banana"
+                        data-name-en="Fresh Ripe Banana"
+                        data-name-hinglish="Taaza Kela (Banana)"
+                        data-name-hi="ताज़ा पका केला"
+                        data-price="15"
+                        data-cal="105"
+                        data-protein="1.3"
+                        data-fats="0.3"
+                        data-carbs="27.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🍌</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Fresh Ripe Banana</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹15</span>
+                                <span class="text-[9px] opacity-80">105 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-mango')"
+                        id="card-fruit-mango"
+                        data-id="fruit-mango"
+                        data-name-en="Royal Alphonso Mango Pulp"
+                        data-name-hinglish="Shuddh Aam ka Pulp"
+                        data-name-hi="शाही आम का गूदा"
+                        data-price="30"
+                        data-cal="110"
+                        data-protein="1.0"
+                        data-fats="0.4"
+                        data-carbs="28.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🥭</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Royal Alphonso Mango Pulp</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹30</span>
+                                <span class="text-[9px] opacity-80">110 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-strawberry')"
+                        id="card-fruit-strawberry"
+                        data-id="fruit-strawberry"
+                        data-name-en="Fresh Wild Strawberry"
+                        data-name-hinglish="Taazi Strawberry"
+                        data-name-hi="ताज़ी स्ट्रॉबेरी"
+                        data-price="35"
+                        data-cal="50"
+                        data-protein="1.0"
+                        data-fats="0.3"
+                        data-carbs="12.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🍓</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Fresh Wild Strawberry</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹35</span>
+                                <span class="text-[9px] opacity-80">50 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-chikoo')"
+                        id="card-fruit-chikoo"
+                        data-id="fruit-chikoo"
+                        data-name-en="Sweet Chikoo (Sapodilla)"
+                        data-name-hinglish="Meetha Taaza Chiku"
+                        data-name-hi="मीठा ताज़ा चीकू"
+                        data-price="20"
+                        data-cal="90"
+                        data-protein="0.8"
+                        data-fats="0.4"
+                        data-carbs="22.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🥔</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Sweet Chikoo (Sapodilla)</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹20</span>
+                                <span class="text-[9px] opacity-80">90 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-papaya')"
+                        id="card-fruit-papaya"
+                        data-id="fruit-papaya"
+                        data-name-en="Ripe Sweet Papaya"
+                        data-name-hinglish="Paka Papita (Papaya)"
+                        data-name-hi="मीठा पपीता"
+                        data-price="20"
+                        data-cal="60"
+                        data-protein="0.9"
+                        data-fats="0.2"
+                        data-carbs="15.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🍑</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Ripe Sweet Papaya</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹20</span>
+                                <span class="text-[9px] opacity-80">60 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-pineapple')"
+                        id="card-fruit-pineapple"
+                        data-id="fruit-pineapple"
+                        data-name-en="Golden Juicy Ananas"
+                        data-name-hinglish="Juicy Ananas (Pineapple)"
+                        data-name-hi="रसीला अनन्नास"
+                        data-price="25"
+                        data-cal="75"
+                        data-protein="0.8"
+                        data-fats="0.2"
+                        data-carbs="19.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🍍</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Golden Juicy Ananas</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹25</span>
+                                <span class="text-[9px] opacity-80">75 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-dates')"
+                        id="card-fruit-dates"
+                        data-id="fruit-dates"
+                        data-name-en="Arabian Medjool Dates"
+                        data-name-hinglish="Arabian Khajoor (Dates)"
+                        data-name-hi="अरबियन शाही खजूर"
+                        data-price="30"
+                        data-cal="130"
+                        data-protein="1.2"
+                        data-fats="0.3"
+                        data-carbs="33.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🌴</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Arabian Medjool Dates</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹30</span>
+                                <span class="text-[9px] opacity-80">130 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-avocado')"
+                        id="card-fruit-avocado"
+                        data-id="fruit-avocado"
+                        data-name-en="Hass Avocado Superfood"
+                        data-name-hinglish="Hass Avocado Superfood"
+                        data-name-hi="हैस एवोकाडो सुपरफूड"
+                        data-price="60"
+                        data-cal="160"
+                        data-protein="2.0"
+                        data-fats="15.0"
+                        data-carbs="9.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🥑</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Hass Avocado Superfood</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹60</span>
+                                <span class="text-[9px] opacity-80">160 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-lychee')"
+                        id="card-fruit-lychee"
+                        data-id="fruit-lychee"
+                        data-name-en="Sweet Fresh Lichi"
+                        data-name-hinglish="Meethi Taaza Lichi"
+                        data-name-hi="मीठी ताज़ी लीची"
+                        data-price="30"
+                        data-cal="70"
+                        data-protein="0.9"
+                        data-fats="0.2"
+                        data-carbs="17.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🍒</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Sweet Fresh Lichi</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹30</span>
+                                <span class="text-[9px] opacity-80">70 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div 
+                        onclick="toggleCustomFruit('fruit-bael')"
+                        id="card-fruit-bael"
+                        data-id="fruit-bael"
+                        data-name-en="Ayurvedic Bel Patther Pulp"
+                        data-name-hinglish="Bel Pather Pulp"
+                        data-name-hi="आयुर्वेदिक बेल पत्थर का गूदा"
+                        data-price="25"
+                        data-cal="120"
+                        data-protein="1.8"
+                        data-fats="0.3"
+                        data-carbs="30.0"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">🍈</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">Ayurvedic Bel Patther Pulp</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹25</span>
+                                <span class="text-[9px] opacity-80">120 kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- STEP 3: AKHADA DRY FRUITS & NUTS -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">3</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepNuts">
+                            Step 3: Akhada Nuts & Desi Boosters
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-neutral-500 font-medium">Stone-ground Silbatta Seeds</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="builder-nuts-container">
+                    
+                </div>
+            </div>
+
+            <!-- STEP 4: PROTEIN SCOOPS -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">4</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepProtein">
+                            Step 4: Athletic Protein Boost (Optional)
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-white bg-black font-black px-2.5 py-1 rounded-full uppercase tracking-wider">High Protein</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="builder-protein-container">
+                    
+                </div>
+            </div>
+
+            <!-- STEP 5 & 6: SWEETNESS & GLASS SIZE -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-6 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center gap-2.5 border-b border-neutral-200 pb-3">
+                    <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">5</span>
+                    <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepSweet">
+                        Step 5: Sweetness & Sugar Preference
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    
+                </div>
+
+                <!-- Glass Size -->
+                <div class="pt-4 border-t border-neutral-200 space-y-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">6</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepSize">
+                            Step 6: Glass Size
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <button 
+                            type="button" 
+                            onclick="selectCustomSize('regular', 1.0, '350ml Regular Glass')"
+                            id="btn-size-regular" 
+                            class="size-chip p-3.5 rounded-2xl text-center border-2 transition-all bg-black text-white border-black shadow"
+                        >
+                            <span class="text-xl block mb-1">🥤</span>
+                            <span class="font-bold text-xs block">Regular</span>
+                            <span class="text-[10px] opacity-80 block">350ml • 1x Price</span>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            onclick="selectCustomSize('medium', 1.35, '500ml Medium Glass')"
+                            id="btn-size-medium" 
+                            class="size-chip p-3.5 rounded-2xl text-center border-2 transition-all bg-neutral-50 text-neutral-800 border-neutral-200 hover:border-black"
+                        >
+                            <span class="text-xl block mb-1">🥛</span>
+                            <span class="font-bold text-xs block">Medium</span>
+                            <span class="text-[10px] opacity-80 block">500ml • 1.35x</span>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            onclick="selectCustomSize('jumbo', 1.7, '750ml Jumbo Akhada Glass')"
+                            id="btn-size-jumbo" 
+                            class="size-chip p-3.5 rounded-2xl text-center border-2 transition-all bg-neutral-50 text-neutral-800 border-neutral-200 hover:border-black"
+                        >
+                            <span class="text-xl block mb-1">🏆</span>
+                            <span class="font-bold text-xs block">Jumbo</span>
+                            <span class="text-[10px] opacity-80 block">750ml • 1.7x</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Name your Drink -->
+                <div>
+                    <label class="block text-xs font-bold text-black uppercase tracking-wider mb-1.5">
+                        Drink Name (Optional / Apna Naam Dein)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="custom-drink-name-input" 
+                        placeholder="e.g. Sandeep Akhada Power Fuel, Morning Fresh Cooler..." 
+                        class="w-full bg-neutral-50 border border-neutral-300 rounded-2xl px-4 py-3 text-xs text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors font-sans"
+                        oninput="updateCustomDrinkName()"
+                    >
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Sticky Live Glass, Nutrition & Order Actions (5 Cols) -->
+        <div class="lg:col-span-5 sticky top-28 space-y-6">
+            
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-6 shadow-md bg-white border-2 border-neutral-300">
+                
+                <!-- Card Header -->
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
+                    <div>
+                        <div class="classic-ornament justify-start text-[9px]">LIVE PREVIEW</div>
+                        <h3 id="custom-preview-title" class="font-classic font-bold text-xl text-black mt-1 leading-snug">
+                            Custom Akhada Drink
+                        </h3>
+                    </div>
+                    <button onclick="resetCustomShakeBuilder()" class="text-neutral-500 hover:text-black text-xs font-bold flex items-center gap-1 transition-colors" title="Reset all selections">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+
+                <!-- Interactive Virtual Glass Simulation -->
+                <div class="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 text-center relative overflow-hidden">
+                    <div class="pehlwan-virtual-glass-wrapper">
+                        <div class="pehlwan-glass-cup">
+                            <div id="virtual-glass-liquid" class="pehlwan-liquid-fill">
+                                <div class="pehlwan-liquid-foam"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Glass size & status -->
+                    <div class="mt-4 flex items-center justify-center gap-2 text-xs">
+                        <span id="virtual-glass-size-badge" class="bg-black text-white font-bold px-3 py-0.5 rounded-full text-[10px] uppercase tracking-wider">
+                            350ml Regular Glass
+                        </span>
+                        <span id="virtual-glass-protein-badge" class="hidden bg-neutral-200 text-black font-black px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider">
+                            💪 Muscle Fuel
+                        </span>
+                    </div>
+
+                    <!-- Selected Recipe Ingredients Pill Tag Cloud -->
+                    <div class="mt-4 pt-3 border-t border-neutral-200 flex flex-wrap items-center justify-center gap-1.5" id="virtual-glass-tags">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Live Macro Dashboard Grid -->
+                <div class="bg-neutral-50 border border-neutral-200 p-4 rounded-2xl grid grid-cols-4 gap-2 text-center">
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="cal">CALORIES</span>
+                        <span id="custom-live-cal" class="text-lg font-black text-black mt-0.5 block">160</span>
+                        <span class="text-[9px] text-neutral-400">kcal</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="protein">PROTEIN</span>
+                        <span id="custom-live-protein" class="text-lg font-black text-black mt-0.5 block">8.0g</span>
+                        <span class="text-[9px] text-neutral-400">Muscle</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="fats">FATS</span>
+                        <span id="custom-live-fats" class="text-lg font-black text-black mt-0.5 block">9.0g</span>
+                        <span class="text-[9px] text-neutral-400">Healthy</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="carbs">CARBS</span>
+                        <span id="custom-live-carbs" class="text-lg font-black text-black mt-0.5 block">12.0g</span>
+                        <span class="text-[9px] text-neutral-400">Energy</span>
+                    </div>
+                </div>
+
+                <!-- Total Bill & Action Buttons -->
+                <div class="pt-2 space-y-3">
+                    <div class="flex items-center justify-between px-1">
+                        <div>
+                            <span class="text-[10px] text-neutral-500 uppercase tracking-widest font-bold block">Calculated Price</span>
+                            <span class="text-xs text-neutral-600 font-medium">100% Transparent Bill</span>
+                        </div>
+                        <div id="custom-live-price" class="font-classic text-3xl font-black text-black">
+                            ₹35
+                        </div>
+                    </div>
+
+                    <!-- Button 1: Add to Tray -->
+                    <button 
+                        type="button" 
+                        onclick="addCustomShakeToDietTray()" 
+                        class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-sm py-4 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group font-classic tracking-wider"
+                    >
+                        <i data-lucide="plus-circle" class="w-5 h-5 stroke-[2.5]"></i>
+                        <span data-i18n="addToTrayBtn">Add Custom Drink to Tray</span>
+                    </button>
+
+                    <!-- Button 2: Direct WhatsApp Order -->
+                    <button 
+                        type="button" 
+                        onclick="orderCustomShakeWhatsApp()" 
+                        class="w-full bg-white border-2 border-black hover:bg-neutral-100 text-black font-extrabold text-xs py-3.5 rounded-full transition-all duration-300 flex items-center justify-center gap-2"
+                    >
+                        <i data-lucide="message-circle" class="w-4 h-4 stroke-[2.5]"></i>
+                        <span data-i18n="whatsappOrderBtn">Direct Order on WhatsApp</span>
+                    </button>
+
+                    <p class="text-[10px] text-center text-neutral-500">
+                        📍 Pick-up at Pehlwan Juice Corner, Israna (Near PNB Bank)
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Mobile Sticky Bottom Floating Action Bar -->
+<div id="custom-mobile-bar" class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/98 backdrop-blur-xl border-t-2 border-black p-3 px-4 flex items-center justify-between shadow-2xl">
+    <div>
+        <div class="flex items-center gap-2">
+            <span id="mobile-bar-price" class="text-xl font-black text-black font-classic">₹35</span>
+            <span id="mobile-bar-cal" class="text-[11px] text-neutral-600 font-bold">160 kcal</span>
+        </div>
+        <div id="mobile-bar-protein" class="text-[10px] text-black font-bold">8.0g Protein</div>
+    </div>
+    <div class="flex items-center gap-2">
+        <button onclick="addCustomShakeToDietTray()" class="bg-black hover:bg-neutral-800 text-white font-black text-xs px-4 py-2.5 rounded-full shadow font-classic">
+            Add to Tray
+        </button>
+        <button onclick="orderCustomShakeWhatsApp()" class="bg-white border-2 border-black text-black p-2.5 rounded-full hover:bg-neutral-100">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+        </button>
+    </div>
+</div>
+
+    </main>
+
+    <!-- Calorie / Diet Tray Drawer (Clean White & Black Slide-over) -->
+    <div id="pehlwan-tray-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white border-l border-neutral-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col text-black">
+        <!-- Drawer Header -->
+        <div class="p-6 border-b border-neutral-200 flex items-center justify-between bg-neutral-50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-black text-white flex items-center justify-center font-bold">
+                    <i data-lucide="scale" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-heading font-bold text-lg text-black" data-i18n="trayTitle">Your Diet Tray</h3>
+                    <p class="text-xs text-neutral-500" data-i18n="traySubtitle">Real-time Nutrition & Macro Balance</p>
+                </div>
+            </div>
+            <button onclick="togglePehlwanTray()" class="p-2 text-neutral-500 hover:text-black rounded-lg hover:bg-neutral-100 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Live Macro Meters -->
+        <div class="p-6 bg-neutral-50 border-b border-neutral-200 space-y-4">
+            <div class="grid grid-cols-4 gap-2 text-center">
+                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
+                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="cal">CALORIES</div>
+                    <div id="drawer-calories" class="text-xl font-black text-black mt-0.5">0</div>
+                    <div class="text-[9px] text-neutral-400">kcal</div>
+                </div>
+                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
+                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="protein">PROTEIN</div>
+                    <div id="drawer-protein" class="text-xl font-black text-black mt-0.5">0g</div>
+                    <div class="text-[9px] text-neutral-400">Muscle</div>
+                </div>
+                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
+                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="fats">FATS</div>
+                    <div id="drawer-fats" class="text-xl font-black text-black mt-0.5">0g</div>
+                    <div class="text-[9px] text-neutral-400">Healthy</div>
+                </div>
+                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
+                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="carbs">CARBS</div>
+                    <div id="drawer-carbs" class="text-xl font-black text-black mt-0.5">0g</div>
+                    <div class="text-[9px] text-neutral-400">Energy</div>
+                </div>
+            </div>
+            <div id="pehlwan-verdict-box" class="text-xs bg-white border border-neutral-200 rounded-2xl p-3 text-neutral-800 flex items-center gap-2.5 shadow-sm">
+                <i data-lucide="sparkles" class="w-4 h-4 text-black flex-shrink-0"></i>
+                <span id="pehlwan-verdict-text">Select items from the menu to balance your nutrition.</span>
+            </div>
+        </div>
+
+        <!-- Tray Items List -->
+        <div id="pehlwan-tray-items" class="flex-grow overflow-y-auto p-6 space-y-3">
+            <div id="pehlwan-tray-empty" class="text-center py-14 text-neutral-400">
+                <span class="text-4xl block mb-2 opacity-50">🥤</span>
+                <p class="font-bold text-black" data-i18n="trayEmptyTitle">Your Diet Tray is Empty</p>
+                <p class="text-xs text-neutral-500 mt-1" data-i18n="trayEmptySub">Add juices, shakes or sandwiches to calculate macros.</p>
+                <a href="menu.html" onclick="togglePehlwanTray()" class="inline-block mt-4 text-xs font-bold text-black underline underline-offset-4">Explore Menu →</a>
+            </div>
+        </div>
+
+        <!-- Tray Footer -->
+        <div class="p-6 border-t border-neutral-200 bg-neutral-50 space-y-4">
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-neutral-600 font-bold" data-i18n="trayTotal">Total Bill</span>
+                <span id="drawer-price" class="text-2xl font-black text-black font-heading">₹0</span>
+            </div>
+            
+            <button onclick="sendOrderViaWhatsApp()" class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-sm py-4 px-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2">
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                <span data-i18n="trayOrderBtn">Confirm & Send via WhatsApp</span>
+            </button>
+            <p class="text-[11px] text-center text-neutral-500" data-i18n="trayPickupNote">Freshly prepared and packed upon your arrival.</p>
+        </div>
+    </div>
+    <!-- Tray Overlay -->
+    <div id="pehlwan-tray-overlay" onclick="togglePehlwanTray()" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden transition-opacity"></div>
+
+    <!-- Luxury Global Footer (Crisp Jet Black & White) -->
+    <footer class="bg-black text-white border-t border-neutral-800 pt-16 pb-12 mt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-11 h-11 flex items-center justify-center flex-shrink-0 bg-white rounded-full p-0.5">
+                            <img src="static/images/pehlwan_logo.png" alt="Pehlwan Juice Corner Logo" class="w-full h-full object-contain rounded-full">
+                        </div>
+                        <div>
+                            <span class="font-classic font-bold text-lg text-white block">PEHLWAN</span>
+                            <span class="font-classic text-neutral-400 text-xs font-semibold tracking-wider block">JUICE CORNER</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-neutral-400 leading-relaxed max-w-sm">
+                        Authentic cold-pressed fruit juices, legendary dry-fruit power shakes, and high-protein grilled sandwiches. 100% pure nutrition without adulteration.
+                    </p>
+                    <p class="text-xs text-white font-semibold tracking-wide" data-i18n="heroTagline">
+                        “Pure Nutrition & Power | 100% Cold-Pressed, Zero Additives”
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-heading font-bold text-xs uppercase tracking-widest text-white mb-4">Quick Navigation</h4>
+                    <ul class="space-y-2.5 text-xs text-neutral-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors" data-i18n="navHome">Home</a></li>
+                        <li><a href="menu.html" class="hover:text-white transition-colors" data-i18n="navMenu">Menu & Nutrition</a></li>
+                        <li><a href="calculator.html" class="hover:text-white transition-colors" data-i18n="navCalculator">Diet Calculator</a></li>
+                        <li><a href="custom_shake.html" class="hover:text-white transition-colors" data-i18n="navCustomShake">Custom Shake Builder</a></li>
+                        <li><a href="location.html" class="hover:text-white transition-colors" data-i18n="navLocation">Location</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-heading font-bold text-xs uppercase tracking-widest text-white mb-4">Pillars of Purity</h4>
+                    <ul class="space-y-2.5 text-xs text-neutral-400">
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white"></i> Zero Added Water or Refined Sugar</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white"></i> 100% Cold-Pressed Natural Juices</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white"></i> 32g Protein Isolate & Dry Fruit Shakes</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white"></i> Fresh Pure Dairy Paneer & Whole Grain Bread</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-heading font-bold text-xs uppercase tracking-widest text-white mb-4">Visit Location</h4>
+                    <div class="space-y-3 text-xs text-neutral-300">
+                        <p class="flex items-start gap-2.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-white flex-shrink-0 mt-0.5"></i>
+                            <span data-i18n="topLocation">📍 Near Punjab National Bank, Main Road, Israna</span>
+                        </p>
+                        <p class="flex items-center gap-2.5 flex-wrap">
+                            <i data-lucide="clock" class="w-4 h-4 text-white flex-shrink-0"></i>
+                            <span data-i18n="topTiming">Open Daily: 9:00 AM – 9:30 PM</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-white text-black ml-1">
+                                OPEN NOW
+                            </span>
+                        </p>
+                        <p class="flex items-center gap-2.5">
+                            <i data-lucide="phone" class="w-4 h-4 text-white flex-shrink-0"></i>
+                            <span>Call / WhatsApp: +91 95883 51884</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-neutral-800 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-4">
+                <p>© 2026 Pehlwan Juice Corner, Israna. All rights reserved.</p>
+                <p class="text-neutral-400">Pure Athletic Heritage & Transparent Nutrition</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Gym Motivational Background Music Dock (Monochrome Black & White) -->
+    <div id="pehlwan-music-dock" class="fixed bottom-4 left-3 sm:bottom-6 sm:left-6 z-40 flex items-center gap-1.5 sm:gap-2.5 bg-black/95 text-white backdrop-blur-xl border border-neutral-800 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full shadow-2xl transition-all duration-300">
+        <!-- Animated Equalizer Bars -->
+        <div id="pehlwan-equalizer" class="pehlwan-equalizer flex items-end gap-0.5 sm:gap-1 h-3.5 sm:h-4 cursor-pointer" onclick="toggleGymMusic()" title="Play / Pause Gym Beats">
+            <span class="eq-bar w-1 bg-white rounded-full h-1.5"></span>
+            <span class="eq-bar w-1 bg-white rounded-full h-3"></span>
+            <span class="eq-bar w-1 bg-white rounded-full h-2"></span>
+            <span class="eq-bar w-1 bg-white rounded-full h-3.5"></span>
+        </div>
+
+        <!-- Track Info (Desktop / Tablet view) -->
+        <div class="cursor-pointer select-none hidden sm:block max-w-[120px] sm:max-w-[160px]" onclick="toggleGymMusic()">
+            <div class="text-[9px] text-neutral-400 font-extrabold uppercase tracking-wider leading-none flex items-center gap-1">
+                <span>GYM BEATS</span>
+                <span id="gym-music-status" class="w-1.5 h-1.5 rounded-full bg-white"></span>
+            </div>
+            <div id="gym-track-title" class="text-xs font-bold text-white truncate mt-0.5" title="Click to Play/Pause">
+                Akhada Power Beat
+            </div>
+        </div>
+
+        <!-- Mobile Mini Label -->
+        <span class="sm:hidden text-[10px] font-bold text-white uppercase tracking-wider cursor-pointer" onclick="toggleGymMusic()">Beats</span>
+
+        <!-- Controls -->
+        <div class="flex items-center gap-1 border-l border-neutral-700 pl-1.5 sm:pl-2">
+            <!-- Play/Pause Button -->
+            <button id="gym-play-btn" onclick="toggleGymMusic()" class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white text-black flex items-center justify-center transition-colors" title="Play / Pause">
+                <i id="gym-play-icon" data-lucide="play" class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-black text-black"></i>
+            </button>
+            
+            <!-- Next Track Button (Desktop / Tablet only) -->
+            <button onclick="nextGymTrack()" class="hidden sm:flex w-6 h-6 rounded-lg text-neutral-400 hover:text-white items-center justify-center transition-colors" title="Next Gym Track">
+                <i data-lucide="skip-forward" class="w-3 h-3"></i>
+            </button>
+            
+            <!-- Mute/Volume Button (Desktop / Tablet only) -->
+            <button id="gym-mute-btn" onclick="toggleGymMute()" class="hidden sm:flex w-6 h-6 rounded-lg text-neutral-400 hover:text-white items-center justify-center transition-colors" title="Mute / Unmute">
+                <i id="gym-vol-icon" data-lucide="volume-2" class="w-3 h-3"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pehlwan AI Coach Launcher Button (Monochrome Black & White) -->
+    <div id="pehlwan-ai-launcher" class="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-40">
+        <button onclick="togglePehlwanAIChat()" class="group relative flex items-center gap-2 sm:gap-2.5 bg-black hover:bg-neutral-800 text-white px-3.5 sm:px-5 py-2 sm:py-3 rounded-full shadow-2xl border border-neutral-700 transition-all transform hover:scale-105 font-classic">
+            <!-- Pulsing Indicator -->
+            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+            
+            <i data-lucide="bot" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]"></i>
+            <!-- Mobile Compact Label -->
+            <span class="sm:hidden text-xs font-black tracking-wide">AI Coach</span>
+            <!-- Desktop Expanded Card -->
+            <div class="text-left hidden sm:block">
+                <div class="text-[9px] font-black tracking-widest uppercase text-neutral-400 leading-none">24x7 ASSISTANT</div>
+                <div class="text-xs font-black tracking-wider leading-tight text-white">Pehlwan AI Coach</div>
+            </div>
+        </button>
+    </div>
+
+    <!-- Pehlwan AI Chat Modal Box (Clean White & Black) -->
+    <div id="pehlwan-ai-modal" class="fixed bottom-16 sm:bottom-20 right-2 sm:right-6 left-2 sm:left-auto max-w-[calc(100vw-16px)] sm:w-[400px] h-[520px] max-h-[82vh] bg-white border-2 border-black rounded-3xl shadow-2xl flex flex-col hidden pehlwan-chat-slide-up overflow-hidden z-50 text-black">
+        <!-- Chat Header -->
+        <div class="p-4 bg-black text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="relative w-10 h-10 rounded-2xl bg-white text-black flex items-center justify-center font-bold">
+                    <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <h3 class="font-classic font-bold text-sm text-white">Pehlwan AI Coach</h3>
+                        <span class="text-[9px] bg-white text-black font-extrabold px-1.5 py-0.5 rounded">AI</span>
+                    </div>
+                    <p class="text-[10px] text-neutral-300 font-semibold flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        <span>Online • Ask anything about drinks & diet</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1">
+                <button onclick="clearPehlwanAIChat()" class="p-1.5 text-neutral-400 hover:text-white rounded-lg hover:bg-neutral-800 transition-colors" title="Clear Chat">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                </button>
+                <button onclick="togglePehlwanAIChat()" class="p-1.5 text-neutral-400 hover:text-white rounded-lg hover:bg-neutral-800 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Messages Container -->
+        <div id="pehlwan-ai-messages" class="flex-grow p-4 overflow-y-auto space-y-3.5 text-xs bg-neutral-50">
+            <!-- Initial Welcome Message from Pehlwan AI -->
+            <div class="flex items-start gap-2.5">
+                <div class="w-7 h-7 rounded-xl bg-black text-white flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">
+                    🤖
+                </div>
+                <div class="ai-bubble-bot p-3.5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed shadow-sm bg-white border border-neutral-200 text-black">
+                    <p class="font-black text-black mb-1">Ram Ram ji! 🙏 Swagat hai Pehlwan Juice Corner me!</p>
+                    <p class="text-neutral-700">Main aapka personal **Pehlwan AI Coach** hu. Shakes ke prices, verified calories, gym workout recovery, dukan ki timing ya custom shake ke baare me kuch bhi puchhein!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Question Chips -->
+        <div class="px-3 py-2 border-t border-neutral-200 bg-white overflow-x-auto flex items-center gap-2 whitespace-nowrap scrollbar-none text-[11px]">
+            <button onclick="askPehlwanAI('Post-workout recovery ke liye best drink kya hai?')" class="bg-neutral-100 hover:bg-black hover:text-white text-neutral-800 border border-neutral-200 px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 font-medium">
+                <span>💪 Post-Workout?</span>
+            </button>
+            <button onclick="askPehlwanAI('Dukaan ki timing aur location kya hai?')" class="bg-neutral-100 hover:bg-black hover:text-white text-neutral-800 border border-neutral-200 px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 font-medium">
+                <span>⏰ Timing & Location?</span>
+            </button>
+            <button onclick="askPehlwanAI('Cold Coffee ka price aur nutrition kya hai?')" class="bg-neutral-100 hover:bg-black hover:text-white text-neutral-800 border border-neutral-200 px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 font-medium">
+                <span>☕ Cold Coffee ₹100?</span>
+            </button>
+            <button onclick="askPehlwanAI('Badam Ragda me kya kya dalte ho?')" class="bg-neutral-100 hover:bg-black hover:text-white text-neutral-800 border border-neutral-200 px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 font-medium">
+                <span>🥛 Badam Ragda?</span>
+            </button>
+            <button onclick="askPehlwanAI('Custom shake kaise banayein?')" class="bg-neutral-100 hover:bg-black hover:text-white text-neutral-800 border border-neutral-200 px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 font-medium">
+                <span>🎨 Custom Shake?</span>
+            </button>
+            <button onclick="askPehlwanAI('Weight loss ke liye konsa juice best hai?')" class="bg-neutral-100 hover:bg-black hover:text-white text-neutral-800 border border-neutral-200 px-2.5 py-1 rounded-xl transition-all flex items-center gap-1 font-medium">
+                <span>🏃 Fat Loss Drinks?</span>
+            </button>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form onsubmit="handlePehlwanAISubmit(event)" class="p-3 bg-white border-t border-neutral-200 flex items-center gap-2">
+            <input 
+                type="text" 
+                id="pehlwan-ai-input" 
+                placeholder="Ask anything (e.g. 'Cold Coffee price', 'Post workout diet')..." 
+                class="flex-grow bg-neutral-100 border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors font-sans"
+                autocomplete="off"
+            >
+            <button type="submit" id="pehlwan-ai-send-btn" class="w-9 h-9 rounded-xl bg-black hover:bg-neutral-800 text-white flex items-center justify-center flex-shrink-0 shadow transition-transform hover:scale-105">
+                <i data-lucide="send" class="w-4 h-4 stroke-[2.5]"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="static/js/app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
