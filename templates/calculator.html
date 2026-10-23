@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Pehlwan Diet & Calorie Calculator | Pehlwan Juice Corner, Israna{% endblock %}
+
+{% block content %}
+<div class="py-14 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+        <div class="classic-ornament justify-center text-[10px]">❖ SCIENTIFIC ATHLETIC FORMULA ❖</div>
+        <div class="inline-flex items-center gap-2 bg-neutral-100 border border-neutral-300 px-4 py-1.5 rounded-full text-xs font-bold text-black">
+            <span>ATHLETIC MACRO BALANCE</span>
+        </div>
+        <h1 class="font-classic font-black text-3xl sm:text-5xl text-black tracking-wide">
+            <span data-i18n="navCalculator">DIET CALCULATOR</span>
+        </h1>
+        <p class="text-neutral-600 text-xs sm:text-sm">
+            Input your biological metrics to compute your target daily calories, protein, and healthy fats.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <!-- Input Form (Left 6 Cols) -->
+        <div class="lg:col-span-6 luxury-card rounded-3xl p-8 space-y-6 shadow-sm bg-white border border-neutral-200">
+            <div class="border-b border-neutral-200 pb-4">
+                <h2 class="font-classic font-bold text-xl text-black">Your Fitness Metrics</h2>
+                <p class="text-xs text-neutral-500 mt-1">Scientific calculation for calories and protein balance</p>
+            </div>
+
+            <!-- Gender -->
+            <div>
+                <label class="block text-xs font-bold text-black uppercase tracking-wider mb-2">Gender</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" onclick="setCalcGender('male')" id="gender-male" class="pehlwan-gender-btn active bg-black border-2 border-black text-white font-bold text-xs py-3 rounded-2xl flex items-center justify-center gap-2 shadow">
+                        <span>💪 Male / Athlete</span>
+                    </button>
+                    <button type="button" onclick="setCalcGender('female')" id="gender-female" class="pehlwan-gender-btn bg-white border border-neutral-300 text-neutral-700 font-bold text-xs py-3 rounded-2xl flex items-center justify-center gap-2 hover:border-black">
+                        <span>🏃‍♀️ Female / Fitness</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Age, Weight, Height -->
+            <div class="grid grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-600 mb-1">Age</label>
+                    <div class="relative">
+                        <input type="number" id="pehlwan-calc-age" value="23" min="12" max="80" class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2.5 text-sm text-black font-bold focus:outline-none focus:border-black">
+                        <span class="absolute right-2.5 top-2.5 text-xs text-neutral-400">yrs</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-600 mb-1">Weight</label>
+                    <div class="relative">
+                        <input type="number" id="pehlwan-calc-weight" value="70" min="30" max="180" class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2.5 text-sm text-black font-bold focus:outline-none focus:border-black">
+                        <span class="absolute right-2.5 top-2.5 text-xs text-neutral-400">kg</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-600 mb-1">Height</label>
+                    <div class="relative">
+                        <input type="number" id="pehlwan-calc-height" value="172" min="100" max="220" class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2.5 text-sm text-black font-bold focus:outline-none focus:border-black">
+                        <span class="absolute right-2.5 top-2.5 text-xs text-neutral-400">cm</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goal -->
+            <div>
+                <label class="block text-xs font-bold text-black uppercase tracking-wider mb-2">Training Goal</label>
+                <div class="grid grid-cols-3 gap-2.5 text-center">
+                    <button type="button" onclick="setCalcGoal('strength')" id="goal-strength" class="pehlwan-goal-btn active bg-black border-2 border-black p-3 rounded-2xl flex flex-col items-center text-white shadow">
+                        <span class="text-xl mb-1">⚡</span>
+                        <span class="text-xs font-bold">Strength</span>
+                        <span class="text-[9px] text-neutral-300 mt-0.5">Fitness</span>
+                    </button>
+                    <button type="button" onclick="setCalcGoal('mass')" id="goal-mass" class="pehlwan-goal-btn bg-white border border-neutral-300 p-3 rounded-2xl flex flex-col items-center hover:border-black">
+                        <span class="text-xl mb-1">💪</span>
+                        <span class="text-xs font-bold text-black">Bulking</span>
+                        <span class="text-[9px] text-neutral-500 mt-0.5">Size & Mass</span>
+                    </button>
+                    <button type="button" onclick="setCalcGoal('fatloss')" id="goal-fatloss" class="pehlwan-goal-btn bg-white border border-neutral-300 p-3 rounded-2xl flex flex-col items-center hover:border-black">
+                        <span class="text-xl mb-1">🔥</span>
+                        <span class="text-xs font-bold text-black">Fat Loss</span>
+                        <span class="text-[9px] text-neutral-500 mt-0.5">Cutting</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="runPehlwanCalculator()" class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-sm py-4 rounded-full shadow-lg transition-all flex items-center justify-center gap-2">
+                <span>Calculate My Macros & Recommended Meal</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
+            </button>
+        </div>
+
+        <!-- Output Panel (Right 6 Cols) -->
+        <div class="lg:col-span-6 space-y-6">
+            <!-- Target Summary Card -->
+            <div class="luxury-card rounded-3xl p-8 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-extrabold uppercase text-white bg-black px-3.5 py-1 rounded-full">Target Daily Nutrition</span>
+                    <span id="calc-goal-title" class="text-xs font-black text-black">Strength & Athletic Stamina</span>
+                </div>
+
+                <div class="flex items-baseline gap-3 mb-6">
+                    <span id="calc-res-calories" class="font-heading font-black text-5xl sm:text-6xl text-black">2,420</span>
+                    <span class="text-lg font-bold text-neutral-600">kcal / day</span>
+                </div>
+
+                <!-- 3 Pillars: Protein, Fats, Carbs -->
+                <div class="grid grid-cols-3 gap-3 text-center mb-6">
+                    <div class="bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl">
+                        <span class="text-[10px] text-neutral-500 font-extrabold uppercase block" data-i18n="protein">PROTEIN</span>
+                        <span id="calc-res-protein" class="text-2xl font-black text-black">126g</span>
+                        <span class="text-[9px] text-neutral-500 block mt-0.5">Recovery</span>
+                    </div>
+                    <div class="bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl">
+                        <span class="text-[10px] text-neutral-500 font-extrabold uppercase block" data-i18n="fats">FATS</span>
+                        <span id="calc-res-fats" class="text-2xl font-black text-black">67g</span>
+                        <span class="text-[9px] text-neutral-500 block mt-0.5">Healthy</span>
+                    </div>
+                    <div class="bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl">
+                        <span class="text-[10px] text-neutral-500 font-extrabold uppercase block" data-i18n="carbs">CARBS</span>
+                        <span id="calc-res-carbs" class="text-2xl font-black text-black">328g</span>
+                        <span class="text-[9px] text-neutral-500 block mt-0.5">Energy</span>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-50 rounded-xl p-3 text-xs text-neutral-600 flex items-center justify-between border border-neutral-200">
+                    <div>BMR: <span id="calc-res-bmr" class="text-black font-bold">1,650</span> kcal</div>
+                    <div>Maintenance (TDEE): <span id="calc-res-tdee" class="text-black font-bold">2,420</span> kcal</div>
+                </div>
+            </div>
+
+            <!-- Recommended Pehlwan Combo -->
+            <div class="luxury-card rounded-3xl p-8 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div>
+                    <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Kitchen Match</span>
+                    <h3 class="font-heading font-black text-xl text-black mt-1">Recommended Pehlwan Combo</h3>
+                    <p class="text-xs text-neutral-600 mt-1">Freshly balanced to meet your training target:</p>
+                </div>
+
+                <div id="calc-combo-box" class="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 id="combo-name" class="font-heading font-bold text-base text-black">Pehlwan Badam Ragda & Grill Sandwich Combo</h4>
+                        <span id="combo-price" class="text-lg font-black text-black font-heading">₹200</span>
+                    </div>
+                    <p id="combo-items" class="text-xs text-neutral-700 font-medium">Badam Ragda (₹100) + Pehlwan Grill Sandwich (₹100)</p>
+                    <div id="combo-macros" class="text-xs text-neutral-600">
+                        ⚡ 760 kcal | 32.5g Protein | 32.0g Fats | 87g Carbs
+                    </div>
+                </div>
+
+                <button onclick="addCurrentComboToTray()" class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-xs py-4 px-4 rounded-full shadow transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                    <span data-i18n="addBtn">Add to Tray</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

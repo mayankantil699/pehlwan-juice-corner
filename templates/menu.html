@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Menu & Nutrition Facts | Pehlwan Juice Corner, Israna{% endblock %}
+
+{% block content %}
+<div class="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+        <div class="classic-ornament justify-center text-[10px]">❖ ROYAL AYURVEDIC & SPORTS NUTRITION ❖</div>
+        <div class="inline-flex items-center gap-2 bg-neutral-100 border border-neutral-300 px-4 py-1.5 rounded-full text-xs font-bold text-black">
+            <span data-i18n="heroBadge">📍 Israna, Near Punjab National Bank (Panipat)</span>
+        </div>
+        <h1 class="font-classic font-black text-3xl sm:text-5xl text-black tracking-wide">
+            <span data-i18n="navMenu">MENU & NUTRITION</span>
+        </h1>
+        <p class="text-neutral-600 text-xs sm:text-sm" data-i18n="bestsellerSub">
+            Transparent lab-verified Calories, Protein, and Fats on every order.
+        </p>
+    </div>
+
+    <!-- Filter & Search Controls (Clean White & Black) -->
+    <div class="luxury-card rounded-3xl p-6 mb-10 space-y-5 shadow-sm bg-white border border-neutral-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-5">
+            <!-- Search Bar -->
+            <div class="relative w-full sm:w-96">
+                <i data-lucide="search" class="w-4 h-4 text-neutral-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                <input 
+                    type="text" 
+                    id="pehlwan-search-input" 
+                    oninput="filterPehlwanMenu()"
+                    placeholder="Search menu (e.g. 'Mosambi', 'Badam', 'Protein')..." 
+                    class="w-full bg-neutral-50 border border-neutral-300 rounded-2xl pl-11 pr-4 py-3 text-xs text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors font-sans"
+                >
+            </div>
+
+            <!-- Categories -->
+            <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 scrollbar-none flex-nowrap">
+                <button onclick="setPehlwanCategory('all')" id="cat-all" class="pehlwan-cat-tab active bg-black text-white px-5 py-2.5 rounded-full text-xs font-black whitespace-nowrap shadow font-classic tracking-wider uppercase">
+                    All ({{ items|length }})
+                </button>
+                <button onclick="setPehlwanCategory('juices')" id="cat-juices" class="pehlwan-cat-tab bg-white text-neutral-800 px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap hover:bg-neutral-100 border border-neutral-300 font-classic tracking-wider uppercase">
+                    Juices
+                </button>
+                <button onclick="setPehlwanCategory('shakes')" id="cat-shakes" class="pehlwan-cat-tab bg-white text-neutral-800 px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap hover:bg-neutral-100 border border-neutral-300 font-classic tracking-wider uppercase">
+                    Shakes
+                </button>
+                <button onclick="setPehlwanCategory('sandwiches')" id="cat-sandwiches" class="pehlwan-cat-tab bg-white text-neutral-800 px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap hover:bg-neutral-100 border border-neutral-300 font-classic tracking-wider uppercase">
+                    Sandwiches
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIY Custom Shake Lab Callout Banner -->
+    <div class="luxury-card rounded-3xl p-5 sm:p-6 mb-8 border-2 border-neutral-300 bg-neutral-50 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div class="flex items-center gap-4 text-center sm:text-left">
+            <div class="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center text-2xl flex-shrink-0">
+                🥤
+            </div>
+            <div>
+                <div class="flex items-center gap-2 justify-center sm:justify-start">
+                    <span class="text-[10px] font-bold text-black uppercase tracking-widest bg-neutral-200 px-2 py-0.5 rounded-full">DIY Pehlwan Lab</span>
+                    <span class="text-xs font-black text-black">⚡ Live Macros</span>
+                </div>
+                <h3 class="font-classic font-bold text-base sm:text-lg text-black mt-0.5">
+                    Apna Manpasand Custom Shake / Juice Khud Mix Karein
+                </h3>
+                <p class="text-xs text-neutral-600 line-clamp-1">
+                    Apni pasand ke fruit, badam-kaju aur pure milk/protein ko mix karke live nutrition aur price dekhein.
+                </p>
+            </div>
+        </div>
+
+        <a href="/custom-shake" class="bg-black hover:bg-neutral-800 text-white font-extrabold text-xs px-6 py-3 rounded-full whitespace-nowrap shadow-md flex items-center gap-2 font-classic tracking-wider transition-transform hover:scale-105">
+            <i data-lucide="sparkles" class="w-4 h-4 stroke-[2.5]"></i>
+            <span>Custom Shake Builder Kholein →</span>
+        </a>
+    </div>
+
+    <!-- Results Count -->
+    <div class="flex items-center justify-between mb-8 text-xs text-neutral-600">
+        <div id="pehlwan-results-count" class="font-medium">Showing verified items</div>
+        <div class="text-black font-classic tracking-wider text-[11px] font-bold">100% PURE & ZERO ADULTERATION</div>
+    </div>
+
+    <!-- Menu Grid -->
+    <div id="pehlwan-menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for item in items %}
+        <div 
+            class="pehlwan-menu-card luxury-card rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm bg-white border border-neutral-200 hover:border-black"
+            data-id="{{ item.id }}"
+            data-category="{{ item.category }}"
+        >
+            <div class="relative h-52 overflow-hidden bg-neutral-100">
+                <img src="{{ item.image }}" alt="{{ item.name_en }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                <div class="absolute top-3 left-3 bg-black text-white px-3 py-1 rounded-full text-[10px] font-bold item-cat font-classic uppercase tracking-wider shadow">
+                    {{ item.cat_en }}
+                </div>
+
+                <div id="top-cal-{{ item.id }}" class="absolute top-3 right-3 bg-white text-black font-black text-xs px-3 py-1 rounded-full border border-neutral-300 shadow">
+                    {{ item.calories }} kcal
+                </div>
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                <div>
+                    <h3 class="font-classic font-bold text-lg sm:text-xl text-black group-hover:underline transition-all item-title leading-snug tracking-wide">
+                        {{ item.name_en }}
+                    </h3>
+                    <p class="text-xs text-neutral-600 mt-2 line-clamp-2 leading-relaxed item-desc">
+                        {{ item.desc_en }}
+                    </p>
+                </div>
+
+                <!-- Size Selector if multiple sizes exist -->
+                {% if item.prices and item.prices|length > 1 %}
+                <div class="bg-neutral-100 border border-neutral-200 p-2 rounded-2xl">
+                    <div class="text-[10px] text-neutral-500 font-bold uppercase tracking-wider mb-1.5 px-1 flex items-center justify-between">
+                        <span class="font-classic">Glass Size:</span>
+                        <span class="text-black text-[10px] font-bold">Select size</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        {% for p in item.prices %}
+                        <button 
+                            type="button"
+                            onclick="selectCardSize('{{ item.id }}', {{ loop.index0 }}, {{ p.price }}, {{ p.cal }}, {{ p.protein }}, {{ p.fats }}, {{ p.carbs }}, '{{ p.size }}', '{{ p.size_hi }}')"
+                            class="size-pill-{{ item.id }} flex-1 py-1.5 px-2 rounded-xl text-xs font-bold border transition-all text-center {% if loop.first %}bg-black text-white border-black shadow font-black{% else %}bg-white text-neutral-700 border-neutral-300 hover:border-black{% endif %}"
+                            data-index="{{ loop.index0 }}"
+                        >
+                            <span class="block text-[11px] leading-tight font-semibold">{{ p.size }}</span>
+                            <span class="block text-[10px] font-black">₹{{ p.price }}</span>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Exact Macro Breakdown -->
+                <div class="bg-neutral-50 border border-neutral-200 p-3 rounded-2xl grid grid-cols-4 gap-1.5 text-center text-xs">
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="cal">CALORIES</span>
+                        <span id="macro-cal-{{ item.id }}" class="font-black text-black text-xs">{{ item.calories }}</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="protein">PROTEIN</span>
+                        <span id="macro-prot-{{ item.id }}" class="font-black text-black text-xs">{{ item.protein }}g</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="fats">FATS</span>
+                        <span id="macro-fats-{{ item.id }}" class="font-black text-black text-xs">{{ item.fats }}g</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="carbs">CARBS</span>
+                        <span id="macro-carbs-{{ item.id }}" class="font-black text-black text-xs">{{ item.carbs }}g</span>
+                    </div>
+                </div>
+
+                <!-- Price & Add -->
+                <div class="pt-3 border-t border-neutral-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-neutral-500 uppercase tracking-wider block font-bold">Price</span>
+                        <div id="card-price-{{ item.id }}" class="text-2xl font-black font-classic text-black">₹{{ item.price }}</div>
+                    </div>
+
+                    <button onclick="addToPehlwanTray('{{ item.id }}')" class="item-add-btn bg-black hover:bg-neutral-800 text-white font-extrabold text-[11px] tracking-wider uppercase px-5 py-3 rounded-full transition-all shadow flex items-center gap-1.5">
+                        <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                        <span data-i18n="addBtn">Add to Tray</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

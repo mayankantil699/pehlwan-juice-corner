@@ -1,0 +1,438 @@
+{% extends "base.html" %}
+
+{% block title %}Custom Shake & Juice Builder | Pehlwan Juice Corner, Israna{% endblock %}
+
+{% block content %}
+<div class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Hero Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
+        <div class="classic-ornament justify-center text-[10px]">❖ PEHLWAN SHAKE & JUICE LAB ❖</div>
+        <div class="inline-flex items-center gap-2 bg-neutral-100 border border-neutral-300 px-4 py-1 rounded-full text-xs font-bold text-black">
+            <span>✨ 100% PURE INGREDIENTS • LIVE MACROS & BILL</span>
+        </div>
+        <h1 class="font-classic font-black text-3xl sm:text-5xl text-black tracking-wide" data-i18n="customShakeTitle">
+            BUILD YOUR CUSTOM SHAKE & JUICE
+        </h1>
+        <p class="text-neutral-600 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed" data-i18n="customShakeSub">
+            Apni marzi ke taaza fruit, silbatte ke dry fruit, pure farm milk aur whey protein ko mix karke apna custom athletic power drink khud banayein.
+        </p>
+
+        <!-- Highlights Pills -->
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-2 text-[11px] text-neutral-700 font-medium">
+            <span class="bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">🥛 6 Base Choices</span>
+            <span class="bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">🍓 10+ Taaza Fruits</span>
+            <span class="bg-neutral-100 border border-neutral-200 px-3 py-1 rounded-full">🌰 7 Akhada Dry Fruits</span>
+            <span class="bg-black text-white font-bold px-3 py-1 rounded-full">⚡ +24g Whey Protein Option</span>
+        </div>
+    </div>
+
+    <!-- Main Builder Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: The 6 Steps Builder (7 Cols) -->
+        <div class="lg:col-span-7 space-y-8">
+            
+            <!-- STEP 1: LIQUID BASE -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">1</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepBase">
+                            Step 1: Choose Your Liquid Base
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-black font-bold uppercase tracking-wider bg-neutral-100 px-2.5 py-1 rounded-full border border-neutral-300">Required (Pick 1)</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="builder-bases-container">
+                    {% for b in bases %}
+                    <div 
+                        onclick="selectCustomBase('{{ b.id }}')"
+                        id="card-{{ b.id }}"
+                        data-id="{{ b.id }}"
+                        data-name-en="{{ b.name_en }}"
+                        data-name-hinglish="{{ b.name_hinglish }}"
+                        data-name-hi="{{ b.name_hi }}"
+                        data-price="{{ b.price }}"
+                        data-cal="{{ b.cal }}"
+                        data-protein="{{ b.protein }}"
+                        data-fats="{{ b.fats }}"
+                        data-carbs="{{ b.carbs }}"
+                        data-color="{{ b.color }}"
+                        class="pehlwan-builder-chip base-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2 {% if loop.first %}selected border-black bg-black text-white{% endif %}"
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">{{ b.icon }}</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug base-name">{{ b.name_en }}</div>
+                                    <span class="text-[10px] font-medium opacity-80">{{ b.badge }}</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm {% if loop.first %}opacity-100{% endif %}">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">₹{{ b.price }}</span>
+                            <span class="text-[10px] opacity-80 font-semibold">{{ b.cal }} kcal • {{ b.protein }}g P</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- STEP 2: FRESH FRUITS (MULTI-SELECT) -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">2</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepFruit">
+                            Step 2: Pick Fresh Fruits
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-neutral-500 font-medium">Multi-Select (Choose any)</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="builder-fruits-container">
+                    {% for f in fruits %}
+                    <div 
+                        onclick="toggleCustomFruit('{{ f.id }}')"
+                        id="card-{{ f.id }}"
+                        data-id="{{ f.id }}"
+                        data-name-en="{{ f.name_en }}"
+                        data-name-hinglish="{{ f.name_hinglish }}"
+                        data-name-hi="{{ f.name_hi }}"
+                        data-price="{{ f.price }}"
+                        data-cal="{{ f.cal }}"
+                        data-protein="{{ f.protein }}"
+                        data-fats="{{ f.fats }}"
+                        data-carbs="{{ f.carbs }}"
+                        class="pehlwan-builder-chip fruit-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">{{ f.icon }}</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug fruit-name">{{ f.name_en }}</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹{{ f.price }}</span>
+                                <span class="text-[9px] opacity-80">{{ f.cal }} kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- STEP 3: AKHADA DRY FRUITS & NUTS -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">3</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepNuts">
+                            Step 3: Akhada Nuts & Desi Boosters
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-neutral-500 font-medium">Stone-ground Silbatta Seeds</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="builder-nuts-container">
+                    {% for n in nuts %}
+                    <div 
+                        onclick="toggleCustomNut('{{ n.id }}')"
+                        id="card-{{ n.id }}"
+                        data-id="{{ n.id }}"
+                        data-name-en="{{ n.name_en }}"
+                        data-name-hinglish="{{ n.name_hinglish }}"
+                        data-name-hi="{{ n.name_hi }}"
+                        data-price="{{ n.price }}"
+                        data-cal="{{ n.cal }}"
+                        data-protein="{{ n.protein }}"
+                        data-fats="{{ n.fats }}"
+                        data-carbs="{{ n.carbs }}"
+                        class="pehlwan-builder-chip nut-card bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between">
+                            <span class="text-2xl">{{ n.icon }}</span>
+                            <div class="check-indicator font-bold text-xs">✓</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs leading-snug nut-name">{{ n.name_en }}</div>
+                            <div class="flex items-center justify-between text-[11px] mt-1 pt-1 border-t border-neutral-200/60">
+                                <span class="font-black">+₹{{ n.price }}</span>
+                                <span class="text-[9px] opacity-80">{{ n.cal }} kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- STEP 4: PROTEIN SCOOPS -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">4</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepProtein">
+                            Step 4: Athletic Protein Boost (Optional)
+                        </h2>
+                    </div>
+                    <span class="text-[10px] text-white bg-black font-black px-2.5 py-1 rounded-full uppercase tracking-wider">High Protein</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="builder-protein-container">
+                    {% for p in protein_options %}
+                    <div 
+                        onclick="toggleCustomProtein('{{ p.id }}')"
+                        id="card-{{ p.id }}"
+                        data-id="{{ p.id }}"
+                        data-name-en="{{ p.name_en }}"
+                        data-name-hinglish="{{ p.name_hinglish }}"
+                        data-name-hi="{{ p.name_hi }}"
+                        data-price="{{ p.price }}"
+                        data-cal="{{ p.cal }}"
+                        data-protein="{{ p.protein }}"
+                        data-fats="{{ p.fats }}"
+                        data-carbs="{{ p.carbs }}"
+                        class="pehlwan-builder-chip protein-card bg-neutral-50 border border-neutral-200 p-4 rounded-2xl flex flex-col justify-between space-y-2"
+                    >
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">{{ p.icon }}</span>
+                                <div>
+                                    <div class="font-bold text-xs leading-snug protein-name">{{ p.name_en }}</div>
+                                    <span class="text-[10px] font-bold text-black">{{ p.badge }}</span>
+                                </div>
+                            </div>
+                            <div class="check-indicator font-bold text-sm">✓</div>
+                        </div>
+
+                        <div class="pt-2 border-t border-neutral-200/60 flex items-center justify-between text-xs">
+                            <span class="font-black text-sm">+₹{{ p.price }}</span>
+                            <span class="text-[10px] opacity-80 font-semibold">{{ p.cal }} kcal • +{{ p.protein }}g Protein</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- STEP 5 & 6: SWEETNESS & GLASS SIZE -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-6 shadow-sm bg-white border border-neutral-200">
+                <div class="flex items-center gap-2.5 border-b border-neutral-200 pb-3">
+                    <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">5</span>
+                    <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepSweet">
+                        Step 5: Sweetness & Sugar Preference
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    {% for sw in sweet_options %}
+                    <button 
+                        type="button"
+                        onclick="selectCustomSweet('{{ sw.id }}')"
+                        id="btn-sweet-{{ sw.id }}"
+                        class="sweet-chip py-2.5 px-3 rounded-xl text-xs font-bold border transition-all text-center {% if loop.first %}bg-black text-white border-black font-black{% else %}bg-neutral-50 text-neutral-700 border-neutral-200 hover:border-black{% endif %}"
+                    >
+                        <span class="block text-sm mb-0.5">{{ sw.icon }}</span>
+                        <span class="block leading-tight text-[11px]">{{ sw.name }}</span>
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <!-- Glass Size -->
+                <div class="pt-4 border-t border-neutral-200 space-y-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-7 h-7 rounded-full bg-black text-white font-black text-xs flex items-center justify-center font-heading">6</span>
+                        <h2 class="font-classic font-bold text-lg text-black" data-i18n="stepSize">
+                            Step 6: Glass Size
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <button 
+                            type="button" 
+                            onclick="selectCustomSize('regular', 1.0, '350ml Regular Glass')"
+                            id="btn-size-regular" 
+                            class="size-chip p-3.5 rounded-2xl text-center border-2 transition-all bg-black text-white border-black shadow"
+                        >
+                            <span class="text-xl block mb-1">🥤</span>
+                            <span class="font-bold text-xs block">Regular</span>
+                            <span class="text-[10px] opacity-80 block">350ml • 1x Price</span>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            onclick="selectCustomSize('medium', 1.35, '500ml Medium Glass')"
+                            id="btn-size-medium" 
+                            class="size-chip p-3.5 rounded-2xl text-center border-2 transition-all bg-neutral-50 text-neutral-800 border-neutral-200 hover:border-black"
+                        >
+                            <span class="text-xl block mb-1">🥛</span>
+                            <span class="font-bold text-xs block">Medium</span>
+                            <span class="text-[10px] opacity-80 block">500ml • 1.35x</span>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            onclick="selectCustomSize('jumbo', 1.7, '750ml Jumbo Akhada Glass')"
+                            id="btn-size-jumbo" 
+                            class="size-chip p-3.5 rounded-2xl text-center border-2 transition-all bg-neutral-50 text-neutral-800 border-neutral-200 hover:border-black"
+                        >
+                            <span class="text-xl block mb-1">🏆</span>
+                            <span class="font-bold text-xs block">Jumbo</span>
+                            <span class="text-[10px] opacity-80 block">750ml • 1.7x</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Name your Drink -->
+                <div>
+                    <label class="block text-xs font-bold text-black uppercase tracking-wider mb-1.5">
+                        Drink Name (Optional / Apna Naam Dein)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="custom-drink-name-input" 
+                        placeholder="e.g. Sandeep Akhada Power Fuel, Morning Fresh Cooler..." 
+                        class="w-full bg-neutral-50 border border-neutral-300 rounded-2xl px-4 py-3 text-xs text-black placeholder-neutral-400 focus:outline-none focus:border-black transition-colors font-sans"
+                        oninput="updateCustomDrinkName()"
+                    >
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Sticky Live Glass, Nutrition & Order Actions (5 Cols) -->
+        <div class="lg:col-span-5 sticky top-28 space-y-6">
+            
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 space-y-6 shadow-md bg-white border-2 border-neutral-300">
+                
+                <!-- Card Header -->
+                <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
+                    <div>
+                        <div class="classic-ornament justify-start text-[9px]">LIVE PREVIEW</div>
+                        <h3 id="custom-preview-title" class="font-classic font-bold text-xl text-black mt-1 leading-snug">
+                            Custom Akhada Drink
+                        </h3>
+                    </div>
+                    <button onclick="resetCustomShakeBuilder()" class="text-neutral-500 hover:text-black text-xs font-bold flex items-center gap-1 transition-colors" title="Reset all selections">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+
+                <!-- Interactive Virtual Glass Simulation -->
+                <div class="bg-neutral-50 border border-neutral-200 rounded-3xl p-6 text-center relative overflow-hidden">
+                    <div class="pehlwan-virtual-glass-wrapper">
+                        <div class="pehlwan-glass-cup">
+                            <div id="virtual-glass-liquid" class="pehlwan-liquid-fill">
+                                <div class="pehlwan-liquid-foam"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Glass size & status -->
+                    <div class="mt-4 flex items-center justify-center gap-2 text-xs">
+                        <span id="virtual-glass-size-badge" class="bg-black text-white font-bold px-3 py-0.5 rounded-full text-[10px] uppercase tracking-wider">
+                            350ml Regular Glass
+                        </span>
+                        <span id="virtual-glass-protein-badge" class="hidden bg-neutral-200 text-black font-black px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider">
+                            💪 Muscle Fuel
+                        </span>
+                    </div>
+
+                    <!-- Selected Recipe Ingredients Pill Tag Cloud -->
+                    <div class="mt-4 pt-3 border-t border-neutral-200 flex flex-wrap items-center justify-center gap-1.5" id="virtual-glass-tags">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Live Macro Dashboard Grid -->
+                <div class="bg-neutral-50 border border-neutral-200 p-4 rounded-2xl grid grid-cols-4 gap-2 text-center">
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="cal">CALORIES</span>
+                        <span id="custom-live-cal" class="text-lg font-black text-black mt-0.5 block">160</span>
+                        <span class="text-[9px] text-neutral-400">kcal</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="protein">PROTEIN</span>
+                        <span id="custom-live-protein" class="text-lg font-black text-black mt-0.5 block">8.0g</span>
+                        <span class="text-[9px] text-neutral-400">Muscle</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="fats">FATS</span>
+                        <span id="custom-live-fats" class="text-lg font-black text-black mt-0.5 block">9.0g</span>
+                        <span class="text-[9px] text-neutral-400">Healthy</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] uppercase font-bold text-neutral-500 block" data-i18n="carbs">CARBS</span>
+                        <span id="custom-live-carbs" class="text-lg font-black text-black mt-0.5 block">12.0g</span>
+                        <span class="text-[9px] text-neutral-400">Energy</span>
+                    </div>
+                </div>
+
+                <!-- Total Bill & Action Buttons -->
+                <div class="pt-2 space-y-3">
+                    <div class="flex items-center justify-between px-1">
+                        <div>
+                            <span class="text-[10px] text-neutral-500 uppercase tracking-widest font-bold block">Calculated Price</span>
+                            <span class="text-xs text-neutral-600 font-medium">100% Transparent Bill</span>
+                        </div>
+                        <div id="custom-live-price" class="font-classic text-3xl font-black text-black">
+                            ₹35
+                        </div>
+                    </div>
+
+                    <!-- Button 1: Add to Tray -->
+                    <button 
+                        type="button" 
+                        onclick="addCustomShakeToDietTray()" 
+                        class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-sm py-4 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group font-classic tracking-wider"
+                    >
+                        <i data-lucide="plus-circle" class="w-5 h-5 stroke-[2.5]"></i>
+                        <span data-i18n="addToTrayBtn">Add Custom Drink to Tray</span>
+                    </button>
+
+                    <!-- Button 2: Direct WhatsApp Order -->
+                    <button 
+                        type="button" 
+                        onclick="orderCustomShakeWhatsApp()" 
+                        class="w-full bg-white border-2 border-black hover:bg-neutral-100 text-black font-extrabold text-xs py-3.5 rounded-full transition-all duration-300 flex items-center justify-center gap-2"
+                    >
+                        <i data-lucide="message-circle" class="w-4 h-4 stroke-[2.5]"></i>
+                        <span data-i18n="whatsappOrderBtn">Direct Order on WhatsApp</span>
+                    </button>
+
+                    <p class="text-[10px] text-center text-neutral-500">
+                        📍 Pick-up at Pehlwan Juice Corner, Israna (Near PNB Bank)
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Mobile Sticky Bottom Floating Action Bar -->
+<div id="custom-mobile-bar" class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/98 backdrop-blur-xl border-t-2 border-black p-3 px-4 flex items-center justify-between shadow-2xl">
+    <div>
+        <div class="flex items-center gap-2">
+            <span id="mobile-bar-price" class="text-xl font-black text-black font-classic">₹35</span>
+            <span id="mobile-bar-cal" class="text-[11px] text-neutral-600 font-bold">160 kcal</span>
+        </div>
+        <div id="mobile-bar-protein" class="text-[10px] text-black font-bold">8.0g Protein</div>
+    </div>
+    <div class="flex items-center gap-2">
+        <button onclick="addCustomShakeToDietTray()" class="bg-black hover:bg-neutral-800 text-white font-black text-xs px-4 py-2.5 rounded-full shadow font-classic">
+            Add to Tray
+        </button>
+        <button onclick="orderCustomShakeWhatsApp()" class="bg-white border-2 border-black text-black p-2.5 rounded-full hover:bg-neutral-100">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+        </button>
+    </div>
+</div>
+{% endblock %}

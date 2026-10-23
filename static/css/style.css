@@ -1,0 +1,330 @@
+/* Pehlwan Juice Corner - Modern Minimalist Black & White Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --luxury-bg: #ffffff;
+    --luxury-surface: #ffffff;
+    --luxury-surface-elevated: #f8fafc;
+    --luxury-border: #e4e4e7;
+    --luxury-text: #09090b;
+    --luxury-muted: #71717a;
+}
+
+body {
+    background-color: #ffffff;
+    color: #09090b;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: -0.01em;
+    overflow-x: hidden;
+}
+
+/* Classic Bold Typography */
+.font-classic {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+}
+
+.font-luxury {
+    font-family: 'Playfair Display', serif;
+}
+
+h1, h2, h3, h4, .font-heading {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* Bold Black Text Gradients / Solid Accents (Replaces Gold Foils) */
+.gold-foil,
+.gold-foil-subtle {
+    color: #000000 !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: initial !important;
+    font-weight: 900 !important;
+}
+
+/* Modern Minimalist White Card with Crisp Black Hover */
+.luxury-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e4e4e7;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.luxury-card:hover {
+    transform: translateY(-4px);
+    border-color: #000000;
+    box-shadow: 0 16px 35px -5px rgba(0, 0, 0, 0.12);
+}
+
+/* Clean Black & White Divider Ornament */
+.classic-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #000000;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+}
+
+.classic-ornament::before,
+.classic-ornament::after {
+    content: '';
+    height: 1px;
+    width: 45px;
+    background: #000000;
+}
+
+/* ============================================================
+   MODERN 3-WAY BLACK & WHITE LANGUAGE SWITCHER
+   ============================================================ */
+.glossy-switch-track {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: #f4f4f5;
+    border: 1px solid #d4d4d8;
+    border-radius: 9999px;
+    padding: 2px;
+    user-select: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/* Sliding Solid Black Thumb */
+.glossy-thumb {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    width: calc((100% - 4px) / 3);
+    background: #000000;
+    border-radius: 9999px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Switch Position States */
+.glossy-switch-track[data-pos="left"] .glossy-thumb {
+    transform: translateX(0%);
+}
+.glossy-switch-track[data-pos="center"] .glossy-thumb {
+    transform: translateX(100%);
+}
+.glossy-switch-track[data-pos="right"] .glossy-thumb {
+    transform: translateX(200%);
+}
+
+/* Segment text labels */
+.switch-segment {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    padding: 4px 6px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-align: center;
+    color: #71717a;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+/* Active Segment Typography: Pure White on Black */
+.glossy-switch-track[data-pos="left"] .segment-en,
+.glossy-switch-track[data-pos="center"] .segment-hinglish,
+.glossy-switch-track[data-pos="right"] .segment-hi {
+    color: #ffffff !important;
+    font-weight: 900 !important;
+}
+
+.glossy-switch-track.compact {
+    height: 24px;
+    padding: 2px;
+}
+.glossy-switch-track.compact .switch-segment {
+    font-size: 8px;
+    line-height: 20px;
+    padding: 0 3px;
+}
+
+@media (min-width: 640px) {
+    .glossy-switch-track.compact {
+        height: 26px;
+    }
+    .glossy-switch-track.compact .switch-segment {
+        font-size: 9.5px;
+        line-height: 22px;
+        padding: 0 5px;
+    }
+}
+
+/* Custom Minimalist Black Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+::-webkit-scrollbar-thumb {
+    background: #000000;
+    border-radius: 9999px;
+    border: 2px solid #ffffff;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ============================================================
+   CUSTOM SHAKE BUILDER VIRTUAL GLASS VISUALIZATION
+   ============================================================ */
+.pehlwan-virtual-glass-wrapper {
+    position: relative;
+    width: 140px;
+    height: 220px;
+    margin: 0 auto;
+    perspective: 800px;
+}
+
+.pehlwan-glass-cup {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
+    border: 2px solid #000000;
+    border-top: 3px solid #000000;
+    border-radius: 8px 8px 30px 30px;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.pehlwan-liquid-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 75%;
+    background: linear-gradient(180deg, #3f3f46 0%, #18181b 50%, #000000 100%);
+    transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 0 0 26px 26px;
+}
+
+.pehlwan-liquid-foam {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    filter: blur(1px);
+}
+
+.pehlwan-builder-chip {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    cursor: pointer;
+}
+
+.pehlwan-builder-chip:hover {
+    border-color: #000000;
+}
+
+.pehlwan-builder-chip.selected {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-color: #000000 !important;
+}
+
+.pehlwan-builder-chip.selected * {
+    color: #ffffff !important;
+}
+
+/* ============================================================
+   GYM AUDIO EQUALIZER (MONOCHROME)
+   ============================================================ */
+.pehlwan-equalizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 16px;
+}
+
+.pehlwan-equalizer .eq-bar {
+    width: 3px;
+    background: #ffffff;
+    border-radius: 2px;
+    height: 4px;
+    transition: height 0.15s ease;
+}
+
+.pehlwan-equalizer.playing .eq-bar:nth-child(1) {
+    animation: eqWave1 0.7s infinite alternate ease-in-out;
+}
+.pehlwan-equalizer.playing .eq-bar:nth-child(2) {
+    animation: eqWave2 0.5s infinite alternate ease-in-out 0.15s;
+}
+.pehlwan-equalizer.playing .eq-bar:nth-child(3) {
+    animation: eqWave3 0.8s infinite alternate ease-in-out 0.3s;
+}
+.pehlwan-equalizer.playing .eq-bar:nth-child(4) {
+    animation: eqWave4 0.6s infinite alternate ease-in-out 0.2s;
+}
+
+@keyframes eqWave1 { 0% { height: 4px; } 100% { height: 16px; } }
+@keyframes eqWave2 { 0% { height: 3px; } 100% { height: 14px; } }
+@keyframes eqWave3 { 0% { height: 5px; } 100% { height: 18px; } }
+@keyframes eqWave4 { 0% { height: 4px; } 100% { height: 13px; } }
+
+/* ============================================================
+   PEHLWAN AI COACH WIDGET (MONOCHROME)
+   ============================================================ */
+.pehlwan-chat-slide-up {
+    animation: chatSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes chatSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.ai-bubble-bot {
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    color: #09090b;
+}
+
+.ai-bubble-user {
+    background: #000000;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* ============================================================
+   BADAM RAGDA MODAL (CLEAN BLACK & WHITE)
+   ============================================================ */
+#badam-ragda-modal {
+    background-color: rgba(0, 0, 0, 0.75);
+}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Location & Timings | Pehlwan Juice Corner - Israna (Near PNB Bank){% endblock %}
+
+{% block content %}
+<div class="py-14 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center max-w-xl mx-auto mb-14 space-y-3">
+        <div class="classic-ornament justify-center text-[10px]">❖ PHYSICAL STORE LOCATION ❖</div>
+        <span class="text-xs font-bold font-classic text-black uppercase tracking-widest bg-neutral-100 px-3.5 py-1.5 rounded-full border border-neutral-300 inline-block">Store Coordinates</span>
+        <h1 class="font-classic font-black text-3xl sm:text-5xl text-black tracking-wide mt-2" data-i18n="locationTitle">
+            VISIT OUR SHOP IN ISRANA
+        </h1>
+        <p class="text-neutral-600 text-xs sm:text-sm" data-i18n="locationSub">
+            Right next to Punjab National Bank, Main Road, Israna (Panipat).
+        </p>
+    </div>
+
+    <!-- Location Card Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start mb-16">
+        <!-- Details (Left 6 Cols) -->
+        <div class="md:col-span-6 luxury-card rounded-3xl p-8 space-y-6 shadow-sm bg-white border border-neutral-200">
+            <div class="space-y-5">
+                <div class="flex items-start gap-4">
+                    <div class="w-11 h-11 rounded-2xl bg-neutral-100 text-black flex items-center justify-center flex-shrink-0 text-xl border border-neutral-200">
+                        📍
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-base text-black">Full Physical Address</h3>
+                        <p class="text-sm text-black font-black mt-1">
+                            Pehlwan Juice Corner
+                        </p>
+                        <p class="text-xs text-neutral-600 mt-1 leading-relaxed">
+                            <strong>Right beside Punjab National Bank (PNB Bank)</strong>, <br>
+                            Main Road / Market, Israna, <br>
+                            Dist. Panipat (Haryana) - 132107
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 pt-4 border-t border-neutral-200">
+                    <div class="w-11 h-11 rounded-2xl bg-neutral-100 text-black flex items-center justify-center flex-shrink-0 text-xl border border-neutral-200">
+                        ⏰
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-base text-black">Opening Hours</h3>
+                        <p class="text-xs text-neutral-600 mt-1">
+                            <strong>Monday through Sunday (365 Days):</strong> <br>
+                            Morning <strong>9:00 AM</strong> to Night <strong>9:30 PM</strong>
+                        </p>
+                        <span class="inline-flex items-center gap-1.5 mt-2 text-[10px] font-black px-2.5 py-0.5 rounded-full bg-black text-white">
+                            ● OPEN NOW
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 pt-4 border-t border-neutral-200">
+                    <div class="w-11 h-11 rounded-2xl bg-neutral-100 text-black flex items-center justify-center flex-shrink-0 text-xl border border-neutral-200">
+                        📞
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-bold text-base text-black">Direct Phone & WhatsApp</h3>
+                        <p class="text-xs text-neutral-600 mt-1">
+                            Mobile / WhatsApp: <strong class="text-black">{{ shop.phone }}</strong>
+                        </p>
+                        <p class="text-[11px] text-neutral-500 mt-1">
+                            Feel free to message your order ahead of time for zero-wait takeaway pickup.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 flex flex-col sm:flex-row gap-3.5">
+                <a href="https://maps.google.com/?q=Israna+Panipat+Punjab+National+Bank" target="_blank" class="flex-grow bg-black hover:bg-neutral-800 text-white font-extrabold text-xs py-3.5 px-5 rounded-full shadow transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="navigation" class="w-4 h-4 stroke-[2.5]"></i>
+                    <span data-i18n="locationBtnRoute">Get Directions on Google Maps</span>
+                </a>
+                <a href="https://wa.me/{{ shop.whatsapp }}?text=Hello%20Pehlwan%20Juice%20Corner!%20I%20am%20coming%20to%20the%20shop." target="_blank" class="bg-white border-2 border-black hover:bg-neutral-100 text-black font-extrabold text-xs py-3.5 px-5 rounded-full transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>WhatsApp</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Landmarks (Right 6 Cols) -->
+        <div class="md:col-span-6 luxury-card rounded-3xl p-8 space-y-6 shadow-sm bg-white border border-neutral-200">
+            <h3 class="font-heading font-bold text-lg text-black">Prominent Landmarks</h3>
+            
+            <div class="space-y-4 text-xs text-neutral-700">
+                <div class="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 flex items-start gap-3.5">
+                    <span class="text-xl">🏦</span>
+                    <div>
+                        <strong class="text-black block text-xs">Punjab National Bank (PNB Bank)</strong>
+                        <span>Located merely 20 paces from the main branch entrance on the primary street.</span>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 flex items-start gap-3.5">
+                    <span class="text-xl">🛣️</span>
+                    <div>
+                        <strong class="text-black block text-xs">Panipat-Rohtak Highway Access</strong>
+                        <span>Turn right at the Israna central market junction for immediate store visibility.</span>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 flex items-start gap-3.5">
+                    <span class="text-xl">🏋️‍♂️</span>
+                    <div>
+                        <strong class="text-black block text-xs">Gym & Athletic Hub</strong>
+                        <span>Preferred post-training refueling center for regional fitness enthusiasts and athletes.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-neutral-100 border border-neutral-300 p-4 rounded-2xl text-xs text-neutral-800">
+                <strong>💡 Note:</strong> During morning or evening peak training hours, pre-ordering via WhatsApp guarantees your shake is blended fresh upon arrival.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

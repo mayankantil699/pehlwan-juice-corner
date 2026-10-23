@@ -1,0 +1,730 @@
+{% extends "base.html" %}
+
+{% block title %}Pehlwan Juice Corner | Pure Juices, Power Shakes & High-Protein Sandwiches{% endblock %}
+
+{% block content %}
+<!-- Modern Minimalist Hero Section (Crisp White & Bold Black) -->
+<section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-white border-b border-neutral-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            <!-- Left 7 Cols: Typography & Actions -->
+            <div class="lg:col-span-7 space-y-7 text-center lg:text-left">
+                <!-- Location Pill (Clean Black & White) -->
+                <div class="inline-flex items-center gap-2 bg-neutral-100 border border-neutral-300 px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold text-black shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-black"></span>
+                    <span data-i18n="heroBadge" class="tracking-wide">📍 Israna, Near Punjab National Bank (Panipat)</span>
+                </div>
+
+                <!-- Classic Luxury Heading -->
+                <div class="space-y-2">
+                    <div class="classic-ornament justify-center lg:justify-start text-[9px] sm:text-[10px]">✦ THE ROYAL AKHADA WELLNESS BAR ✦</div>
+                    <h1 class="font-classic font-black text-4xl sm:text-6xl lg:text-7xl text-black tracking-[0.04em] leading-[1.08] sm:leading-[1.05]">
+                        <span data-i18n="heroTitlePehlwan">PEHLWAN</span> <br>
+                        <span data-i18n="heroTitleJuice" class="text-neutral-900">JUICE CORNER</span>
+                    </h1>
+                </div>
+
+                <!-- Tagline -->
+                <div class="text-base sm:text-xl font-classic font-bold text-neutral-800 tracking-wide" data-i18n="heroTagline">
+                    “Pure Nutrition & Power | 100% Cold-Pressed, Zero Additives”
+                </div>
+
+                <!-- MOBILE EXCLUSIVE: Badam Ragda Kundi Sota Instant Card (Visible Immediately on Mobile Open) -->
+                <div class="block lg:hidden my-4">
+                    <div class="luxury-card rounded-2xl p-3.5 shadow-md border-2 border-black bg-white" onclick="openBadamRagdaModal()">
+                        <div class="relative h-56 rounded-xl overflow-hidden bg-neutral-100">
+                            <img src="/static/images/badam_ragda_kundi_sota.jpg" alt="Pehlwan Special Badam Ragda Kundi Sota" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+                            
+                            <!-- Badges -->
+                            <div class="absolute top-2.5 left-2.5 bg-black text-white text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow">
+                                <span>🥣</span>
+                                <span>कुंडी-सोटे से बनता हुआ</span>
+                            </div>
+                            <div class="absolute top-2.5 right-2.5 bg-white text-black text-xs font-black px-2.5 py-0.5 rounded-full shadow border border-neutral-300">
+                                ₹100
+                            </div>
+
+                            <div class="absolute bottom-2.5 left-2.5 right-2.5 text-left">
+                                <h3 class="font-heading font-black text-base text-white leading-tight">Pehlwan Special Badam Ragda</h3>
+                                <p class="text-[10px] text-neutral-200 mt-0.5">पत्थर की कुंडी और सोटे से घुटाई करके तैयार देसी पौष्टिक खुराक</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-2.5 flex items-center justify-between text-xs">
+                            <div class="text-[10px] font-bold text-neutral-600">
+                                ⚡ 380 kcal • 14.5g Protein
+                            </div>
+                            <button onclick="event.stopPropagation(); addToPehlwanTray('item-12');" class="bg-black hover:bg-neutral-800 text-white font-black text-[11px] px-3.5 py-1.5 rounded-full flex items-center gap-1">
+                                <i data-lucide="plus" class="w-3.5 h-3.5 stroke-[3]"></i>
+                                <span>Add to Tray</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-neutral-600 text-xs sm:text-base max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal" data-i18n="heroSubtitle">
+                    Experience fresh cold-pressed fruit juices, legendary dry-fruit power shakes, and high-protein grilled sandwiches with exact verified calories and macronutrients.
+                </p>
+
+                <!-- Clean Actions -->
+                <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+                    <a href="/menu" class="w-full sm:w-auto bg-black hover:bg-neutral-800 text-white font-black text-xs tracking-wider uppercase px-7 sm:px-9 py-3.5 sm:py-4 rounded-full shadow-lg transition-all hover:scale-105 flex items-center justify-center gap-2.5">
+                        <span data-i18n="heroBtnMenu">Explore Menu & Macros</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 stroke-[3]"></i>
+                    </a>
+                    <a href="/calculator" class="w-full sm:w-auto bg-white hover:bg-neutral-100 text-black font-black text-xs tracking-wider uppercase px-6 sm:px-8 py-3.5 sm:py-4 rounded-full border-2 border-black transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="calculator" class="w-4 h-4 text-black"></i>
+                        <span data-i18n="heroBtnCalc">Diet Calculator</span>
+                    </a>
+                </div>
+
+                <!-- 4 Crisp Stat Highlights -->
+                <div class="pt-4 sm:pt-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-left">
+                    <div class="bg-neutral-50 border border-neutral-200 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <div class="text-lg sm:text-xl font-black text-black" data-i18n="stat1Title">100% Pure</div>
+                        <div class="text-[10px] sm:text-[11px] text-neutral-500 mt-0.5 leading-snug" data-i18n="stat1Sub">Zero Added Water or Sugar</div>
+                    </div>
+                    <div class="bg-neutral-50 border border-neutral-200 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <div class="text-lg sm:text-xl font-black text-black" data-i18n="stat2Title">Up to 32g</div>
+                        <div class="text-[10px] sm:text-[11px] text-neutral-500 mt-0.5 leading-snug" data-i18n="stat2Sub">Protein Power Shakes</div>
+                    </div>
+                    <div class="bg-neutral-50 border border-neutral-200 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <div class="text-lg sm:text-xl font-black text-black" data-i18n="stat3Title">Fresh Grilled</div>
+                        <div class="text-[10px] sm:text-[11px] text-neutral-500 mt-0.5 leading-snug" data-i18n="stat3Sub">120g Paneer & Egg Sandwiches</div>
+                    </div>
+                    <div class="bg-neutral-50 border border-neutral-200 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <div class="text-lg sm:text-xl font-black text-black" data-i18n="stat4Title">9 AM – 9:30 PM</div>
+                        <div class="text-[10px] sm:text-[11px] text-neutral-500 mt-0.5 leading-snug" data-i18n="stat4Sub">Open All 365 Days</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 5 Cols: Permanent Badam Ragda with Kundi Sota Card (Desktop Showcase) -->
+            <div class="lg:col-span-5 relative hidden lg:block">
+                <div class="luxury-card rounded-3xl p-5 shadow-xl relative overflow-hidden group cursor-pointer border-2 border-neutral-300 hover:border-black transition-all bg-white" onclick="openBadamRagdaModal()" title="Click to View Full Photo & Royal Story">
+                    <div class="relative h-72 sm:h-80 rounded-2xl overflow-hidden bg-neutral-100">
+                        <img src="/static/images/badam_ragda_kundi_sota.jpg" alt="Pehlwan Special Badam Ragda with Kundi Sota" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+
+                        <!-- Macro Tag -->
+                        <div class="absolute top-4 left-4 bg-black/85 backdrop-blur-md text-white px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-white"></span>
+                            <span>380 kcal • 14.5g Protein</span>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-black text-white font-extrabold text-[10px] px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-lg flex items-center gap-1.5 font-classic">
+                            <span>🥣</span>
+                            <span>कुंडी-सोटे से तैयार</span>
+                        </div>
+
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="font-heading font-black text-2xl text-white group-hover:underline transition-all">
+                                Pehlwan Badam Ragda
+                            </h3>
+                            <p class="text-xs text-neutral-200 mt-0.5">पत्थर की कुंडी और सोटे से घुटाई करके तैयार असली देसी खुराक</p>
+                        </div>
+                    </div>
+
+                    <!-- Macro Breakdown Bar -->
+                    <div class="mt-4 p-3 bg-neutral-50 rounded-2xl border border-neutral-200">
+                        <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                            <div class="p-1.5 rounded-xl bg-white border border-neutral-200">
+                                <span class="text-[9px] text-neutral-500 font-bold block" data-i18n="cal">CALORIES</span>
+                                <span class="font-black text-black text-base">380</span>
+                            </div>
+                            <div class="p-1.5 rounded-xl bg-white border border-neutral-200">
+                                <span class="text-[9px] text-neutral-500 font-bold block" data-i18n="protein">PROTEIN</span>
+                                <span class="font-black text-black text-base">14.5g</span>
+                            </div>
+                            <div class="p-1.5 rounded-xl bg-white border border-neutral-200">
+                                <span class="text-[9px] text-neutral-500 font-bold block" data-i18n="fats">FATS</span>
+                                <span class="font-black text-black text-base">18.0g</span>
+                            </div>
+                            <div class="p-1.5 rounded-xl bg-white border border-neutral-200">
+                                <span class="text-[9px] text-neutral-500 font-bold block" data-i18n="carbs">CARBS</span>
+                                <span class="font-black text-black text-base">42.0g</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price & Add Button -->
+                    <div class="mt-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-neutral-500 uppercase tracking-wider block font-bold">Akhada Special</span>
+                            <div class="text-2xl font-black text-black font-heading">₹100</div>
+                        </div>
+                        <button onclick="event.stopPropagation(); addToPehlwanTray('item-12');" class="bg-black hover:bg-neutral-800 text-white font-extrabold text-xs px-6 py-3 rounded-full transition-all shadow-md flex items-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                            <span data-i18n="addBtn">Add to Tray</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Curated Menu Highlights Section (White Background) -->
+<section class="py-20 bg-neutral-50 border-b border-neutral-200 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-6">
+            <div class="space-y-2">
+                <div class="classic-ornament justify-start text-[10px]">❖ ROYAL MENU SELECTION ❖</div>
+                <h2 class="font-classic font-black text-3xl sm:text-4xl text-black tracking-wide" data-i18n="bestsellerTitle">
+                    Signature Menu Highlights
+                </h2>
+                <p class="text-neutral-600 text-xs sm:text-sm max-w-xl" data-i18n="bestsellerSub">Transparent lab-verified Calories, Protein, and Fats on every order.</p>
+            </div>
+            <a href="/menu" class="text-xs font-black font-classic tracking-widest uppercase text-black hover:underline flex items-center gap-2" data-i18n="viewFullMenu">
+                <span>View Complete Menu →</span>
+            </a>
+        </div>
+
+        <!-- Category Filters (Clean Black & White Tabs) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-8 scrollbar-none flex-nowrap">
+            <button onclick="setPehlwanCategory('all')" id="cat-all" class="pehlwan-cat-tab active bg-black text-white px-5 py-2.5 rounded-full text-xs font-black whitespace-nowrap shadow font-classic tracking-wider uppercase">
+                All Items ({{ items|length }})
+            </button>
+            <button onclick="setPehlwanCategory('juices')" id="cat-juices" class="pehlwan-cat-tab bg-white text-neutral-800 px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap hover:bg-neutral-200 border border-neutral-300 font-classic tracking-wider uppercase">
+                Fresh Juices
+            </button>
+            <button onclick="setPehlwanCategory('shakes')" id="cat-shakes" class="pehlwan-cat-tab bg-white text-neutral-800 px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap hover:bg-neutral-200 border border-neutral-300 font-classic tracking-wider uppercase">
+                Power Shakes
+            </button>
+            <button onclick="setPehlwanCategory('sandwiches')" id="cat-sandwiches" class="pehlwan-cat-tab bg-white text-neutral-800 px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap hover:bg-neutral-200 border border-neutral-300 font-classic tracking-wider uppercase">
+                Grill Sandwiches
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for item in items %}
+            <div 
+                class="pehlwan-menu-card luxury-card rounded-3xl overflow-hidden flex flex-col justify-between group shadow-md bg-white border border-neutral-200 hover:border-black"
+                data-id="{{ item.id }}"
+                data-category="{{ item.category }}"
+            >
+                <div class="relative h-52 overflow-hidden bg-neutral-100">
+                    <img src="{{ item.image }}" alt="{{ item.name_en }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                    <!-- Category badge -->
+                    <div class="absolute top-3 left-3 bg-black text-white px-3 py-1 rounded-full text-[10px] font-bold item-cat font-classic uppercase tracking-wider shadow">
+                        {{ item.cat_en }}
+                    </div>
+
+                    <!-- Calorie badge -->
+                    <div id="top-cal-{{ item.id }}" class="absolute top-3 right-3 bg-white text-black font-black text-xs px-3 py-1 rounded-full border border-neutral-300 shadow">
+                        {{ item.calories }} kcal
+                    </div>
+                </div>
+
+                <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-classic font-bold text-lg sm:text-xl text-black group-hover:underline transition-all item-title leading-snug tracking-wide">
+                            {{ item.name_en }}
+                        </h3>
+                        <p class="text-xs text-neutral-600 mt-2 line-clamp-2 leading-relaxed item-desc">
+                            {{ item.desc_en }}
+                        </p>
+                    </div>
+
+                    <!-- Size Selector if multiple sizes exist -->
+                    {% if item.prices and item.prices|length > 1 %}
+                    <div class="bg-neutral-100 border border-neutral-200 p-2 rounded-2xl">
+                        <div class="text-[10px] text-neutral-500 font-bold uppercase tracking-wider mb-1.5 px-1 flex items-center justify-between">
+                            <span class="font-classic">Glass Size:</span>
+                            <span class="text-black text-[10px] font-bold">Select size</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            {% for p in item.prices %}
+                            <button 
+                                type="button"
+                                onclick="selectCardSize('{{ item.id }}', {{ loop.index0 }}, {{ p.price }}, {{ p.cal }}, {{ p.protein }}, {{ p.fats }}, {{ p.carbs }}, '{{ p.size }}', '{{ p.size_hi }}')"
+                                class="size-pill-{{ item.id }} flex-1 py-1.5 px-2 rounded-xl text-xs font-bold border transition-all text-center {% if loop.first %}bg-black text-white border-black shadow font-black{% else %}bg-white text-neutral-700 border-neutral-300 hover:border-black{% endif %}"
+                                data-index="{{ loop.index0 }}"
+                            >
+                                <span class="block text-[11px] leading-tight font-semibold">{{ p.size }}</span>
+                                <span class="block text-[10px] font-black">₹{{ p.price }}</span>
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Exact Macro Breakdown -->
+                    <div class="bg-neutral-50 border border-neutral-200 p-3 rounded-2xl grid grid-cols-4 gap-1.5 text-center text-xs">
+                        <div>
+                            <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="cal">CALORIES</span>
+                            <span id="macro-cal-{{ item.id }}" class="font-black text-black text-xs">{{ item.calories }}</span>
+                        </div>
+                        <div>
+                            <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="protein">PROTEIN</span>
+                            <span id="macro-prot-{{ item.id }}" class="font-black text-black text-xs">{{ item.protein }}g</span>
+                        </div>
+                        <div>
+                            <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="fats">FATS</span>
+                            <span id="macro-fats-{{ item.id }}" class="font-black text-black text-xs">{{ item.fats }}g</span>
+                        </div>
+                        <div>
+                            <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="carbs">CARBS</span>
+                            <span id="macro-carbs-{{ item.id }}" class="font-black text-black text-xs">{{ item.carbs }}g</span>
+                        </div>
+                    </div>
+
+                    <!-- Price & Add -->
+                    <div class="pt-3 border-t border-neutral-200 flex items-center justify-between">
+                        <div id="card-price-{{ item.id }}" class="text-2xl font-black font-classic text-black">₹{{ item.price }}</div>
+                        <button onclick="addToPehlwanTray('{{ item.id }}')" class="item-add-btn bg-black hover:bg-neutral-800 text-white font-extrabold text-[11px] tracking-wider uppercase px-4 py-2.5 rounded-full transition-all shadow flex items-center gap-1.5">
+                            <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                            <span data-i18n="addBtn">Add to Tray</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Athletic Power Combos Section -->
+<section class="py-20 bg-white border-b border-neutral-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <span class="text-xs font-bold text-black uppercase tracking-widest bg-neutral-100 px-3.5 py-1 rounded-full border border-neutral-300">Optimal Combinations</span>
+            <h2 class="font-heading font-black text-3xl sm:text-4xl text-black tracking-tight" data-i18n="combosTitle">Athletic Power Combos</h2>
+            <p class="text-neutral-600 text-sm" data-i18n="combosSub">Synergistic juice and sandwich pairings crafted for training results.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for combo in combos %}
+            <div 
+                class="pehlwan-combo-card luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 shadow-md bg-white border border-neutral-200 hover:border-black"
+                data-combo-id="{{ combo.id }}"
+            >
+                <div class="space-y-3">
+                    <span class="inline-block text-[10px] font-black text-white uppercase tracking-wider bg-black px-2.5 py-1 rounded-md">Power Stack</span>
+                    <h3 class="font-heading font-black text-xl text-black combo-title">{{ combo.name_en }}</h3>
+                    <div class="text-xs text-neutral-700 font-bold combo-items">Includes: {{ combo.items_en }}</div>
+                    <p class="text-xs text-neutral-600 leading-relaxed combo-benefit">{{ combo.benefit_en }}</p>
+                </div>
+
+                <div class="bg-neutral-50 border border-neutral-200 p-3.5 rounded-2xl grid grid-cols-4 gap-1 text-center text-xs">
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="cal">CALORIES</span>
+                        <span class="font-black text-black text-sm">{{ combo.calories }}</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="protein">PROTEIN</span>
+                        <span class="font-black text-black text-sm">{{ combo.protein }}g</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="fats">FATS</span>
+                        <span class="font-black text-black text-sm">{{ combo.fats }}g</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] text-neutral-500 block font-bold" data-i18n="carbs">CARBS</span>
+                        <span class="font-black text-black text-sm">{{ combo.carbs }}g</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-neutral-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-neutral-500 uppercase tracking-wider block font-bold">Combo Price</span>
+                        <div class="text-2xl font-black text-black font-heading">₹{{ combo.price }}</div>
+                    </div>
+                    <button onclick="addComboToPehlwanTray('{{ combo.id }}')" class="bg-black hover:bg-neutral-800 text-white font-extrabold text-xs px-5 py-3 rounded-full transition-all shadow flex items-center gap-1.5">
+                        <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                        <span data-i18n="addBtn">Add to Tray</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- DIY Custom Shake & Juice Builder Showcase Section -->
+<section class="py-20 border-b border-neutral-200 bg-neutral-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="luxury-card rounded-3xl p-8 sm:p-12 border-2 border-neutral-300 shadow-xl overflow-hidden bg-white">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <!-- Left Details (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="space-y-2.5">
+                        <div class="classic-ornament justify-start text-[10px]">❖ DIY PEHLWAN SHAKE & JUICE LAB ❖</div>
+                        <span class="inline-block text-[11px] font-bold text-black uppercase tracking-widest bg-neutral-100 px-3 py-1 rounded-full border border-neutral-300">
+                            Custom Akhada Drink Builder
+                        </span>
+                        <h2 class="font-classic font-bold text-3xl sm:text-4xl text-black tracking-wide leading-tight">
+                            Apna Shake & Juice Khud Banayein
+                        </h2>
+                        <p class="text-neutral-600 text-xs sm:text-sm leading-relaxed max-w-xl">
+                            Apni pasand ke taaza fruit (Banana, Mango, Avocado, Strawberry), akhada dry fruits (Badam, Kaju, Pista, Beej Dana), pure buffalo milk ya coconut water aur 24g pure whey protein scoop ko mix karke apna custom power drink banayein. Har ingredient ka live price aur nutrition live dekhein!
+                        </p>
+                    </div>
+
+                    <!-- 4 Interactive Feature Highlights -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                        <div class="bg-neutral-50 border border-neutral-200 p-3 rounded-2xl text-center">
+                            <span class="text-2xl block mb-1">🥛</span>
+                            <span class="text-[11px] font-bold text-black block">6 Pure Bases</span>
+                            <span class="text-[9px] text-neutral-500">Milk, Malai, Juice</span>
+                        </div>
+                        <div class="bg-neutral-50 border border-neutral-200 p-3 rounded-2xl text-center">
+                            <span class="text-2xl block mb-1">🍓</span>
+                            <span class="text-[11px] font-bold text-black block">10+ Fruits</span>
+                            <span class="text-[9px] text-neutral-500">100% Farm Fresh</span>
+                        </div>
+                        <div class="bg-neutral-50 border border-neutral-200 p-3 rounded-2xl text-center">
+                            <span class="text-2xl block mb-1">🌰</span>
+                            <span class="text-[11px] font-bold text-black block">Akhada Nuts</span>
+                            <span class="text-[9px] text-neutral-500">Silbatta Badam</span>
+                        </div>
+                        <div class="bg-neutral-50 border border-neutral-200 p-3 rounded-2xl text-center">
+                            <span class="text-2xl block mb-1">⚡</span>
+                            <span class="text-[11px] font-bold text-black block">+24g Whey</span>
+                            <span class="text-[9px] text-neutral-500">Protein Scoop</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                        <a href="/custom-shake" class="bg-black hover:bg-neutral-800 text-white font-black text-sm px-8 py-4 rounded-full shadow-lg transition-transform hover:scale-105 flex items-center justify-center gap-2 font-classic tracking-wider">
+                            <i data-lucide="sparkles" class="w-4 h-4 stroke-[2.5]"></i>
+                            <span>Apna Custom Shake Banayein →</span>
+                        </a>
+
+                        <a href="https://wa.me/{{ shop.whatsapp }}?text=Bhaiya%20mujhe%20apna%20custom%20shake%20banvana%20hai" target="_blank" class="bg-white hover:bg-neutral-100 text-black border-2 border-black text-xs px-6 py-4 rounded-full font-black flex items-center justify-center gap-2 transition-colors">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-black"></i>
+                            <span>WhatsApp par Direct Puchhein</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Visual Teaser (5 cols) -->
+                <div class="lg:col-span-5 bg-neutral-50 border border-neutral-200 rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-6 shadow-md relative">
+                    <div class="flex items-center justify-between border-b border-neutral-200 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-black"></span>
+                            <span class="text-[11px] font-black text-black uppercase tracking-wider">Popular Custom Mix</span>
+                        </div>
+                        <span class="text-neutral-600 font-classic font-bold text-xs">Jumbo Akhada Glass</span>
+                    </div>
+
+                    <!-- Visual Custom Shake Glass Teaser -->
+                    <div class="flex items-center justify-center py-2">
+                        <div class="pehlwan-virtual-glass-wrapper" style="width: 120px; height: 180px;">
+                            <div class="pehlwan-glass-cup">
+                                <div class="pehlwan-liquid-fill" style="height: 80%;">
+                                    <div class="pehlwan-liquid-foam"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ingredients Included -->
+                    <div class="space-y-2">
+                        <div class="text-[11px] font-bold text-black">Custom Mix Recipe:</div>
+                        <div class="flex flex-wrap gap-1.5 text-[10px]">
+                            <span class="bg-white border border-neutral-200 text-black px-2 py-0.5 rounded-lg">🥛 Buffalo Milk</span>
+                            <span class="bg-white border border-neutral-200 text-black px-2 py-0.5 rounded-lg">🍌 Ripe Banana</span>
+                            <span class="bg-white border border-neutral-200 text-black px-2 py-0.5 rounded-lg">🌰 Silbatta Badam</span>
+                            <span class="bg-black text-white font-bold px-2 py-0.5 rounded-lg">⚡ Whey Protein (+24g)</span>
+                            <span class="bg-white border border-neutral-200 text-black px-2 py-0.5 rounded-lg">🍯 Organic Honey</span>
+                        </div>
+                    </div>
+
+                    <!-- Nutrition & Price Strip -->
+                    <div class="bg-white border border-neutral-200 p-3 rounded-2xl flex items-center justify-between shadow-sm">
+                        <div>
+                            <div class="text-[9px] text-neutral-500 uppercase font-bold">Total Nutrition</div>
+                            <div class="text-xs font-black text-black">540 kcal • 38.5g Protein</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-[9px] text-neutral-500 uppercase font-bold">Transparent Bill</div>
+                            <div class="text-xl font-classic font-black text-black">₹165</div>
+                        </div>
+                    </div>
+
+                    <a href="/custom-shake" class="block w-full py-2.5 rounded-xl bg-neutral-200 hover:bg-black hover:text-white text-black text-xs font-bold text-center transition-colors">
+                        Is Recipe ko Customize Karein →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Local & Regular Customer Feedback Section -->
+<section class="py-20 bg-white border-b border-neutral-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 gap-6">
+            <div class="space-y-2.5">
+                <div class="classic-ornament justify-start text-[10px]">❖ LOCAL ATHLETES & REGULAR CUSTOMERS ❖</div>
+                <h2 class="font-classic font-bold text-3xl sm:text-4xl text-black tracking-wide" data-i18n="feedbackTitle">
+                    Regular & Local Customers Feedback
+                </h2>
+                <p class="text-neutral-600 text-xs sm:text-sm max-w-xl" data-i18n="feedbackSub">
+                    Honest feedback from Israna gym lifters, wrestlers, and daily health lovers.
+                </p>
+            </div>
+            
+            <button onclick="openFeedbackModal()" class="bg-black hover:bg-neutral-800 text-white font-extrabold text-xs px-6 py-3.5 rounded-full shadow-md transition-transform hover:scale-105 flex items-center gap-2 whitespace-nowrap self-start sm:self-auto font-classic tracking-wider">
+                <i data-lucide="edit-3" class="w-4 h-4 stroke-[2.5]"></i>
+                <span data-i18n="feedbackBtn">✍️ Apna Feedback Dein</span>
+            </button>
+        </div>
+
+        <!-- Feedback Cards Grid -->
+        <div id="pehlwan-feedback-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for fb in feedbacks %}
+            <div class="pehlwan-feedback-card luxury-card rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-sm bg-white border border-neutral-200 hover:border-black">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="text-black text-sm tracking-widest font-black">
+                            {% for s in range(fb.rating) %}★{% endfor %}
+                        </div>
+                        <span class="bg-neutral-100 border border-neutral-200 text-black text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                            {{ fb.role }}
+                        </span>
+                    </div>
+                    <p class="text-xs text-neutral-700 italic leading-relaxed">
+                        "{{ fb.comment }}"
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-neutral-200 space-y-2">
+                    <div class="inline-flex items-center gap-1.5 bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-xl text-[10px] text-black">
+                        <span>❤️ Fav:</span>
+                        <span class="font-bold">{{ fb.favorite }}</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-heading font-black text-black">{{ fb.name }}</span>
+                        <span class="text-[10px] text-neutral-500">{{ fb.date }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<!-- Feedback Modal (Clean White & Black) -->
+<div id="pehlwan-feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
+    <div class="luxury-card rounded-3xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl border-2 border-black bg-white">
+        <button onclick="closeFeedbackModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-neutral-100 border border-neutral-300 text-black hover:bg-black hover:text-white flex items-center justify-center transition-colors">
+            ✕
+        </button>
+
+        <div class="space-y-2 mb-6">
+            <div class="classic-ornament justify-start text-[9px]">❖ CUSTOMER REVIEWS ❖</div>
+            <h3 class="font-classic font-bold text-2xl text-black">Share Your Feedback</h3>
+            <p class="text-xs text-neutral-600">Regular ya local customer hone ke naate apna 1-2 line ka feedback share karein.</p>
+        </div>
+
+        <form onsubmit="submitCustomerFeedback(event)" class="space-y-4 text-xs">
+            <div>
+                <label class="block text-black font-semibold mb-1">Your Name (Aapka Naam)</label>
+                <input type="text" id="fb-input-name" placeholder="e.g. Rohit Malik / Vikas Pehlwan" required class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black font-sans">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-black font-semibold mb-1">Customer Type</label>
+                    <select id="fb-input-role" class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-3 text-black focus:outline-none focus:border-black">
+                        <option value="Regular Customer (Israna)">Regular Customer / नियमित ग्राहक</option>
+                        <option value="Gym Lifter & Athlete">Gym Lifter / जिम एथलीट</option>
+                        <option value="Akhada Wrestler">Akhada Wrestler / अखाड़ा पहलवान</option>
+                        <option value="Local Resident (Near PNB)">Local Resident / स्थानीय निवासी</option>
+                        <option value="Family Customer">Family / पारिवारिक ग्राहक</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-black font-semibold mb-1">Favorite Item</label>
+                    <select id="fb-input-favorite" class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-3 text-black focus:outline-none focus:border-black">
+                        <option value="Pehlwan Special Badam Ragda">Badam Ragda (₹100)</option>
+                        <option value="Fresh Moosmi Juice">Moosmi Juice (₹50-90)</option>
+                        <option value="Classic Chilled Cold Coffee">Cold Coffee (₹100)</option>
+                        <option value="Pehlwan Special Grill Sandwich">Grill Sandwich (₹100)</option>
+                        <option value="Royal Mango Shake">Mango Shake (₹50-90)</option>
+                        <option value="Athletic Banana Shake">Banana Shake (₹50-90)</option>
+                        <option value="Wild Strawberry Shake">Strawberry Shake (₹50-100)</option>
+                        <option value="Arabian Date (Khajoor) Shake">Date Shake (₹50-100)</option>
+                        <option value="Oreo Cookies & Cream Shake">Oreo Shake (₹50-100)</option>
+                        <option value="Beej Dana (Natural Drink)">Beej Dana Drink (₹100)</option>
+                        <option value="Naariyal Malayi Shake">Naariyal Malayi Shake (₹150)</option>
+                        <option value="Hass Avocado Super-Shake">Avocado Shake (₹180-300)</option>
+                        <option value="Bel Patther Shake">Bel Patther Shake (₹70)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-black font-semibold mb-1">Rating</label>
+                <div class="flex items-center gap-2 py-1">
+                    <span id="fb-star-1" onclick="setFeedbackRating(1)" class="text-black cursor-pointer text-2xl transition-transform hover:scale-125">★</span>
+                    <span id="fb-star-2" onclick="setFeedbackRating(2)" class="text-black cursor-pointer text-2xl transition-transform hover:scale-125">★</span>
+                    <span id="fb-star-3" onclick="setFeedbackRating(3)" class="text-black cursor-pointer text-2xl transition-transform hover:scale-125">★</span>
+                    <span id="fb-star-4" onclick="setFeedbackRating(4)" class="text-black cursor-pointer text-2xl transition-transform hover:scale-125">★</span>
+                    <span id="fb-star-5" onclick="setFeedbackRating(5)" class="text-black cursor-pointer text-2xl transition-transform hover:scale-125">★</span>
+                    <span class="text-neutral-500 text-xs ml-2 font-medium">(Tap to Rate)</span>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-black font-semibold mb-1">Your Short Feedback / Review (1-2 lines)</label>
+                <textarea id="fb-input-comment" rows="3" placeholder="Yahan apna feedback likhein, e.g. Taste, shuddhata ya workout ke baad ka experience..." required class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-black font-sans"></textarea>
+            </div>
+
+            <div class="pt-2 flex items-center justify-end gap-3">
+                <button type="button" onclick="closeFeedbackModal()" class="px-5 py-2.5 rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 font-bold">
+                    Cancel
+                </button>
+                <button type="submit" class="bg-black hover:bg-neutral-800 text-white font-extrabold text-xs px-6 py-3 rounded-full shadow-md transition-all">
+                    Submit Feedback
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Location & Timings Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="luxury-card rounded-3xl p-8 sm:p-14 text-center relative overflow-hidden shadow-xl space-y-6 border-2 border-neutral-300 bg-white">
+            <span class="text-xs font-bold text-black uppercase tracking-widest bg-neutral-100 px-3.5 py-1.5 rounded-full border border-neutral-300">Physical Store</span>
+            <h2 class="font-heading font-black text-3xl sm:text-4xl text-black tracking-tight" data-i18n="locationTitle">
+                Visit Our Shop in Israna
+            </h2>
+            <div class="text-base text-neutral-800 font-bold" data-i18n="locationSub">
+                Right next to Punjab National Bank, Main Road, Israna (Panipat).
+            </div>
+            <p class="text-xs sm:text-sm text-neutral-600 max-w-xl mx-auto leading-relaxed" data-i18n="topTiming">
+                Open Daily: 9:00 AM – 9:30 PM (365 Days Open)
+            </p>
+
+            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="/location" class="w-full sm:w-auto bg-black hover:bg-neutral-800 text-white font-black text-xs px-8 py-4 rounded-full shadow-md transition-transform hover:scale-105 flex items-center justify-center gap-2">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                    <span data-i18n="locationBtnRoute">Get Directions on Google Maps</span>
+                </a>
+                <a href="https://wa.me/{{ shop.whatsapp }}?text=Hello%20Pehlwan%20Juice%20Corner!%20Please%20keep%20my%20order%20ready." target="_blank" class="w-full sm:w-auto bg-white border-2 border-black hover:bg-neutral-100 text-black font-black text-xs px-8 py-4 rounded-full transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span data-i18n="locationBtnWhatsApp">Send Pre-Order on WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PEHLWAN SPECIAL BADAM RAGDA - WELCOME SPOTLIGHT MODAL -->
+<!-- Auto-opens on page load & re-openable from hero card -->
+<!-- ============================================================ -->
+<div id="badam-ragda-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm transition-all duration-300 hidden" onclick="if(event.target === this) closeBadamRagdaModal()">
+    <div class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white border-2 border-black rounded-3xl shadow-2xl scrollbar-none animate-in fade-in zoom-in-95 duration-300 text-black">
+        
+        <!-- Header Bar -->
+        <div class="sticky top-0 z-20 bg-black px-5 py-3 flex items-center justify-between text-white shadow-md">
+            <div class="flex items-center gap-2">
+                <span class="text-base">👑</span>
+                <span class="font-classic font-black text-xs tracking-wider uppercase">
+                    PEHLWAN SPECIAL • AKHADA POWER DRINK
+                </span>
+            </div>
+            <button onclick="closeBadamRagdaModal()" class="w-7 h-7 rounded-full bg-white/20 hover:bg-white text-white hover:text-black flex items-center justify-center text-xs font-black transition-colors" title="Close">
+                ✕
+            </button>
+        </div>
+
+        <!-- Modal Content Container -->
+        <div class="p-4 sm:p-6 space-y-4">
+            
+            <!-- Big High-Resolution Image of Badam Ragda -->
+            <div class="relative rounded-2xl overflow-hidden border border-neutral-300 shadow-md bg-neutral-100">
+                <img src="/static/images/badam_ragda_kundi_sota.jpg" alt="Pehlwan Special Badam Ragda Kundi Sota" class="w-full h-56 sm:h-72 object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+
+                <!-- Floating Badges on Image -->
+                <div class="absolute top-3 left-3 bg-black/90 px-3 py-1 rounded-full text-[10px] font-bold text-white font-classic uppercase tracking-wider flex items-center gap-1.5 shadow">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span>🥣 कुंडी-सोटे से घुटाई (100% Authentic Ragda)</span>
+                </div>
+
+                <div class="absolute top-3 right-3 bg-white text-black font-black text-sm px-3.5 py-1 rounded-full shadow-lg font-classic border border-neutral-300">
+                    ₹100
+                </div>
+
+                <div class="absolute bottom-3 left-3 right-3">
+                    <h2 class="font-classic font-black text-xl sm:text-2xl text-white drop-shadow-md">
+                        Pehlwan Special Badam Ragda
+                    </h2>
+                    <p class="text-xs text-neutral-200 font-medium drop-shadow mt-0.5">
+                        Traditional Stone-Ground Almond Sardai with Pure Kashmiri Saffron & Pistachio
+                    </p>
+                </div>
+            </div>
+
+            <!-- Macro Nutritional Facts Strip -->
+            <div class="grid grid-cols-4 gap-2 text-center">
+                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
+                    <span class="text-[9px] text-neutral-500 font-black uppercase block">CALORIES</span>
+                    <span class="text-base sm:text-lg font-black text-black">380</span>
+                    <span class="text-[9px] text-neutral-400 block">kcal</span>
+                </div>
+                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
+                    <span class="text-[9px] text-neutral-500 font-black uppercase block">PROTEIN</span>
+                    <span class="text-base sm:text-lg font-black text-black">14.5g</span>
+                    <span class="text-[9px] text-neutral-400 block">Pure Muscle</span>
+                </div>
+                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
+                    <span class="text-[9px] text-neutral-500 font-black uppercase block">HEALTHY FATS</span>
+                    <span class="text-base sm:text-lg font-black text-black">18.0g</span>
+                    <span class="text-[9px] text-neutral-400 block">Almond Oil</span>
+                </div>
+                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
+                    <span class="text-[9px] text-neutral-500 font-black uppercase block">CARBS</span>
+                    <span class="text-base sm:text-lg font-black text-black">42.0g</span>
+                    <span class="text-[9px] text-neutral-400 block">Natural Fuel</span>
+                </div>
+            </div>
+
+            <!-- Taste Note / Speciality Story -->
+            <p class="text-xs text-neutral-700 leading-relaxed bg-neutral-50 border border-neutral-200 p-3.5 rounded-xl">
+                🥣 <strong>Silbatte (Kharal) par hath se ragda hua</strong> asli Kashmiri badam, shuddh kesar, choti elaichi aur pure buffalo milk se taiyar kiya gaya asli Pehlwan taakat ka tonic. Zero added milawat, 100% pure nutritional power!
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                <button onclick="addToPehlwanTray('item-12'); showPehlwanFeedback('👑 Badam Ragda Diet Tray me add ho gaya!');" class="bg-black hover:bg-neutral-800 text-white font-black text-xs py-3.5 px-4 rounded-full shadow-lg transition-transform hover:scale-105 flex items-center justify-center gap-2 font-classic uppercase tracking-wider">
+                    <i data-lucide="shopping-bag" class="w-4 h-4 stroke-[3]"></i>
+                    <span>Add to Tray (₹100)</span>
+                </button>
+                
+                <a href="https://wa.me/{{ shop.whatsapp }}?text=Hello%20Pehlwan%20Juice%20Corner!%20Mujhe%20Pehlwan%20Special%20Badam%20Ragda%20order%20karna%20hai." target="_blank" class="bg-white border-2 border-black hover:bg-neutral-100 text-black font-black text-xs py-3.5 px-4 rounded-full shadow-lg transition-transform hover:scale-105 flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>WhatsApp par Order Karein</span>
+                </a>
+            </div>
+
+            <!-- Explore Button (Closes Modal) -->
+            <div class="text-center pt-1 pb-1">
+                <button onclick="closeBadamRagdaModal()" class="text-xs text-neutral-500 hover:text-black font-bold transition-colors underline decoration-dotted">
+                    Website Dekhein / Explore Menu →
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

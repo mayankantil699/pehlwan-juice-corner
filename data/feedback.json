@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fb-1",
+    "name": "Pehlwan Sandeep Malik",
+    "role": "Akhada Wrestler (Israna)",
+    "role_hi": "अखाड़ा पहलवान (इसराना)",
+    "rating": 5,
+    "favorite": "Pehlwan Special Badam Ragda",
+    "comment": "Subah kushti practice ke baad Pehlwan Badam Ragda se tagdi recovery drink poore Israna me nahi hai. Asli kesar aur silbatte ka badam!",
+    "date": "Yesterday"
+  },
+  {
+    "id": "fb-2",
+    "name": "Dr. Mohit Narwal",
+    "role": "Local Resident (Near PNB Bank)",
+    "role_hi": "स्थानीय निवासी (PNB बैंक के पास)",
+    "rating": 5,
+    "favorite": "Fresh Moosmi Juice",
+    "comment": "100% pure taaza nichoda hua juice, no added water, no sugar. Clinic aate waqt rozana yahi se mosambi juice leta hu.",
+    "date": "2 days ago"
+  },
+  {
+    "id": "fb-3",
+    "name": "Sahil Dahiya",
+    "role": "Gym Lifter & Athlete",
+    "role_hi": "जिम एथलीट (पावरलिफ्टर)",
+    "rating": 5,
+    "favorite": "Cold Coffee & Grill Sandwich",
+    "comment": "Nayi Cold Coffee ₹100 me full thick creamy aur crispy paneer grill sandwich protein fuel ke liye ek number hai!",
+    "date": "3 days ago"
+  },
+  {
+    "id": "fb-4",
+    "name": "Pooja Jaglan",
+    "role": "Regular Family Customer",
+    "role_hi": "नियमित पारिवारिक ग्राहक",
+    "rating": 5,
+    "favorite": "Naariyal Malayi Shake",
+    "comment": "Tender coconut malai shake aur strawberry shake dono hi lajawaab hain. Safaai aur shuddhata bilkul top class hai.",
+    "date": "5 days ago"
+  }
+]
