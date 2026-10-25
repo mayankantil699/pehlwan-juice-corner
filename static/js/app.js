@@ -326,37 +326,56 @@ function applyLanguage(lang) {
     updateShopStatus();
 }
 
-// Dynamic Real-time Shop Open/Closed Status (9:00 AM – 9:30 PM IST)
+// Dynamic Real-time Shop Open/Closed Status (Strictly 9:00 AM – 9:30 PM IST)
 function updateShopStatus() {
-    const now = new Date();
-    // Indian Standard Time (UTC + 5:30 = 330 minutes)
-    const utcMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
-    const istMinutes = (utcMinutes + 330) % 1440;
+    let istMinutes = 0;
+    try {
+        const istParts = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Kolkata',
+            hour12: false,
+            hour: 'numeric',
+            minute: 'numeric'
+        }).formatToParts(new Date());
+
+        const hours = parseInt(istParts.find(p => p.type === 'hour').value, 10);
+        const minutes = parseInt(istParts.find(p => p.type === 'minute').value, 10);
+        istMinutes = hours * 60 + minutes;
+    } catch (e) {
+        const now = new Date();
+        const utcMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+        istMinutes = (utcMinutes + 330) % 1440;
+    }
 
     const openMin = 9 * 60; // 9:00 AM = 540 min
     const closeMin = 21 * 60 + 30; // 9:30 PM = 1290 min
 
+    // Open ONLY between 9:00 AM and 9:30 PM IST; otherwise CLOSED
     const isOpen = istMinutes >= openMin && istMinutes < closeMin;
 
     document.querySelectorAll('.shop-status-badge').forEach(badge => {
         const dot = badge.querySelector('.status-dot');
         const text = badge.querySelector('.status-text');
+        const isTicker = badge.classList.contains('ticker-badge');
 
         if (isOpen) {
-            badge.className = 'shop-status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border shadow-sm bg-neutral-100 text-black text-black border-neutral-300 tracking-wider';
-            if (dot) dot.className = 'status-dot w-2 h-2 rounded-full bg-black animate-pulse shadow-[0_0_8px_#34d399]';
-            if (text) {
-                if (currentLang === 'hi') text.innerText = 'खुला है (OPEN)';
-                else if (currentLang === 'hinglish') text.innerText = 'OPEN NOW';
-                else text.innerText = 'OPEN NOW';
+            if (isTicker) {
+                badge.className = 'shop-status-badge ticker-badge inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] font-black bg-emerald-400 text-black';
+                if (dot) dot.className = 'status-dot w-1.5 h-1.5 rounded-full bg-emerald-900 animate-pulse';
+                if (text) text.innerText = (currentLang === 'hi' ? 'खुला है' : 'OPEN');
+            } else {
+                badge.className = 'shop-status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black border shadow-sm bg-emerald-50 text-emerald-800 border-emerald-300';
+                if (dot) dot.className = 'status-dot w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+                if (text) text.innerText = (currentLang === 'hi' ? 'खुला है (OPEN NOW)' : 'OPEN NOW');
             }
         } else {
-            badge.className = 'shop-status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border shadow-sm bg-rose-950/80 text-rose-400 border-rose-500/40 tracking-wider';
-            if (dot) dot.className = 'status-dot w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]';
-            if (text) {
-                if (currentLang === 'hi') text.innerText = 'बंद है (CLOSED)';
-                else if (currentLang === 'hinglish') text.innerText = 'CLOSED';
-                else text.innerText = 'CLOSED';
+            if (isTicker) {
+                badge.className = 'shop-status-badge ticker-badge inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] font-black bg-rose-600 text-white';
+                if (dot) dot.className = 'status-dot w-1.5 h-1.5 rounded-full bg-white';
+                if (text) text.innerText = (currentLang === 'hi' ? 'बंद है' : 'CLOSED');
+            } else {
+                badge.className = 'shop-status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black border shadow-sm bg-rose-50 text-rose-800 border-rose-300';
+                if (dot) dot.className = 'status-dot w-2 h-2 rounded-full bg-rose-500';
+                if (text) text.innerText = (currentLang === 'hi' ? 'बंद है (CLOSED)' : 'CLOSED (Opens 9 AM)');
             }
         }
     });
