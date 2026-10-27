@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('virtual-glass-liquid')) {
         initCustomShakeBuilder();
     }
-    initGymMusicPlayer();
+    // initGymMusicPlayer();
     initPehlwanAIChat();
 
     // Auto-open Royal Badam Ragda Photo Spotlight on Homepage
