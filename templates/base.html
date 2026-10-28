@@ -520,7 +520,7 @@
     </div>
 
     <!-- Customer Auth Modal (Login & Registration) -->
-    <div id="customer-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden">
+    <div id="customer-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden" onclick="if(event.target === this) closeCustomerAuthModal()">
         <div class="luxury-card rounded-3xl p-6 sm:p-8 max-w-md w-full relative shadow-2xl border-2 border-black bg-white space-y-5 animate-scale-up">
             
             <!-- Close Button -->
@@ -658,15 +658,16 @@
     </div>
 
     <!-- Google Quick Account Connect Modal -->
-    <div id="google-quick-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+    <div id="google-quick-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden" style="display: none;" onclick="if(event.target === this) closeGoogleQuickModal()">
         <div class="luxury-card rounded-3xl p-6 sm:p-7 max-w-sm w-full relative shadow-2xl border-2 border-black bg-white space-y-4 animate-scale-up text-center">
             
-            <button onclick="closeGoogleQuickModal()" class="absolute top-4 right-4 p-2 text-neutral-400 hover:text-black rounded-full hover:bg-neutral-100 transition-colors">
+            <button type="button" onclick="closeGoogleQuickModal()" class="absolute top-4 right-4 p-2 text-neutral-400 hover:text-black rounded-full hover:bg-neutral-100 transition-colors">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
 
-            <div class="w-12 h-12 rounded-2xl bg-white border border-neutral-200 flex items-center justify-center mx-auto shadow-sm">
-                <svg class="w-6 h-6" viewBox="0 0 24 24">
+            <!-- Google G Logo -->
+            <div class="w-14 h-14 rounded-2xl bg-white border-2 border-neutral-200 flex items-center justify-center mx-auto shadow-sm">
+                <svg class="w-7 h-7" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
@@ -676,50 +677,73 @@
 
             <div class="space-y-1">
                 <h3 class="font-heading font-black text-lg text-black">Sign in with Google</h3>
-                <p class="text-xs text-neutral-500">Connect your Google profile for fast 1-tap orders</p>
+                <p class="text-xs text-neutral-500">Pehlwan Juice Corner — Member Connect</p>
             </div>
 
-            <form onsubmit="event.preventDefault(); confirmGoogleLogin();" class="space-y-3 text-left">
+            <!-- Fast 1-Tap Google Account Button for Owner/Tester -->
+            <button 
+                type="button" 
+                onclick="quickSelectGoogleUser('Mayank Antil', 'mayankantil699@gmail.com', '9588351884')"
+                class="w-full py-2.5 px-3 bg-neutral-50 hover:bg-neutral-100 border border-neutral-300 rounded-xl flex items-center justify-between text-left text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
+            >
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">M</span>
+                    <div>
+                        <div class="font-bold text-black">Mayank Antil</div>
+                        <div class="text-[10px] text-neutral-500 font-mono">mayankantil699@gmail.com</div>
+                    </div>
+                </div>
+                <span class="text-xs text-neutral-400 font-bold">1-Tap →</span>
+            </button>
+
+            <!-- OR Divider -->
+            <div class="relative flex items-center justify-center my-1">
+                <div class="border-t border-neutral-200 w-full"></div>
+                <span class="bg-white px-2 text-[9px] uppercase tracking-widest font-bold text-neutral-400">OR USE ANOTHER ACCOUNT</span>
+                <div class="border-t border-neutral-200 w-full"></div>
+            </div>
+
+            <form onsubmit="event.preventDefault(); confirmGoogleLogin();" class="space-y-2.5 text-left">
                 <div>
-                    <label class="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Your Google Name</label>
+                    <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-0.5">Your Google Name</label>
                     <input 
                         type="text" 
                         id="google-name-input" 
-                        placeholder="e.g. Mayank Antil" 
+                        placeholder="e.g. Rahul Sharma" 
                         required
-                        class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:border-black focus:outline-none"
+                        class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3.5 py-2 text-xs font-semibold focus:border-black focus:outline-none"
                     >
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Gmail / Email</label>
+                    <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-0.5">Gmail Address</label>
                     <input 
                         type="email" 
                         id="google-email-input" 
                         placeholder="yourname@gmail.com" 
                         required
-                        class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:border-black focus:outline-none"
+                        class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3.5 py-2 text-xs font-semibold focus:border-black focus:outline-none"
                     >
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Mobile Number (For Pick-up WhatsApp)</label>
+                    <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-0.5">Mobile Number (For WhatsApp Pick-up)</label>
                     <input 
                         type="tel" 
                         id="google-phone-input" 
                         placeholder="10-digit mobile number" 
                         maxlength="10"
                         required
-                        class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:border-black focus:outline-none"
+                        class="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3.5 py-2 text-xs font-semibold focus:border-black focus:outline-none"
                     >
                 </div>
-                <button type="submit" class="w-full py-3 bg-black hover:bg-neutral-800 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow transition-transform active:scale-95 cursor-pointer flex items-center justify-center gap-2">
-                    <span>Connect & Continue →</span>
+                <button type="submit" class="w-full py-3 bg-black hover:bg-neutral-800 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow transition-transform active:scale-95 cursor-pointer flex items-center justify-center gap-2 mt-1">
+                    <span>Connect Google Account →</span>
                 </button>
             </form>
         </div>
     </div>
 
     <!-- Customer Profile & Order History Modal -->
-    <div id="customer-profile-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden">
+    <div id="customer-profile-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden" onclick="if(event.target === this) closeCustomerProfileModal()">
         <div class="luxury-card rounded-3xl p-6 sm:p-8 max-w-lg w-full relative shadow-2xl border-2 border-black bg-white space-y-6 animate-scale-up max-h-[90vh] flex flex-col">
             
             <!-- Close Button -->
