@@ -68,13 +68,13 @@
                         inputmode="numeric"
                         id="admin-pin-input" 
                         value=""
-                        placeholder="Enter Secret PIN" 
+                        placeholder="••••" 
                         maxlength="4"
                         class="w-full text-center tracking-[0.5em] text-3xl font-black py-3.5 px-4 rounded-xl border-2 border-neutral-300 focus:border-black focus:outline-none bg-neutral-50 text-black shadow-inner"
                         autocomplete="off"
                         autofocus
                     >
-                    <p id="pin-error" class="text-xs text-rose-600 font-bold mt-2 hidden">Galat Password! Sirf Owner ko access hai.</p>
+                    <p id="pin-error" class="text-xs text-rose-600 font-bold mt-2 hidden">❌ Invalid Password. Access Denied.</p>
                 </div>
                 
                 <button 
@@ -87,7 +87,7 @@
                 </button>
             </form>
 
-            <p class="text-[11px] text-neutral-400">Strict 4-digit secret key for Pehlwan Juice Corner owner only.</p>
+            <p class="text-[11px] text-neutral-400">Authorized Access Only • Pehlwan Juice Corner</p>
         </div>
     </div>
 
@@ -413,7 +413,7 @@
             } else {
                 const err = document.getElementById('pin-error');
                 if (err) {
-                    err.innerText = "❌ Galat Password! Sirf 9817 se khulega.";
+                    err.innerText = "❌ Invalid Password. Access Denied.";
                     err.classList.remove('hidden');
                 }
                 if (input) {
