@@ -61,19 +61,20 @@
             </div>
 
             <!-- PIN Form -->
-            <form onsubmit="event.preventDefault(); verifyPin();" class="space-y-3">
+            <form onsubmit="event.preventDefault(); verifyPin();" class="space-y-4">
                 <div>
                     <input 
-                        type="tel" 
+                        type="password" 
                         inputmode="numeric"
                         id="admin-pin-input" 
-                        value="9588"
-                        placeholder="PIN: 9588" 
-                        maxlength="6"
-                        class="w-full text-center tracking-[0.4em] text-2xl font-black py-3 px-4 rounded-xl border-2 border-neutral-300 focus:border-black focus:outline-none bg-neutral-50 text-black shadow-inner"
+                        value=""
+                        placeholder="Enter Secret PIN" 
+                        maxlength="4"
+                        class="w-full text-center tracking-[0.5em] text-3xl font-black py-3.5 px-4 rounded-xl border-2 border-neutral-300 focus:border-black focus:outline-none bg-neutral-50 text-black shadow-inner"
                         autocomplete="off"
+                        autofocus
                     >
-                    <p id="pin-error" class="text-xs text-rose-600 font-bold mt-1.5 hidden">Invalid PIN. Try 9588!</p>
+                    <p id="pin-error" class="text-xs text-rose-600 font-bold mt-2 hidden">Galat Password! Sirf Owner ko access hai.</p>
                 </div>
                 
                 <button 
@@ -86,16 +87,7 @@
                 </button>
             </form>
 
-            <!-- Quick Unlock Button -->
-            <button 
-                type="button" 
-                onclick="directUnlock()" 
-                class="w-full py-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs rounded-xl transition-all cursor-pointer"
-            >
-                ⚡ 1-Click Fast Unlock
-            </button>
-
-            <p class="text-[11px] text-neutral-400">Security passcode (9588) keeps public visitors away from owner stats.</p>
+            <p class="text-[11px] text-neutral-400">Strict 4-digit secret key for Pehlwan Juice Corner owner only.</p>
         </div>
     </div>
 
@@ -370,12 +362,12 @@
             return await res.json();
         }
 
-        // PIN Verification
-        const DEFAULT_PIN = "9588";
+        // STRICT OWNER PASSWORD: 9817 ONLY
+        const OWNER_SECRET_PIN = "9817";
 
         function checkAuth() {
-            const saved = localStorage.getItem('pehlwan_admin_auth');
-            if (saved === 'true') {
+            const authKey = localStorage.getItem('pehlwan_owner_key');
+            if (authKey === OWNER_SECRET_PIN) {
                 showDashboard();
             } else {
                 showModal();
@@ -401,31 +393,38 @@
             if (content) content.style.display = 'none';
             const input = document.getElementById('admin-pin-input');
             if (input) {
-                input.value = '9588';
+                input.value = '';
                 input.focus();
             }
+            const err = document.getElementById('pin-error');
+            if (err) err.classList.add('hidden');
         }
 
         function verifyPin() {
             const input = document.getElementById('admin-pin-input');
             const val = input ? input.value.trim() : '';
-            // Accepts 9588, 1234, 0000, or Mayank's PIN
-            if (val === DEFAULT_PIN || val === '1234' || val === '0000' || val.length === 4) {
-                localStorage.setItem('pehlwan_admin_auth', 'true');
+            
+            // STRICT CHECK: ONLY 9817 CAN UNLOCK
+            if (val === OWNER_SECRET_PIN) {
+                localStorage.setItem('pehlwan_owner_key', OWNER_SECRET_PIN);
+                const err = document.getElementById('pin-error');
+                if (err) err.classList.add('hidden');
                 showDashboard();
             } else {
                 const err = document.getElementById('pin-error');
-                if (err) err.classList.remove('hidden');
-                if (input) input.value = '';
+                if (err) {
+                    err.innerText = "❌ Galat Password! Sirf 9817 se khulega.";
+                    err.classList.remove('hidden');
+                }
+                if (input) {
+                    input.value = '';
+                    input.focus();
+                }
             }
         }
 
-        function directUnlock() {
-            localStorage.setItem('pehlwan_admin_auth', 'true');
-            showDashboard();
-        }
-
         function lockDashboard() {
+            localStorage.removeItem('pehlwan_owner_key');
             localStorage.removeItem('pehlwan_admin_auth');
             showModal();
         }
