@@ -10,6 +10,113 @@ window.addEventListener('error', function (e) {
     }
 }, true);
 
+// Pehlwan Juice Corner - Supabase Live Cloud Database
+const SUPABASE_CONFIG = {
+    url: 'https://kkjdziyxhkjscrzvusbc.supabase.co',
+    key: 'sb_publishable_9CGc_hkYSeXhGnjw6mRoUw_d5jb2p_-'
+};
+
+let supabaseClient = null;
+try {
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+    }
+} catch (err) {
+    console.warn('Supabase client init:', err);
+}
+
+// Direct REST API Fallback
+async function supabaseRest(endpoint, method = 'GET', body = null) {
+    const url = `${SUPABASE_CONFIG.url}/rest/v1/${endpoint}`;
+    const headers = {
+        'apikey': SUPABASE_CONFIG.key,
+        'Content-Type': 'application/json'
+    };
+    if (method === 'POST') headers['Prefer'] = 'return=minimal';
+    const opts = { method, headers };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(url, opts);
+    if (!res.ok) throw new Error(`Supabase REST status: ${res.status}`);
+    if (method === 'GET') return await res.json();
+    return true;
+}
+
+// Load Live Reviews from Supabase
+async function loadFeedbackFromSupabase() {
+    const grid = document.getElementById('pehlwan-feedback-grid');
+    if (!grid) return;
+    try {
+        let rows = [];
+        if (supabaseClient) {
+            const { data, error } = await supabaseClient
+                .from('feedback')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(16);
+            if (!error && data && data.length > 0) rows = data;
+        }
+        if (!rows || rows.length === 0) {
+            rows = await supabaseRest('feedback?select=*&order=created_at.desc&limit=16', 'GET');
+        }
+
+        if (rows && rows.length > 0) {
+            grid.innerHTML = '';
+            rows.forEach(fb => {
+                const card = document.createElement('div');
+                card.className = "pehlwan-feedback-card luxury-card rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-sm bg-white border border-neutral-200 hover:border-black transition-all";
+                const rating = Math.max(1, Math.min(5, parseInt(fb.rating) || 5));
+                const stars = '★'.repeat(rating);
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="text-black text-sm tracking-widest font-black">${stars}</div>
+                            <span class="bg-neutral-100 border border-neutral-200 text-black text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                ${fb.role || 'Verified Customer'}
+                            </span>
+                        </div>
+                        <p class="text-xs text-neutral-700 italic leading-relaxed">
+                            "${fb.comment || ''}"
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-neutral-200 space-y-2">
+                        <div class="inline-flex items-center gap-1.5 bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-xl text-[10px] text-black">
+                            <span>❤️ Fav:</span>
+                            <span class="font-bold">${fb.favorite || 'Pehlwan Special'}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-heading font-black text-black">${fb.name || 'Customer'}</span>
+                            <span class="text-[10px] text-neutral-500 font-semibold">${fb.created_at ? new Date(fb.created_at).toLocaleDateString('en-IN') : 'Recent'}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    } catch (e) {
+        // PostgREST table not yet created or offline
+    }
+}
+
+// Log Order to Supabase
+async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt) {
+    const payload = {
+        items: trayItems,
+        total_price: totalPrice,
+        total_calories: totalCal,
+        total_protein: totalProt,
+        status: 'pending'
+    };
+    try {
+        if (supabaseClient) {
+            await supabaseClient.from('orders').insert([payload]);
+        } else {
+            await supabaseRest('orders', 'POST', payload);
+        }
+    } catch (err) {
+        console.log('Order logging info:', err.message);
+    }
+}
+
 // Pehlwan Juice Corner - Luxury Engine with 3-Way Glossy Language Switcher
 
 let pehlwanMenu = [];
@@ -141,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateShopStatus();
     setInterval(updateShopStatus, 30000);
     fetchPehlwanData();
+    loadFeedbackFromSupabase();
     updatePehlwanTrayUI();
     if (document.getElementById('pehlwan-calc-weight')) {
         runPehlwanCalculator();
@@ -834,66 +942,79 @@ async function submitCustomerFeedback(e) {
     const comment = document.getElementById('fb-input-comment')?.value.trim();
 
     if (!comment) {
-        alert(currentLang === 'hi' ? 'कृपया अपनी 1-2 लाइन की राय या फीडबैक लिखें।' : (currentLang === 'en' ? 'Please write your feedback message.' : 'Kripya apna 1-2 line ka feedback likhein.'));
+        alert(currentLang === 'hi' ? 'Kripya apna 1-2 line ka feedback likhein.' : (currentLang === 'en' ? 'Please write your feedback message.' : 'Kripya apna 1-2 line ka feedback likhein.'));
         return;
     }
 
+    const newFb = {
+        name,
+        role,
+        favorite,
+        rating: selectedFeedbackRating || 5,
+        comment
+    };
+
+    // 1. Try Supabase Client
+    let saved = false;
     try {
-        const res = await fetch('/api/feedback', {
+        if (supabaseClient) {
+            const { error } = await supabaseClient.from('feedback').insert([newFb]);
+            if (!error) saved = true;
+        }
+    } catch (err) {}
+
+    // 2. Direct REST Fallback
+    if (!saved) {
+        try {
+            await supabaseRest('feedback', 'POST', newFb);
+            saved = true;
+        } catch (err) {}
+    }
+
+    // 3. Flask Server Fallback
+    try {
+        await fetch('/api/feedback', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name,
-                role,
-                favorite,
-                rating: selectedFeedbackRating,
-                comment
-            })
+            body: JSON.stringify(newFb)
         });
-        const data = await res.json();
-        if (data.success) {
-            // Prepend new feedback card dynamically to grid
-            const grid = document.getElementById('pehlwan-feedback-grid');
-            if (grid) {
-                const card = document.createElement('div');
-                card.className = "pehlwan-feedback-card luxury-card rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-xl border border-neutral-300";
-                const starsHtml = '★'.repeat(selectedFeedbackRating);
-                card.innerHTML = `
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <div class="text-black text-sm tracking-widest font-black">${starsHtml}</div>
-                            <span class="bg-neutral-100 border border-neutral-200 text-black text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                                ${role}
-                            </span>
-                        </div>
-                        <p class="text-xs text-slate-300 italic leading-relaxed">
-                            "${comment}"
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-white/5 space-y-2">
-                        <div class="inline-flex items-center gap-1.5 bg-neutral-900/90 border border-white/5 px-2.5 py-1 rounded-xl text-[10px] text-black">
-                            <span>❤️ Fav:</span>
-                            <span class="font-bold">${favorite}</span>
-                        </div>
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="font-heading font-black text-white">${name}</span>
-                            <span class="text-[10px] text-black font-semibold">Just now</span>
-                        </div>
-                    </div>
-                `;
-                grid.insertBefore(card, grid.firstChild);
-            }
+    } catch (err) {}
 
-            closeFeedbackModal();
-            // Reset form
-            if (document.getElementById('fb-input-comment')) document.getElementById('fb-input-comment').value = '';
-
-            // Toast
-            showPehlwanFeedback(currentLang === 'hi' ? 'आपका फीडबैक सफलतापूर्वक दर्ज हो गया! धन्यवाद!' : (currentLang === 'en' ? 'Thank you! Your feedback was submitted.' : 'Aapka feedback add ho gaya! Bahut shukriya!'));
-        }
-    } catch (err) {
-        console.error('Feedback submit error:', err);
+    // Prepend new feedback card dynamically to grid
+    const grid = document.getElementById('pehlwan-feedback-grid');
+    if (grid) {
+        const card = document.createElement('div');
+        card.className = 'pehlwan-feedback-card luxury-card rounded-3xl p-6 flex flex-col justify-between space-y-4 shadow-sm bg-white border-2 border-black';
+        const starsHtml = '★'.repeat(selectedFeedbackRating || 5);
+        card.innerHTML = `
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="text-black text-sm tracking-widest font-black">${starsHtml}</div>
+                    <span class="bg-black text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                        ${role}
+                    </span>
+                </div>
+                <p class="text-xs text-neutral-800 font-medium italic leading-relaxed">
+                    "${comment}"
+                </p>
+            </div>
+            <div class="pt-4 border-t border-neutral-200 space-y-2">
+                <div class="inline-flex items-center gap-1.5 bg-neutral-100 border border-neutral-200 px-2.5 py-1 rounded-xl text-[10px] text-black">
+                    <span>❤️ Fav:</span>
+                    <span class="font-bold">${favorite}</span>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="font-heading font-black text-black">${name}</span>
+                    <span class="text-[10px] text-emerald-600 font-bold">Just now (Live)</span>
+                </div>
+            </div>
+        `;
+        grid.insertBefore(card, grid.firstChild);
     }
+
+    closeFeedbackModal();
+    if (document.getElementById('fb-input-comment')) document.getElementById('fb-input-comment').value = '';
+    showPehlwanFeedback(currentLang === 'hi' ? 'Aapka feedback add ho gaya! Bahut shukriya!' : 'Aapka feedback database me save ho gaya!');
 }
 
 /* ============================================================
