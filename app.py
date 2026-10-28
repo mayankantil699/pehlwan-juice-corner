@@ -1392,5 +1392,9 @@ def api_ai_chat():
         "reply": reply
     })
 
+@app.route("/admin")
+def admin_portal():
+    return render_template("admin.html", shop=SHOP_INFO)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
