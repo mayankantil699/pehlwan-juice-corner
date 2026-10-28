@@ -86,13 +86,19 @@ async function loadFeedbackFromSupabase() {
 }
 
 // Log Order to Supabase
-async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt) {
+async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt, custName = 'Walk-in Customer', custPhone = '', orderId = '#ORD-101') {
     const payload = {
-        items: trayItems,
+        customer_phone: custPhone || 'Walk-in',
+        items: {
+            order_id: orderId,
+            customer_name: custName || 'Regular Customer',
+            customer_phone: custPhone,
+            products: trayItems
+        },
         total_price: totalPrice,
         total_calories: totalCal,
         total_protein: totalProt,
-        status: 'pending'
+        status: 'Pending'
     };
     try {
         if (supabaseClient) {
@@ -755,9 +761,13 @@ function updatePehlwanTrayUI() {
 // WhatsApp Order Formatter
 function sendOrderViaWhatsApp() {
     if (pehlwanTray.length === 0) {
-        alert(currentLang === 'en' ? "Your tray is empty! Please add items from menu first." : (currentLang === 'hi' ? "आपकी थाली अभी खाली है! कृपया पहले मेन्यू से आइटम जोड़ें।" : "Aapki thali abhi khaali hai! Kripya pehle menu se items add karein."));
+        alert(currentLang === 'en' ? "Your tray is empty! Please add items from menu first." : "Aapki thali abhi khaali hai! Kripya pehle menu se items add karein.");
         return;
     }
+
+    const custName = document.getElementById('order-customer-name')?.value.trim() || 'Regular Customer';
+    const custPhone = document.getElementById('order-customer-phone')?.value.trim() || '';
+    const orderId = '#ORD-' + Math.floor(100 + Math.random() * 900);
 
     const totalCal = Math.round(pehlwanTray.reduce((acc, c) => acc + (c.calories * c.quantity), 0));
     const totalProt = Math.round(pehlwanTray.reduce((acc, c) => acc + (c.protein * c.quantity), 0) * 10) / 10;
@@ -770,7 +780,13 @@ function sendOrderViaWhatsApp() {
         itemsText += `%0A${index + 1}. *${name}* x ${item.quantity} = ₹${item.price * item.quantity} (${item.calories * item.quantity} kcal, ${item.protein * item.quantity}g P)`;
     });
 
-    const msg = `*Pehlwan Juice Corner (Israna) - Order*%0A----------------------------${itemsText}%0A----------------------------%0A*Total Bill:* ₹${totalPrice}%0A*Nutrition:* ${totalCal} kcal | ${totalProt}g Protein | ${totalFats}g Fat%0A%0A📍 *Location:* Near Punjab National Bank, Israna (Panipat)%0APlease keep it ready for pick-up!`;
+    let customerInfoText = `%0A👤 *Customer:* ${encodeURIComponent(custName)}`;
+    if (custPhone) customerInfoText += ` | 📱 *Phone:* ${encodeURIComponent(custPhone)}`;
+
+    const msg = `*Pehlwan Juice Corner (Israna) - Pre-Order ${orderId}*%0A----------------------------${customerInfoText}%0A----------------------------${itemsText}%0A----------------------------%0A*Total Bill:* ₹${totalPrice}%0A*Nutrition:* ${totalCal} kcal | ${totalProt}g Protein | ${totalFats}g Fat%0A%0A📍 *Location:* Near Punjab National Bank, Israna (Panipat)%0APlease keep it ready for pick-up!`;
+
+    // Log to Supabase Cloud with full Customer Details
+    logOrderToSupabase(pehlwanTray, totalPrice, totalCal, totalProt, custName, custPhone, orderId);
 
     const phoneNum = pehlwanShop.whatsapp || '919588351884';
     const whatsappUrl = `https://wa.me/${phoneNum}?text=${msg}`;
