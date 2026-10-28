@@ -154,10 +154,80 @@
         <!-- Main Body -->
         <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
 
-            <!-- Key Metric Cards -->
+            <!-- 1. Grand Revenue & Sales Tracker (Real-Time Live Earnings) -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 border-2 border-black bg-white shadow-lg space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-200">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-black uppercase tracking-wider text-neutral-500">Total Sales Revenue (कुल कमाई)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE EARNINGS
+                            </span>
+                        </div>
+                        <div class="flex items-baseline gap-3">
+                            <div id="stat-total-revenue" class="text-4xl sm:text-5xl font-black text-black font-heading tracking-tight">₹0</div>
+                            <span class="text-xs text-neutral-500 font-bold uppercase tracking-wider">All-Time Business</span>
+                        </div>
+                    </div>
+
+                    <!-- Action: Quick Test Order -->
+                    <button 
+                        type="button" 
+                        onclick="createSampleOrder()" 
+                        class="self-start sm:self-auto px-4 py-2 bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 text-neutral-800 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5"
+                        title="Add a test pre-order to test revenue counter"
+                    >
+                        <span>➕ Test Sale (₹200)</span>
+                    </button>
+                </div>
+
+                <!-- 3-Tier Financial Sub-Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                    <div class="bg-emerald-50/60 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-[11px] font-black text-emerald-900 uppercase tracking-wider">Today's Sales (आज की सेल)</div>
+                            <div id="stat-today-revenue" class="text-2xl font-black text-emerald-800 font-heading mt-0.5">₹0</div>
+                            <div id="stat-today-orders-count" class="text-[11px] text-emerald-700 font-semibold mt-0.5">0 orders today</div>
+                        </div>
+                        <span class="text-2xl">💰</span>
+                    </div>
+
+                    <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-[11px] font-black text-neutral-600 uppercase tracking-wider">Avg Order Value (औसत बिल)</div>
+                            <div id="stat-avg-order" class="text-2xl font-black text-black font-heading mt-0.5">₹0</div>
+                            <div class="text-[11px] text-neutral-500 font-medium mt-0.5">Per customer basket</div>
+                        </div>
+                        <span class="text-2xl">📊</span>
+                    </div>
+
+                    <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-[11px] font-black text-amber-900 uppercase tracking-wider">Active Pending Orders</div>
+                            <div id="stat-pending-orders" class="text-2xl font-black text-amber-900 font-heading mt-0.5">0</div>
+                            <div id="stat-pending-revenue" class="text-[11px] text-amber-800 font-semibold mt-0.5">₹0 to collect</div>
+                        </div>
+                        <span class="text-2xl">⏳</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Operational Stats (4 Cards) -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 
-                <!-- Card 1: Visitors Today -->
+                <!-- Card 1: Diet Tray Orders -->
+                <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Orders</span>
+                        <span class="text-lg">🛍️</span>
+                    </div>
+                    <div>
+                        <div id="stat-total-orders" class="text-3xl font-extrabold text-black font-heading">0</div>
+                        <p class="text-[11px] text-neutral-500 mt-0.5">Diet Thali pre-orders</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Total Visits -->
                 <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Visits</span>
@@ -169,7 +239,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Active / Unique Sessions -->
+                <!-- Card 3: Unique Users -->
                 <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Unique Users</span>
@@ -178,18 +248,6 @@
                     <div>
                         <div id="stat-unique-users" class="text-3xl font-extrabold text-black font-heading">0</div>
                         <p class="text-[11px] text-neutral-500 mt-0.5">Separate visitor devices</p>
-                    </div>
-                </div>
-
-                <!-- Card 3: Diet Tray Orders -->
-                <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Pre-Orders</span>
-                        <span class="text-lg">🛍️</span>
-                    </div>
-                    <div>
-                        <div id="stat-total-orders" class="text-3xl font-extrabold text-black font-heading">0</div>
-                        <p class="text-[11px] text-neutral-500 mt-0.5">Orders from Diet Thali</p>
                     </div>
                 </div>
 
@@ -271,10 +329,14 @@
 
             <!-- Tab Content 2: Pre-Orders Received -->
             <div id="tab-content-orders" class="space-y-4 hidden">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h3 class="font-heading font-bold text-lg text-black">Diet Thali Orders</h3>
-                        <p class="text-xs text-neutral-500">Orders submitted by customers via WhatsApp / Diet Tray.</p>
+                        <h3 class="font-heading font-bold text-lg text-black">Diet Thali Orders & Sales Breakdown</h3>
+                        <p class="text-xs text-neutral-500">Real-time orders received from customer Diet Trays.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-neutral-500">Total Booked:</span>
+                        <span id="tab-orders-revenue-badge" class="bg-black text-white text-xs font-black px-3 py-1 rounded-full">₹0</span>
                     </div>
                 </div>
 
@@ -534,14 +596,49 @@
             }
         }
 
+        // Indian Currency Formatter
+        function formatINR(num) {
+            return '₹' + new Intl.NumberFormat('en-IN').format(Math.round(num || 0));
+        }
+
         async function loadOrders() {
             try {
-                const data = await fetchSupabase('orders', '?select=*&order=created_at.desc&limit=50');
+                const data = await fetchSupabase('orders', '?select=*&order=created_at.desc&limit=100');
                 if (lastKnownOrderCount !== -1 && data.length > lastKnownOrderCount) {
                     playAlertTone();
                 }
                 lastKnownOrderCount = data.length;
 
+                // --- 1. Calculate Real Financial Metrics ---
+                const totalRevenue = data.reduce((sum, o) => sum + (parseFloat(o.total_price) || 0), 0);
+                
+                const todayStr = new Date().toDateString();
+                const todayOrders = data.filter(o => o.created_at && new Date(o.created_at).toDateString() === todayStr);
+                const todayRevenue = todayOrders.reduce((sum, o) => sum + (parseFloat(o.total_price) || 0), 0);
+                
+                const avgOrder = data.length > 0 ? Math.round(totalRevenue / data.length) : 0;
+                
+                const pendingOrders = data.filter(o => (o.status || '').toLowerCase() !== 'completed');
+                const pendingRevenue = pendingOrders.reduce((sum, o) => sum + (parseFloat(o.total_price) || 0), 0);
+
+                // --- 2. Update Revenue UI Elements ---
+                const revEl = document.getElementById('stat-total-revenue');
+                const todayRevEl = document.getElementById('stat-today-revenue');
+                const todayCountEl = document.getElementById('stat-today-orders-count');
+                const avgEl = document.getElementById('stat-avg-order');
+                const pendingCountEl = document.getElementById('stat-pending-orders');
+                const pendingRevEl = document.getElementById('stat-pending-revenue');
+                const tabBadgeRev = document.getElementById('tab-orders-revenue-badge');
+
+                if (revEl) revEl.innerText = formatINR(totalRevenue);
+                if (todayRevEl) todayRevEl.innerText = formatINR(todayRevenue);
+                if (todayCountEl) todayCountEl.innerText = `${todayOrders.length} orders today`;
+                if (avgEl) avgEl.innerText = formatINR(avgOrder);
+                if (pendingCountEl) pendingCountEl.innerText = pendingOrders.length;
+                if (pendingRevEl) pendingRevEl.innerText = `${formatINR(pendingRevenue)} pending`;
+                if (tabBadgeRev) tabBadgeRev.innerText = formatINR(totalRevenue);
+
+                // Update Counts
                 const statOrders = document.getElementById('stat-total-orders');
                 const badgeOrders = document.getElementById('tab-badge-orders');
                 if (statOrders) statOrders.innerText = data.length;
@@ -551,33 +648,40 @@
                 if (!tbody) return;
 
                 if (data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-neutral-400 font-medium">No Diet Thali pre-orders received yet.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" class="py-10 text-center text-neutral-400 font-medium">Abhi koi order nahi aaya hai. Website par Diet Thali se order aate hi yahan live sale jud jayegi!</td></tr>`;
                     return;
                 }
 
                 tbody.innerHTML = '';
-                data.forEach(o => {
+                data.forEach((o, idx) => {
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-neutral-50";
-                    const timeStr = o.created_at ? new Date(o.created_at).toLocaleString('en-IN') : 'Recent';
+                    tr.className = idx === 0 ? "bg-emerald-50/40 hover:bg-neutral-50 transition-colors" : "hover:bg-neutral-50 transition-colors";
+                    const timeStr = o.created_at ? new Date(o.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : 'Recent';
+                    const dateStr = o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN') : '';
                     
                     let itemsSummary = '';
                     if (Array.isArray(o.items)) {
                         itemsSummary = o.items.map(it => `${it.name_en || it.name_hinglish} (x${it.quantity})`).join(', ');
+                    } else if (typeof o.items === 'object') {
+                        itemsSummary = JSON.stringify(o.items);
                     } else {
-                        itemsSummary = 'Custom Diet Order';
+                        itemsSummary = 'Pehlwan Diet Order';
                     }
 
                     tr.innerHTML = `
-                        <td class="py-3 px-4 font-bold text-black whitespace-nowrap">${timeStr}</td>
-                        <td class="py-3 px-4 font-medium text-neutral-800 max-w-xs truncate">${itemsSummary}</td>
-                        <td class="py-3 px-4 text-neutral-600 whitespace-nowrap">
-                            <b>${Math.round(o.total_calories || 0)}</b> kcal &bull; <b>${Math.round(o.total_protein || 0)}g</b> Protein
+                        <td class="py-3.5 px-4 font-bold text-black whitespace-nowrap">
+                            ${timeStr} <span class="text-[10px] text-neutral-400 block sm:inline font-normal">(${dateStr})</span>
                         </td>
-                        <td class="py-3 px-4 font-extrabold text-black text-sm whitespace-nowrap">₹${o.total_price || 0}</td>
-                        <td class="py-3 px-4 text-right whitespace-nowrap">
-                            <span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">
-                                ${o.status || 'Pending'}
+                        <td class="py-3.5 px-4 font-semibold text-neutral-800 max-w-xs truncate">${itemsSummary}</td>
+                        <td class="py-3.5 px-4 text-neutral-600 whitespace-nowrap">
+                            <span class="font-bold text-black">${Math.round(o.total_calories || 0)}</span> kcal &bull; <span class="font-bold text-black">${Math.round(o.total_protein || 0)}g</span> Protein
+                        </td>
+                        <td class="py-3.5 px-4 font-black text-black text-sm whitespace-nowrap">
+                            ${formatINR(o.total_price || 0)}
+                        </td>
+                        <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                            <span class="inline-flex items-center gap-1 bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                ● ${o.status || 'Pending'}
                             </span>
                         </td>
                     `;
@@ -586,6 +690,39 @@
 
             } catch (err) {
                 console.log('Orders load info:', err);
+            }
+        }
+
+        // Quick Function to Insert Sample/Test Sale (₹200) into Supabase
+        async function createSampleOrder() {
+            try {
+                const samplePayload = {
+                    items: [
+                        { name_en: "Pehlwan Badam Ragda", price: 100, quantity: 1, calories: 340, protein: 11 },
+                        { name_en: "Paneer Grill Sandwich", price: 100, quantity: 1, calories: 380, protein: 15 }
+                    ],
+                    total_price: 200,
+                    total_calories: 720,
+                    total_protein: 26,
+                    status: 'pending'
+                };
+                const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_CONFIG.key,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(samplePayload)
+                });
+                if (res.ok) {
+                    playAlertTone();
+                    await loadOrders();
+                } else {
+                    alert('Order create failed: ' + res.status);
+                }
+            } catch(e) {
+                alert('Order error: ' + e.message);
             }
         }
 
