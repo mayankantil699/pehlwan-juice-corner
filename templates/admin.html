@@ -153,64 +153,6 @@
         <!-- Main Body -->
         <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
 
-            <!-- 1. Grand Revenue & Sales Tracker (Real-Time Live Earnings) -->
-            <div class="luxury-card rounded-3xl p-6 sm:p-7 border-2 border-black bg-white shadow-lg space-y-5">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-200">
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-black uppercase tracking-wider text-neutral-500">Total Sales Revenue (कुल कमाई)</span>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE EARNINGS
-                            </span>
-                        </div>
-                        <div class="flex items-baseline gap-3">
-                            <div id="stat-total-revenue" class="text-4xl sm:text-5xl font-black text-black font-heading tracking-tight">₹0</div>
-                            <span class="text-xs text-neutral-500 font-bold uppercase tracking-wider">All-Time Business</span>
-                        </div>
-                    </div>
-
-                    <!-- Action: Quick Test Order -->
-                    <button 
-                        type="button" 
-                        onclick="createSampleOrder()" 
-                        class="self-start sm:self-auto px-4 py-2 bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 text-neutral-800 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5"
-                        title="Add a test pre-order to test revenue counter"
-                    >
-                        <span>➕ Test Sale (₹200)</span>
-                    </button>
-                </div>
-
-                <!-- 3-Tier Financial Sub-Metrics -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
-                    <div class="bg-emerald-50/60 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between">
-                        <div>
-                            <div class="text-[11px] font-black text-emerald-900 uppercase tracking-wider">Today's Sales (आज की सेल)</div>
-                            <div id="stat-today-revenue" class="text-2xl font-black text-emerald-800 font-heading mt-0.5">₹0</div>
-                            <div id="stat-today-orders-count" class="text-[11px] text-emerald-700 font-semibold mt-0.5">0 orders today</div>
-                        </div>
-                        <span class="text-2xl">💰</span>
-                    </div>
-
-                    <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 flex items-center justify-between">
-                        <div>
-                            <div class="text-[11px] font-black text-neutral-600 uppercase tracking-wider">Avg Order Value (औसत बिल)</div>
-                            <div id="stat-avg-order" class="text-2xl font-black text-black font-heading mt-0.5">₹0</div>
-                            <div class="text-[11px] text-neutral-500 font-medium mt-0.5">Per customer basket</div>
-                        </div>
-                        <span class="text-2xl">📊</span>
-                    </div>
-
-                    <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 flex items-center justify-between">
-                        <div>
-                            <div class="text-[11px] font-black text-amber-900 uppercase tracking-wider">Active Pending Orders</div>
-                            <div id="stat-pending-orders" class="text-2xl font-black text-amber-900 font-heading mt-0.5">0</div>
-                            <div id="stat-pending-revenue" class="text-[11px] text-amber-800 font-semibold mt-0.5">₹0 to collect</div>
-                        </div>
-                        <span class="text-2xl">⏳</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- 2. Operational Stats (4 Cards) -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 
@@ -374,6 +316,66 @@
                     <div class="col-span-full py-8 text-center text-neutral-400">Loading customer reviews...</div>
                 </div>
             </div>
+
+
+            <!-- 1. Grand Revenue & Sales Tracker (Real-Time Live Earnings) -->
+            <div class="luxury-card rounded-3xl p-6 sm:p-7 border-2 border-black bg-white shadow-lg space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-200">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-black uppercase tracking-wider text-neutral-500">Total Sales Revenue (कुल कमाई)</span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE EARNINGS
+                            </span>
+                        </div>
+                        <div class="flex items-baseline gap-3">
+                            <div id="stat-total-revenue" class="text-4xl sm:text-5xl font-black text-black font-heading tracking-tight">₹0</div>
+                            <span class="text-xs text-neutral-500 font-bold uppercase tracking-wider">All-Time Business</span>
+                        </div>
+                    </div>
+
+                    <!-- Action: Quick Test Order -->
+                    <button 
+                        type="button" 
+                        onclick="createSampleOrder()" 
+                        class="self-start sm:self-auto px-4 py-2 bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 text-neutral-800 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5"
+                        title="Add a test pre-order to test revenue counter"
+                    >
+                        <span>➕ Test Sale (₹200)</span>
+                    </button>
+                </div>
+
+                <!-- 3-Tier Financial Sub-Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                    <div class="bg-emerald-50/60 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-[11px] font-black text-emerald-900 uppercase tracking-wider">Today's Sales (आज की सेल)</div>
+                            <div id="stat-today-revenue" class="text-2xl font-black text-emerald-800 font-heading mt-0.5">₹0</div>
+                            <div id="stat-today-orders-count" class="text-[11px] text-emerald-700 font-semibold mt-0.5">0 orders today</div>
+                        </div>
+                        <span class="text-2xl">💰</span>
+                    </div>
+
+                    <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-[11px] font-black text-neutral-600 uppercase tracking-wider">Avg Order Value (औसत बिल)</div>
+                            <div id="stat-avg-order" class="text-2xl font-black text-black font-heading mt-0.5">₹0</div>
+                            <div class="text-[11px] text-neutral-500 font-medium mt-0.5">Per customer basket</div>
+                        </div>
+                        <span class="text-2xl">📊</span>
+                    </div>
+
+                    <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-[11px] font-black text-amber-900 uppercase tracking-wider">Active Pending Orders</div>
+                            <div id="stat-pending-orders" class="text-2xl font-black text-amber-900 font-heading mt-0.5">0</div>
+                            <div id="stat-pending-revenue" class="text-[11px] text-amber-800 font-semibold mt-0.5">₹0 to collect</div>
+                        </div>
+                        <span class="text-2xl">⏳</span>
+                    </div>
+                </div>
+            </div>
+
 
         </main>
 
