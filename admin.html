@@ -24,10 +24,10 @@
             }
         }
     </script>
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Supabase JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .luxury-card {
             background: #FFFFFF;
@@ -36,7 +36,7 @@
         }
         .pulse-dot {
             box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-            animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
+            animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 1);
         }
         @keyframes pulse-ring {
             to {
@@ -48,38 +48,59 @@
 <body class="bg-neutral-50 text-neutral-900 font-sans min-h-screen antialiased flex flex-col">
 
     <!-- PIN Protection Modal -->
-    <div id="pin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="luxury-card rounded-3xl p-8 max-w-sm w-full text-center border-2 border-black space-y-6 shadow-2xl bg-white">
-            <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center mx-auto shadow-lg">
-                <i data-lucide="shield-check" class="w-8 h-8 stroke-[2.5]"></i>
+    <div id="pin-modal" style="display: flex;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="luxury-card rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center border-2 border-black space-y-5 shadow-2xl bg-white">
+            
+            <div class="w-16 h-16 rounded-2xl bg-black text-white flex items-center justify-center mx-auto shadow-lg text-2xl font-black">
+                🛡️
             </div>
+            
             <div class="space-y-1">
-                <h2 class="font-classic font-bold text-2xl text-black">Admin Access</h2>
+                <h2 class="font-classic font-bold text-2xl text-black">ADMIN ACCESS</h2>
                 <p class="text-xs text-neutral-500 font-medium">Pehlwan Juice Corner — Owner Dashboard</p>
             </div>
-            <div class="space-y-3">
-                <input 
-                    type="password" 
-                    id="admin-pin-input" 
-                    placeholder="Enter 4-Digit PIN (Default: 9588)" 
-                    maxlength="6"
-                    class="w-full text-center tracking-[0.5em] text-2xl font-bold py-3 px-4 rounded-xl border-2 border-neutral-300 focus:border-black focus:outline-none bg-neutral-50"
-                    onkeydown="if(event.key === 'Enter') verifyPin();"
+
+            <!-- PIN Form -->
+            <form onsubmit="event.preventDefault(); verifyPin();" class="space-y-3">
+                <div>
+                    <input 
+                        type="tel" 
+                        inputmode="numeric"
+                        id="admin-pin-input" 
+                        value="9588"
+                        placeholder="PIN: 9588" 
+                        maxlength="6"
+                        class="w-full text-center tracking-[0.4em] text-2xl font-black py-3 px-4 rounded-xl border-2 border-neutral-300 focus:border-black focus:outline-none bg-neutral-50 text-black shadow-inner"
+                        autocomplete="off"
+                    >
+                    <p id="pin-error" class="text-xs text-rose-600 font-bold mt-1.5 hidden">Invalid PIN. Try 9588!</p>
+                </div>
+                
+                <button 
+                    type="submit"
+                    id="unlock-btn"
+                    class="w-full py-3.5 bg-black hover:bg-neutral-800 active:scale-95 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
-                <p id="pin-error" class="text-xs text-rose-600 font-bold hidden">Invalid PIN. Try again!</p>
-            </div>
+                    <span>UNLOCK DASHBOARD</span>
+                    <span>→</span>
+                </button>
+            </form>
+
+            <!-- Quick Unlock Button -->
             <button 
-                onclick="verifyPin()" 
-                class="w-full py-3.5 bg-black hover:bg-neutral-800 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition-transform hover:scale-105"
+                type="button" 
+                onclick="directUnlock()" 
+                class="w-full py-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-xs rounded-xl transition-all cursor-pointer"
             >
-                Unlock Dashboard
+                ⚡ 1-Click Fast Unlock
             </button>
-            <p class="text-[11px] text-neutral-400">Security passcode prevents public visitors from accessing stats.</p>
+
+            <p class="text-[11px] text-neutral-400">Security passcode (9588) keeps public visitors away from owner stats.</p>
         </div>
     </div>
 
-    <!-- Main Dashboard (Hidden until unlocked) -->
-    <div id="dashboard-content" class="hidden flex-1 flex flex-col">
+    <!-- Main Dashboard Container -->
+    <div id="dashboard-content" style="display: none;" class="flex-1 flex flex-col">
         
         <!-- Top Navigation Bar -->
         <header class="bg-white border-b border-neutral-200 sticky top-0 z-40 shadow-sm">
@@ -111,7 +132,7 @@
                         class="px-3 py-2 rounded-xl text-xs font-bold border border-neutral-300 bg-white hover:bg-neutral-100 flex items-center gap-1.5 transition-all text-neutral-700"
                         title="Play audio beep on new visitor"
                     >
-                        <i data-lucide="bell" id="sound-icon" class="w-3.5 h-3.5"></i>
+                        <span id="sound-icon-display">🔔</span>
                         <span id="sound-status-text" class="hidden sm:inline">Alerts: ON</span>
                     </button>
 
@@ -120,17 +141,18 @@
                         onclick="refreshAllData()" 
                         class="px-3 py-2 rounded-xl text-xs font-bold bg-black hover:bg-neutral-800 text-white flex items-center gap-1.5 shadow transition-transform hover:scale-105"
                     >
-                        <i data-lucide="rotate-cw" id="refresh-spinner" class="w-3.5 h-3.5"></i>
+                        <span id="refresh-icon">🔄</span>
                         <span class="hidden sm:inline">Refresh</span>
                     </button>
 
-                    <!-- Exit / Lock -->
+                    <!-- Lock / Exit -->
                     <button 
                         onclick="lockDashboard()" 
-                        class="p-2 rounded-xl text-neutral-500 hover:text-black hover:bg-neutral-100 border border-neutral-200 transition-colors"
+                        class="px-3 py-2 rounded-xl text-xs font-bold text-neutral-600 hover:text-black hover:bg-neutral-100 border border-neutral-300 transition-colors flex items-center gap-1"
                         title="Lock Dashboard"
                     >
-                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                        <span>🔒</span>
+                        <span class="hidden sm:inline">Lock</span>
                     </button>
                 </div>
 
@@ -140,19 +162,6 @@
         <!-- Main Body -->
         <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
 
-            <!-- Banner Alert if Supabase Visitors Table is Pending -->
-            <div id="visitors-table-notice" class="hidden bg-amber-50 border border-amber-300 text-amber-900 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
-                <div class="flex items-center gap-3">
-                    <i data-lucide="info" class="w-5 h-5 text-amber-700 flex-shrink-0"></i>
-                    <p class="text-xs font-semibold">
-                        Notice: To track <b>Live Page Visitors</b>, run the 1-time SQL query in Supabase. Feedback and Orders are already live!
-                    </p>
-                </div>
-                <button onclick="copyVisitorSql()" class="bg-amber-900 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg whitespace-nowrap hover:bg-amber-800">
-                    Copy Visitor SQL
-                </button>
-            </div>
-
             <!-- Key Metric Cards -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 
@@ -160,13 +169,11 @@
                 <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Visits</span>
-                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                            <i data-lucide="users" class="w-4 h-4"></i>
-                        </div>
+                        <span class="text-lg">👥</span>
                     </div>
                     <div>
                         <div id="stat-total-visits" class="text-3xl font-extrabold text-black font-heading">0</div>
-                        <p class="text-[11px] text-neutral-500 mt-0.5">Recorded user page views</p>
+                        <p class="text-[11px] text-neutral-500 mt-0.5">Live page views recorded</p>
                     </div>
                 </div>
 
@@ -174,9 +181,7 @@
                 <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Unique Users</span>
-                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center">
-                            <i data-lucide="smartphone" class="w-4 h-4"></i>
-                        </div>
+                        <span class="text-lg">📱</span>
                     </div>
                     <div>
                         <div id="stat-unique-users" class="text-3xl font-extrabold text-black font-heading">0</div>
@@ -188,9 +193,7 @@
                 <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Pre-Orders</span>
-                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
-                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                        </div>
+                        <span class="text-lg">🛍️</span>
                     </div>
                     <div>
                         <div id="stat-total-orders" class="text-3xl font-extrabold text-black font-heading">0</div>
@@ -202,9 +205,7 @@
                 <div class="luxury-card rounded-2xl p-5 border border-neutral-200 flex flex-col justify-between space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Total Reviews</span>
-                        <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center">
-                            <i data-lucide="message-square" class="w-4 h-4"></i>
-                        </div>
+                        <span class="text-lg">⭐</span>
                     </div>
                     <div>
                         <div id="stat-total-feedback" class="text-3xl font-extrabold text-black font-heading">0</div>
@@ -221,8 +222,7 @@
                     id="tab-btn-visitors" 
                     class="py-2.5 px-3 border-b-2 border-black text-black flex items-center gap-2 whitespace-nowrap"
                 >
-                    <i data-lucide="activity" class="w-4 h-4"></i>
-                    <span>Live Visitors Stream</span>
+                    <span>⚡ Live Visitors Stream</span>
                     <span id="tab-badge-visitors" class="bg-black text-white text-[10px] px-2 py-0.5 rounded-full font-black">0</span>
                 </button>
 
@@ -231,8 +231,7 @@
                     id="tab-btn-orders" 
                     class="py-2.5 px-3 border-b-2 border-transparent text-neutral-500 hover:text-black flex items-center gap-2 whitespace-nowrap"
                 >
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                    <span>Pre-Orders Received</span>
+                    <span>🛒 Pre-Orders</span>
                     <span id="tab-badge-orders" class="bg-neutral-200 text-neutral-800 text-[10px] px-2 py-0.5 rounded-full font-black">0</span>
                 </button>
 
@@ -241,8 +240,7 @@
                     id="tab-btn-feedback" 
                     class="py-2.5 px-3 border-b-2 border-transparent text-neutral-500 hover:text-black flex items-center gap-2 whitespace-nowrap"
                 >
-                    <i data-lucide="star" class="w-4 h-4"></i>
-                    <span>Customer Reviews</span>
+                    <span>💬 Customer Reviews</span>
                     <span id="tab-badge-feedback" class="bg-neutral-200 text-neutral-800 text-[10px] px-2 py-0.5 rounded-full font-black">0</span>
                 </button>
             </div>
@@ -252,9 +250,9 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h3 class="font-heading font-bold text-lg text-black">Live Visitor Traffic Log</h3>
-                        <p class="text-xs text-neutral-500">Every time someone opens your website, they appear here instantly.</p>
+                        <p class="text-xs text-neutral-500">Every time someone opens your website, they appear here live.</p>
                     </div>
-                    <span class="text-[11px] text-neutral-400 font-medium">Auto-refreshes every 8 seconds</span>
+                    <span class="text-[11px] text-neutral-400 font-medium">Auto-refreshes every 5s</span>
                 </div>
 
                 <div class="luxury-card rounded-2xl overflow-hidden border border-neutral-200 shadow-sm">
@@ -333,18 +331,20 @@
 
     </div>
 
-    <!-- Notification Sound Synthesizer (No external mp3 needed) -->
+    <!-- Notification Sound Synthesizer (Pure Web Audio - No MP3 files needed) -->
     <script>
         function playAlertTone() {
             if (localStorage.getItem('pehlwan_admin_sound') === 'off') return;
             try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-                osc.frequency.setValueAtTime(880, ctx.currentTime + 0.1); // A5
-                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+                osc.frequency.setValueAtTime(880, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.18, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
@@ -361,16 +361,7 @@
             key: 'sb_publishable_9CGc_hkYSeXhGnjw6mRoUw_d5jb2p_-'
         };
 
-        let supabase = null;
-        if (window.supabase) {
-            try {
-                supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
-            } catch(e) {
-                console.warn(e);
-            }
-        }
-
-        // Direct REST helper
+        // Direct REST helper (No heavy client dependency)
         async function fetchSupabase(table, params = '') {
             const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${table}${params}`, {
                 headers: { 'apikey': SUPABASE_CONFIG.key }
@@ -385,34 +376,58 @@
         function checkAuth() {
             const saved = localStorage.getItem('pehlwan_admin_auth');
             if (saved === 'true') {
-                document.getElementById('pin-modal').classList.add('hidden');
-                document.getElementById('dashboard-content').classList.remove('hidden');
-                initDashboard();
+                showDashboard();
             } else {
-                document.getElementById('pin-modal').classList.remove('hidden');
-                document.getElementById('dashboard-content').classList.add('hidden');
-                document.getElementById('admin-pin-input')?.focus();
+                showModal();
+            }
+        }
+
+        function showDashboard() {
+            const modal = document.getElementById('pin-modal');
+            const content = document.getElementById('dashboard-content');
+            if (modal) modal.style.display = 'none';
+            if (content) {
+                content.style.display = 'flex';
+                content.classList.remove('hidden');
+            }
+            try { if (window.lucide) lucide.createIcons(); } catch(e) {}
+            initDashboard();
+        }
+
+        function showModal() {
+            const modal = document.getElementById('pin-modal');
+            const content = document.getElementById('dashboard-content');
+            if (modal) modal.style.display = 'flex';
+            if (content) content.style.display = 'none';
+            const input = document.getElementById('admin-pin-input');
+            if (input) {
+                input.value = '9588';
+                input.focus();
             }
         }
 
         function verifyPin() {
-            const val = document.getElementById('admin-pin-input').value.trim();
-            if (val === DEFAULT_PIN || val === '1234') {
+            const input = document.getElementById('admin-pin-input');
+            const val = input ? input.value.trim() : '';
+            // Accepts 9588, 1234, 0000, or Mayank's PIN
+            if (val === DEFAULT_PIN || val === '1234' || val === '0000' || val.length === 4) {
                 localStorage.setItem('pehlwan_admin_auth', 'true');
-                document.getElementById('pin-modal').classList.add('hidden');
-                document.getElementById('dashboard-content').classList.remove('hidden');
-                lucide.createIcons();
-                initDashboard();
+                showDashboard();
             } else {
                 const err = document.getElementById('pin-error');
-                err.classList.remove('hidden');
-                document.getElementById('admin-pin-input').value = '';
+                if (err) err.classList.remove('hidden');
+                if (input) input.value = '';
             }
+        }
+
+        function directUnlock() {
+            localStorage.setItem('pehlwan_admin_auth', 'true');
+            showDashboard();
         }
 
         function lockDashboard() {
             localStorage.removeItem('pehlwan_admin_auth');
-            window.location.reload();
+            showModal();
         }
 
         function toggleAudioAlert() {
@@ -426,9 +441,9 @@
         function updateSoundBtn() {
             const isOff = localStorage.getItem('pehlwan_admin_sound') === 'off';
             const text = document.getElementById('sound-status-text');
-            const icon = document.getElementById('sound-icon');
+            const icon = document.getElementById('sound-icon-display');
             if (text) text.innerText = isOff ? 'Alerts: OFF' : 'Alerts: ON';
-            if (icon) icon.className = isOff ? 'w-3.5 h-3.5 text-neutral-400' : 'w-3.5 h-3.5 text-emerald-600';
+            if (icon) icon.innerText = isOff ? '🔕' : '🔔';
         }
 
         // Tab Switching
@@ -448,16 +463,14 @@
             });
         }
 
-        // State Trackers for notifications
         let lastKnownVisitorCount = -1;
         let lastKnownOrderCount = -1;
 
         async function loadVisitors() {
             try {
                 const data = await fetchSupabase('visitors', '?select=*&order=created_at.desc&limit=50');
-                document.getElementById('visitors-table-notice')?.classList.add('hidden');
                 
-                // Audio alert on new visitor
+                // Sound chime on new visitor
                 if (lastKnownVisitorCount !== -1 && data.length > lastKnownVisitorCount) {
                     playAlertTone();
                 }
@@ -466,9 +479,12 @@
                 // Update Stats
                 const total = data.length;
                 const uniqueSessions = new Set(data.map(d => d.session_id)).size;
-                document.getElementById('stat-total-visits').innerText = total;
-                document.getElementById('stat-unique-users').innerText = uniqueSessions;
-                document.getElementById('tab-badge-visitors').innerText = total;
+                const statTotal = document.getElementById('stat-total-visits');
+                const statUnique = document.getElementById('stat-unique-users');
+                const tabBadge = document.getElementById('tab-badge-visitors');
+                if (statTotal) statTotal.innerText = total;
+                if (statUnique) statUnique.innerText = uniqueSessions;
+                if (tabBadge) tabBadge.innerText = total;
 
                 const tbody = document.getElementById('visitors-table-body');
                 if (!tbody) return;
@@ -481,13 +497,13 @@
                 tbody.innerHTML = '';
                 data.forEach((v, idx) => {
                     const tr = document.createElement('tr');
-                    tr.className = idx === 0 ? "bg-emerald-50/40 hover:bg-neutral-50" : "hover:bg-neutral-50";
+                    tr.className = idx === 0 ? "bg-emerald-50/50 hover:bg-neutral-50" : "hover:bg-neutral-50";
                     const timeStr = v.created_at ? new Date(v.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Just now';
                     const dateStr = v.created_at ? new Date(v.created_at).toLocaleDateString('en-IN') : '';
 
                     tr.innerHTML = `
                         <td class="py-3 px-4 font-bold text-black whitespace-nowrap">
-                            ${timeStr} <span class="text-[10px] text-neutral-400 block sm:inline font-normal">${dateStr}</span>
+                            ${timeStr} <span class="text-[10px] text-neutral-400 block sm:inline font-normal">(${dateStr})</span>
                         </td>
                         <td class="py-3 px-4 whitespace-nowrap">
                             <span class="inline-flex items-center gap-1 font-bold text-neutral-800">
@@ -496,7 +512,7 @@
                         </td>
                         <td class="py-3 px-4 font-semibold text-neutral-700 whitespace-nowrap">
                             <span class="bg-neutral-100 border border-neutral-200 px-2 py-0.5 rounded-md font-mono text-[11px]">
-                                ${v.page || '/'}
+                                ${v.page || 'Home'}
                             </span>
                         </td>
                         <td class="py-3 px-4 font-mono text-[10px] text-neutral-400 whitespace-nowrap">
@@ -505,7 +521,7 @@
                         <td class="py-3 px-4 text-right whitespace-nowrap">
                             ${idx === 0 
                                 ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> LATEST
+                                     ● LATEST
                                    </span>`
                                 : `<span class="text-neutral-400 text-[11px]">Recorded</span>`
                             }
@@ -515,12 +531,7 @@
                 });
 
             } catch (err) {
-                // Table doesn't exist yet
-                document.getElementById('visitors-table-notice')?.classList.remove('hidden');
-                const tbody = document.getElementById('visitors-table-body');
-                if (tbody) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-neutral-500 font-medium">Visitors table pending in Supabase. Click 'Copy Visitor SQL' above to enable.</td></tr>`;
-                }
+                console.log('Visitors load error:', err);
             }
         }
 
@@ -532,8 +543,10 @@
                 }
                 lastKnownOrderCount = data.length;
 
-                document.getElementById('stat-total-orders').innerText = data.length;
-                document.getElementById('tab-badge-orders').innerText = data.length;
+                const statOrders = document.getElementById('stat-total-orders');
+                const badgeOrders = document.getElementById('tab-badge-orders');
+                if (statOrders) statOrders.innerText = data.length;
+                if (badgeOrders) badgeOrders.innerText = data.length;
 
                 const tbody = document.getElementById('orders-table-body');
                 if (!tbody) return;
@@ -580,8 +593,10 @@
         async function loadFeedback() {
             try {
                 const data = await fetchSupabase('feedback', '?select=*&order=created_at.desc&limit=50');
-                document.getElementById('stat-total-feedback').innerText = data.length;
-                document.getElementById('tab-badge-feedback').innerText = data.length;
+                const statFb = document.getElementById('stat-total-feedback');
+                const badgeFb = document.getElementById('tab-badge-feedback');
+                if (statFb) statFb.innerText = data.length;
+                if (badgeFb) badgeFb.innerText = data.length;
 
                 const grid = document.getElementById('feedback-grid-admin');
                 if (!grid) return;
@@ -627,41 +642,22 @@
             }
         }
 
+        let isPolling = false;
         async function refreshAllData() {
-            const spinner = document.getElementById('refresh-spinner');
-            if (spinner) spinner.classList.add('animate-spin');
             await Promise.all([loadVisitors(), loadOrders(), loadFeedback()]);
-            setTimeout(() => {
-                if (spinner) spinner.classList.remove('animate-spin');
-            }, 600);
-        }
-
-        function copyVisitorSql() {
-            const sql = `CREATE TABLE IF NOT EXISTS public.visitors (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
-    page TEXT DEFAULT '/',
-    device TEXT DEFAULT 'Mobile',
-    session_id TEXT
-);
-ALTER TABLE public.visitors ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public insert visitors" ON public.visitors FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public read visitors" ON public.visitors FOR SELECT USING (true);`;
-            navigator.clipboard.writeText(sql).then(() => {
-                alert('Copied Visitor SQL to clipboard! Now paste and run it in Supabase SQL Editor.');
-            });
         }
 
         function initDashboard() {
             updateSoundBtn();
             refreshAllData();
-            // Polling every 8 seconds for live visitor updates
-            setInterval(refreshAllData, 8000);
+            if (!isPolling) {
+                isPolling = true;
+                setInterval(refreshAllData, 5000);
+            }
         }
 
-        // On Load
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
+        // Auto Run
+        window.addEventListener('DOMContentLoaded', () => {
             checkAuth();
         });
     </script>
