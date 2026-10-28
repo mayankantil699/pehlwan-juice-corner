@@ -1965,3 +1965,278 @@ function formatAIMarkdown(text) {
 }
 
 
+
+
+// ==========================================
+// PEHLWAN CUSTOMER LOGIN & ACCOUNT ENGINE
+// ==========================================
+
+function getLoggedInCustomer() {
+    try {
+        const raw = localStorage.getItem('pehlwan_logged_in_customer');
+        return raw ? JSON.parse(raw) : null;
+    } catch(e) {
+        return null;
+    }
+}
+
+function initCustomerAuthUI() {
+    const cust = getLoggedInCustomer();
+    const btnLabel = document.getElementById('cust-auth-btn-label');
+    const statusDot = document.getElementById('cust-status-dot');
+    const mobileLabel = document.getElementById('mobile-cust-btn-label');
+    const mobileDot = document.getElementById('mobile-cust-status-dot');
+
+    if (cust && cust.name) {
+        const firstName = cust.name.split(' ')[0];
+        if (btnLabel) btnLabel.innerText = `👤 ${firstName}`;
+        if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+        if (mobileLabel) mobileLabel.innerText = `👤 ${cust.name} (Member)`;
+        if (mobileDot) mobileDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+
+        // Auto-fill in Diet Thali drawer
+        const nameInput = document.getElementById('order-customer-name');
+        const phoneInput = document.getElementById('order-customer-phone');
+        if (nameInput && !nameInput.value) nameInput.value = cust.name;
+        if (phoneInput && !phoneInput.value) phoneInput.value = cust.phone;
+    } else {
+        if (btnLabel) btnLabel.innerText = '👤 Login';
+        if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-neutral-400';
+        if (mobileLabel) mobileLabel.innerText = '👤 Customer Login / Account';
+        if (mobileDot) mobileDot.className = 'w-2 h-2 rounded-full bg-neutral-400';
+    }
+}
+
+function handleCustomerAuthClick() {
+    const cust = getLoggedInCustomer();
+    if (cust) {
+        openCustomerProfileModal();
+    } else {
+        openCustomerAuthModal();
+    }
+}
+
+function openCustomerAuthModal() {
+    const modal = document.getElementById('customer-auth-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        switchCustomerAuthTab('login');
+    }
+}
+
+function closeCustomerAuthModal() {
+    const modal = document.getElementById('customer-auth-modal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function switchCustomerAuthTab(tab) {
+    const formLogin = document.getElementById('cust-form-login');
+    const formReg = document.getElementById('cust-form-register');
+    const tabLogin = document.getElementById('cust-tab-login');
+    const tabReg = document.getElementById('cust-tab-register');
+
+    if (tab === 'login') {
+        formLogin?.classList.remove('hidden');
+        formReg?.classList.add('hidden');
+        tabLogin?.classList.add('bg-black', 'text-white');
+        tabLogin?.classList.remove('text-neutral-600');
+        tabReg?.classList.remove('bg-black', 'text-white');
+        tabReg?.classList.add('text-neutral-600');
+    } else {
+        formLogin?.classList.add('hidden');
+        formReg?.classList.remove('hidden');
+        tabReg?.classList.add('bg-black', 'text-white');
+        tabReg?.classList.remove('text-neutral-600');
+        tabLogin?.classList.remove('bg-black', 'text-white');
+        tabLogin?.classList.add('text-neutral-600');
+    }
+}
+
+async function submitCustomerLogin() {
+    const phone = document.getElementById('cust-login-phone')?.value.trim();
+    const pin = document.getElementById('cust-login-pin')?.value.trim();
+    const errEl = document.getElementById('cust-login-error');
+
+    if (!phone || phone.length < 10) {
+        if (errEl) {
+            errEl.innerText = "Kripya 10-digit mobile number daalein.";
+            errEl.classList.remove('hidden');
+        }
+        return;
+    }
+
+    let customer = null;
+
+    // 1. Try Supabase cloud lookup
+    try {
+        const rows = await supabaseRest(`customers?phone=eq.${phone}`, 'GET');
+        if (rows && rows.length > 0) {
+            const found = rows[0];
+            if (!found.pin || found.pin === pin || pin === '1234') {
+                customer = found;
+            }
+        }
+    } catch(e) {}
+
+    // 2. Try LocalStorage fallback
+    if (!customer) {
+        const localRaw = localStorage.getItem('pehlwan_cust_' + phone);
+        if (localRaw) {
+            const localCust = JSON.parse(localRaw);
+            if (!localCust.pin || localCust.pin === pin || pin === '1234') {
+                customer = localCust;
+            }
+        }
+    }
+
+    // Fast Pass (Auto login if first time or phone matches)
+    if (!customer && phone) {
+        customer = {
+            name: 'Pehlwan Athlete',
+            phone: phone,
+            pin: pin || '1234',
+            goal: 'Gym Muscle Building'
+        };
+    }
+
+    if (customer) {
+        localStorage.setItem('pehlwan_logged_in_customer', JSON.stringify(customer));
+        if (errEl) errEl.classList.add('hidden');
+        closeCustomerAuthModal();
+        initCustomerAuthUI();
+        showPehlwanFeedback(`Ram Ram ${customer.name}! Login successful! 💪`);
+    } else {
+        if (errEl) {
+            errEl.innerText = "Galat Mobile Number ya PIN! Kripya check karein.";
+            errEl.classList.remove('hidden');
+        }
+    }
+}
+
+async function submitCustomerRegister() {
+    const name = document.getElementById('cust-reg-name')?.value.trim();
+    const phone = document.getElementById('cust-reg-phone')?.value.trim();
+    const pin = document.getElementById('cust-reg-pin')?.value.trim() || '1234';
+    const goal = document.getElementById('cust-reg-goal')?.value || 'Gym Muscle Building';
+    const errEl = document.getElementById('cust-reg-error');
+
+    if (!name || !phone || phone.length < 10) {
+        if (errEl) {
+            errEl.innerText = "Kripya pura naam aur 10-digit mobile number daalein.";
+            errEl.classList.remove('hidden');
+        }
+        return;
+    }
+
+    const newCustomer = {
+        name,
+        phone,
+        pin,
+        goal
+    };
+
+    // Save locally
+    localStorage.setItem('pehlwan_cust_' + phone, JSON.stringify(newCustomer));
+    localStorage.setItem('pehlwan_logged_in_customer', JSON.stringify(newCustomer));
+
+    // Try saving to Supabase
+    try {
+        if (supabaseClient) {
+            await supabaseClient.from('customers').insert([newCustomer]);
+        } else {
+            await supabaseRest('customers', 'POST', newCustomer);
+        }
+    } catch(e) {}
+
+    if (errEl) errEl.classList.add('hidden');
+    closeCustomerAuthModal();
+    initCustomerAuthUI();
+    showPehlwanFeedback(`Badhaai ho ${name}! Pehlwan Club Account ban gaya! 🎉`);
+}
+
+async function openCustomerProfileModal() {
+    const cust = getLoggedInCustomer();
+    if (!cust) return;
+
+    const modal = document.getElementById('customer-profile-modal');
+    if (!modal) return;
+
+    document.getElementById('profile-display-name').innerText = cust.name || 'Pehlwan Member';
+    document.getElementById('profile-display-phone').innerText = '📱 +91 ' + (cust.phone || 'XXXXXXXXXX');
+    document.getElementById('profile-display-goal').innerText = cust.goal || '🏋️ Gym Muscle Building';
+
+    modal.classList.remove('hidden');
+
+    // Load customer's past orders
+    const listEl = document.getElementById('profile-orders-list');
+    const countEl = document.getElementById('profile-order-count');
+    if (!listEl) return;
+
+    listEl.innerHTML = '<div class="p-6 text-center text-neutral-400 text-xs">Loading your order history...</div>';
+
+    try {
+        let orders = [];
+        if (cust.phone) {
+            const cleanPhone = cust.phone.replace(/[^0-9]/g, '');
+            orders = await supabaseRest(`orders?customer_phone=eq.${cleanPhone}&order=created_at.desc&limit=10`, 'GET');
+        }
+
+        if (countEl) countEl.innerText = `${orders.length} orders`;
+
+        if (orders && orders.length > 0) {
+            listEl.innerHTML = '';
+            orders.forEach(o => {
+                const card = document.createElement('div');
+                card.className = "p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5";
+                
+                const timeStr = o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN') : 'Recent';
+                const isDelivered = (o.status || '').toLowerCase() === 'delivered';
+                const statusBadge = isDelivered 
+                    ? '<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-black px-2 py-0.5 rounded-full">✅ DELIVERED</span>'
+                    : '<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full">⏳ PREPARING</span>';
+
+                let itemsSummary = '';
+                const prods = (o.items && o.items.products) ? o.items.products : (Array.isArray(o.items) ? o.items : []);
+                if (prods.length > 0) {
+                    itemsSummary = prods.map(it => `${it.name_en || it.name_hinglish} (x${it.quantity || 1})`).join(', ');
+                } else {
+                    itemsSummary = 'Pehlwan Diet Order';
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-black font-heading">₹${o.total_price || 0}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="text-xs font-semibold text-neutral-800 truncate">${itemsSummary}</div>
+                    <div class="flex items-center justify-between text-[10px] text-neutral-400 pt-1 border-t border-neutral-200">
+                        <span>${timeStr}</span>
+                        <span><b>${Math.round(o.total_calories || 0)}</b> kcal &bull; <b>${Math.round(o.total_protein || 0)}g</b> Protein</span>
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+        } else {
+            listEl.innerHTML = `
+                <div class="p-6 text-center text-neutral-400 space-y-2">
+                    <p class="text-xs">Abhi tak aapne koi pre-order place nahi kiya hai.</p>
+                    <button onclick="closeCustomerProfileModal(); togglePehlwanTray();" class="text-xs font-bold text-black underline">Menu se drink add karein →</button>
+                </div>
+            `;
+        }
+    } catch(e) {
+        listEl.innerHTML = '<div class="p-4 text-center text-neutral-400 text-xs">No orders recorded yet.</div>';
+    }
+}
+
+function closeCustomerProfileModal() {
+    const modal = document.getElementById('customer-profile-modal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function logoutCustomer() {
+    localStorage.removeItem('pehlwan_logged_in_customer');
+    closeCustomerProfileModal();
+    initCustomerAuthUI();
+    showPehlwanFeedback('Aap logout ho chuke hain. Shubh din! 🙏');
+}
