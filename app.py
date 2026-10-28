@@ -5,9 +5,27 @@ import os
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://kkjdziyxhkjscrzvusbc.supabase.co")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "sb_publishable_9CGc_hkYSeXhGnjw6mRoUw_d5jb2p_-")
 FEEDBACK_FILE = os.path.join(os.path.dirname(__file__), "data", "feedback.json")
 
 def load_feedback():
+    # 1. Live Supabase database
+    try:
+        import urllib.request
+        req = urllib.request.Request(
+            f"{SUPABASE_URL}/rest/v1/feedback?select=*&order=created_at.desc&limit=15",
+            headers={"apikey": SUPABASE_KEY}
+        )
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            if resp.status == 200:
+                rows = json.loads(resp.read().decode())
+                if rows and len(rows) > 0:
+                    return rows
+    except Exception:
+        pass
+
+    # 2. Local fallback
     if os.path.exists(FEEDBACK_FILE):
         try:
             with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
