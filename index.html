@@ -2678,6 +2678,29 @@
                 <span class="text-sm text-neutral-600 font-bold" data-i18n="trayTotal">Total Bill</span>
                 <span id="drawer-price" class="text-2xl font-black text-black font-heading">₹0</span>
             </div>
+
+            <!-- Customer Details for Fast Pick-up -->
+            <div class="space-y-2 pt-2 border-t border-neutral-200">
+                <div class="flex items-center justify-between text-[11px] font-bold text-neutral-700">
+                    <span>Customer Details (Name & Phone)</span>
+                    <span class="text-[10px] text-emerald-600 font-bold">● Direct Pre-Order</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input 
+                        type="text" 
+                        id="order-customer-name" 
+                        placeholder="Aapka Naam / Name" 
+                        class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none"
+                    >
+                    <input 
+                        type="tel" 
+                        id="order-customer-phone" 
+                        placeholder="Mobile Number (10 Digits)" 
+                        maxlength="10"
+                        class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none"
+                    >
+                </div>
+            </div>
             
             <button onclick="sendOrderViaWhatsApp()" class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-sm py-4 px-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2">
                 <i data-lucide="message-circle" class="w-5 h-5"></i>
