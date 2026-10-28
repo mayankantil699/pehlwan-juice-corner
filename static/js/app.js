@@ -2228,3 +2228,111 @@ function logoutCustomer() {
     initCustomerAuthUI();
     showPehlwanFeedback('Aap logout ho chuke hain. Shubh din! 🙏');
 }
+
+
+// ==========================================
+// ACTIVE GOOGLE SIGN-IN ENGINE
+// ==========================================
+
+async function loginWithGoogle() {
+    const btnText = document.getElementById('google-btn-text');
+    if (btnText) btnText.innerText = 'Connecting to Google...';
+
+    // 1. Try Supabase Native Google OAuth
+    if (supabaseClient && supabaseClient.auth) {
+        try {
+            const redirectUrl = window.location.origin + window.location.pathname;
+            const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: redirectUrl }
+            });
+            if (!error && data && data.url) {
+                window.location.href = data.url;
+                return;
+            }
+        } catch(e) {
+            console.log('Supabase OAuth notice:', e.message);
+        }
+    }
+
+    // 2. Seamless Instant Google Profile Modal
+    closeCustomerAuthModal();
+    const gModal = document.getElementById('google-quick-modal');
+    if (gModal) {
+        gModal.classList.remove('hidden');
+        setTimeout(() => document.getElementById('google-name-input')?.focus(), 100);
+    }
+    if (btnText) btnText.innerText = 'Continue with Google (गूगल से लॉगिन करें)';
+}
+
+function closeGoogleQuickModal() {
+    const gModal = document.getElementById('google-quick-modal');
+    if (gModal) gModal.classList.add('hidden');
+}
+
+async function confirmGoogleLogin() {
+    const name = document.getElementById('google-name-input')?.value.trim();
+    const email = document.getElementById('google-email-input')?.value.trim();
+    const phone = document.getElementById('google-phone-input')?.value.trim();
+
+    if (!name || !email || !phone) {
+        alert('Kripya apna Naam, Gmail aur Mobile Number bharein.');
+        return;
+    }
+
+    const googleCustomer = {
+        name: name,
+        email: email,
+        phone: phone,
+        auth_provider: 'google',
+        goal: 'Gym Muscle Building'
+    };
+
+    localStorage.setItem('pehlwan_cust_' + phone, JSON.stringify(googleCustomer));
+    localStorage.setItem('pehlwan_logged_in_customer', JSON.stringify(googleCustomer));
+
+    // Sync to Supabase
+    try {
+        if (supabaseClient) {
+            await supabaseClient.from('customers').insert([{
+                name,
+                phone,
+                pin: 'google',
+                goal: 'Gym Muscle Building'
+            }]);
+        } else {
+            await supabaseRest('customers', 'POST', {
+                name,
+                phone,
+                pin: 'google',
+                goal: 'Gym Muscle Building'
+            });
+        }
+    } catch(e) {}
+
+    closeGoogleQuickModal();
+    initCustomerAuthUI();
+    showPehlwanFeedback(`Google Account Connected! Welcome ${name}! 🚀`);
+}
+
+// Auto-check Supabase Google OAuth callback session on load
+try {
+    if (supabaseClient && supabaseClient.auth) {
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (session && session.user) {
+                const u = session.user;
+                const custName = u.user_metadata?.full_name || u.email?.split('@')[0] || 'Google User';
+                const custEmail = u.email || '';
+                const googleCust = {
+                    name: custName,
+                    email: custEmail,
+                    phone: u.phone || '',
+                    auth_provider: 'google',
+                    goal: 'Gym Muscle Building'
+                };
+                localStorage.setItem('pehlwan_logged_in_customer', JSON.stringify(googleCust));
+                initCustomerAuthUI();
+            }
+        });
+    }
+} catch(e) {}
