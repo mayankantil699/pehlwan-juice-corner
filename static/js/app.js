@@ -119,6 +119,36 @@ async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt) {
 
 // Pehlwan Juice Corner - Luxury Engine with 3-Way Glossy Language Switcher
 
+// Lightweight Visitor Tracker for Admin Live Alert
+async function trackVisitor() {
+    try {
+        let sessionId = sessionStorage.getItem('pehlwan_session_id');
+        if (!sessionId) {
+            sessionId = 'sess_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
+            sessionStorage.setItem('pehlwan_session_id', sessionId);
+        }
+
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const deviceType = isMobile ? 'Mobile 📱' : 'Desktop 💻';
+        let pageName = window.location.pathname.split('/').filter(Boolean).pop() || 'Home';
+        if (pageName === 'pehlwan-juice-corner') pageName = 'Home';
+
+        const payload = {
+            session_id: sessionId,
+            device: deviceType,
+            page: pageName
+        };
+
+        if (supabaseClient) {
+            await supabaseClient.from('visitors').insert([payload]);
+        } else {
+            await supabaseRest('visitors', 'POST', payload);
+        }
+    } catch (e) {
+        // Table may not yet be created
+    }
+}
+
 let pehlwanMenu = [];
 let pehlwanCombos = [];
 let pehlwanShop = { phone: '+91 95883 51884', whatsapp: '919588351884' };
@@ -249,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateShopStatus, 30000);
     fetchPehlwanData();
     loadFeedbackFromSupabase();
+    trackVisitor();
     updatePehlwanTrayUI();
     if (document.getElementById('pehlwan-calc-weight')) {
         runPehlwanCalculator();
