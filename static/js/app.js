@@ -1,3 +1,11 @@
+
+function toggleMobileAuthForm() {
+    const el = document.getElementById('mobile-auth-collapsible');
+    if (el) {
+        el.classList.toggle('hidden');
+    }
+}
+
 // Pehlwan Juice Corner - Supabase Live Cloud Database
 const SUPABASE_CONFIG = {
     url: 'https://kkjdziyxhkjscrzvusbc.supabase.co',
@@ -2326,35 +2334,27 @@ window.addEventListener('load', () => {
 });
 
 function loginWithGoogle() {
-    closeCustomerAuthModal();
-    
-    // 1. If official Google One Tap Client ID is configured, trigger Google prompt directly
-    if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
-        window.google.accounts.id.prompt();
+    const textSpan = document.getElementById('google-btn-text');
+    if (textSpan) {
+        textSpan.innerHTML = '<span class="inline-flex items-center gap-2 text-[#0F172A]"><svg class="w-4 h-4 text-[#C89B3C] animate-spin inline" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Connecting with Google...</span>';
     }
 
-    // 2. Open Google Modal (renders official button & instant connect)
-    const gModal = document.getElementById('google-quick-modal');
-    if (gModal) {
-        gModal.classList.remove('hidden');
-        gModal.style.display = 'flex';
-        
-        // Render official button if GIS is loaded
-        if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
-            const container = document.getElementById('g_id_signin_container');
-            if (container) {
-                window.google.accounts.id.renderButton(container, {
-                    theme: 'outline',
-                    size: 'large',
-                    shape: 'pill',
-                    text: 'continue_with',
-                    width: 280
-                });
-            }
-        }
-        
-        setTimeout(() => document.getElementById('google-name-input')?.focus(), 150);
+    // 1. If official Google One Tap Client ID is configured, trigger prompt
+    if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
+        try { window.google.accounts.id.prompt(); } catch(e) {}
     }
+
+    // 2. Open Google 1-Tap Chooser Modal
+    setTimeout(() => {
+        closeCustomerAuthModal();
+        if (textSpan) textSpan.innerText = 'Continue with Google';
+        const gModal = document.getElementById('google-quick-modal');
+        if (gModal) {
+            gModal.classList.remove('hidden');
+            gModal.style.display = 'flex';
+            setTimeout(() => document.getElementById('google-name-input')?.focus(), 150);
+        }
+    }, 350);
 }
 
 function closeGoogleQuickModal() {
