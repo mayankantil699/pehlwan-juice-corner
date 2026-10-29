@@ -2249,9 +2249,10 @@ function logoutCustomer() {
 const PEHLWAN_GOOGLE_CLIENT_ID = '108127538097-bg62u1h3cmtjv16qptbci3du45tqj1lf.apps.googleusercontent.com';
 window.PEHLWAN_GOOGLE_CLIENT_ID = PEHLWAN_GOOGLE_CLIENT_ID;
 
+let googleTokenClient = null;
+
 function handleGoogleCredentialResponse(response) {
     try {
-        // Decode Google JWT payload
         const base64Url = response.credential.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -2277,7 +2278,7 @@ function handleGoogleCredentialResponse(response) {
             localStorage.setItem('pehlwan_cust_' + email, JSON.stringify(googleCustomer));
         }
 
-        // Sync to Supabase customers table
+        // Sync to Supabase
         try {
             if (supabaseClient) {
                 supabaseClient.from('customers').insert([{
@@ -2299,38 +2300,83 @@ function handleGoogleCredentialResponse(response) {
 }
 
 function initGoogleOneTap() {
-    if (window.google && window.google.accounts && window.google.accounts.id) {
-        try {
-            window.google.accounts.id.initialize({
-                client_id: PEHLWAN_GOOGLE_CLIENT_ID,
-                callback: handleGoogleCredentialResponse,
-                auto_select: true,
-                cancel_on_tap_outside: false
-            });
-
-            // Automatically trigger official floating 1-Tap dialog on screen
-            window.google.accounts.id.prompt();
-
-            // Render official Google button inside the modal container
-            const container = document.getElementById('g_id_signin_container');
-            if (container) {
-                window.google.accounts.id.renderButton(container, {
-                    theme: 'outline',
-                    size: 'large',
-                    shape: 'pill',
-                    text: 'continue_with',
-                    width: 300
+    if (window.google && window.google.accounts) {
+        // 1. One-Tap ID Client
+        if (window.google.accounts.id) {
+            try {
+                window.google.accounts.id.initialize({
+                    client_id: PEHLWAN_GOOGLE_CLIENT_ID,
+                    callback: handleGoogleCredentialResponse,
+                    auto_select: true,
+                    cancel_on_tap_outside: false
                 });
-                const customBtn = document.getElementById('google-signin-btn');
-                if (customBtn) customBtn.style.display = 'none';
+                window.google.accounts.id.prompt();
+            } catch(e) {
+                console.log('One-tap init note:', e);
             }
-        } catch(e) {
-            console.log('Google GIS init notice:', e);
+        }
+
+        // 2. Token Client for 1-Click Popup on Button Click
+        if (window.google.accounts.oauth2) {
+            try {
+                googleTokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: PEHLWAN_GOOGLE_CLIENT_ID,
+                    scope: 'email profile openid',
+                    callback: async (tokenResponse) => {
+                        const textSpan = document.getElementById('google-btn-text');
+                        if (textSpan) textSpan.innerText = 'Continue with Google';
+
+                        if (tokenResponse && tokenResponse.access_token) {
+                            try {
+                                const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                                });
+                                const user = await res.json();
+                                if (user && (user.name || user.email)) {
+                                    const googleCustomer = {
+                                        name: user.name || user.given_name || 'Google User',
+                                        email: user.email || '',
+                                        picture: user.picture || '',
+                                        phone: '',
+                                        auth_provider: 'google',
+                                        goal: 'Gym Muscle Building'
+                                    };
+
+                                    localStorage.setItem('pehlwan_logged_in_customer', JSON.stringify(googleCustomer));
+                                    if (user.email) {
+                                        localStorage.setItem('pehlwan_cust_' + user.email, JSON.stringify(googleCustomer));
+                                    }
+
+                                    try {
+                                        if (supabaseClient) {
+                                            supabaseClient.from('customers').insert([{
+                                                name: googleCustomer.name,
+                                                phone: googleCustomer.email,
+                                                pin: 'google',
+                                                goal: 'Gym Muscle Building'
+                                            }]).then(() => {}).catch(() => {});
+                                        }
+                                    } catch(e) {}
+
+                                    closeCustomerAuthModal();
+                                    closeGoogleQuickModal();
+                                    initCustomerAuthUI();
+                                    showPehlwanFeedback(`Google Login Safal! Welcome ${googleCustomer.name}! 🚀`);
+                                }
+                            } catch(err) {
+                                console.error('Error fetching Google userinfo:', err);
+                            }
+                        }
+                    }
+                });
+            } catch(e) {
+                console.log('OAuth2 token client note:', e);
+            }
         }
     }
 }
 
-// Initialize Google One Tap on load with retry
+// Initialize Google SDK on load with retry
 window.addEventListener('load', () => {
     initGoogleOneTap();
     setTimeout(initGoogleOneTap, 1000);
@@ -2338,25 +2384,40 @@ window.addEventListener('load', () => {
 });
 
 function loginWithGoogle() {
+    const textSpan = document.getElementById('google-btn-text');
+    if (textSpan) {
+        textSpan.innerHTML = '<span class="inline-flex items-center gap-2 text-[#0F172A]"><svg class="w-4 h-4 text-[#C89B3C] animate-spin inline" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Connecting...</span>';
+    }
+
+    // 1. If Token Client ready, open Google Official Account Chooser Popup directly
+    if (googleTokenClient) {
+        try {
+            googleTokenClient.requestAccessToken({ prompt: 'select_account' });
+            setTimeout(() => { if (textSpan) textSpan.innerText = 'Continue with Google'; }, 2500);
+            return;
+        } catch(e) {
+            console.log('Token client call error:', e);
+        }
+    }
+
+    // 2. Try One-Tap prompt
     if (window.google && window.google.accounts && window.google.accounts.id) {
         try {
             window.google.accounts.id.prompt();
-            const renderedBtn = document.querySelector('#g_id_signin_container div[role="button"]');
-            if (renderedBtn) {
-                renderedBtn.click();
-                return;
-            }
         } catch(e) {}
     }
 
-    // Fallback modal if popup blocked
-    closeCustomerAuthModal();
-    const gModal = document.getElementById('google-quick-modal');
-    if (gModal) {
-        gModal.classList.remove('hidden');
-        gModal.style.display = 'flex';
-        setTimeout(() => document.getElementById('google-name-input')?.focus(), 150);
-    }
+    // 3. Fallback to quick connect modal
+    setTimeout(() => {
+        closeCustomerAuthModal();
+        if (textSpan) textSpan.innerText = 'Continue with Google';
+        const gModal = document.getElementById('google-quick-modal');
+        if (gModal) {
+            gModal.classList.remove('hidden');
+            gModal.style.display = 'flex';
+            setTimeout(() => document.getElementById('google-name-input')?.focus(), 150);
+        }
+    }, 400);
 }
 
 function closeGoogleQuickModal() {
