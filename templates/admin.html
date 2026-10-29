@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -28,6 +29,72 @@
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        /* Dark Mode High-Contrast Luxury Palette */
+        html.dark body {
+            background-color: #0B0E14 !important;
+            color: #F3F4F6 !important;
+        }
+        html.dark .luxury-card {
+            background: #111827 !important;
+            border-color: #1F2937 !important;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
+        }
+        html.dark header {
+            background-color: #111827 !important;
+            border-color: #1F2937 !important;
+        }
+        html.dark header h1,
+        html.dark .text-black {
+            color: #FFFFFF !important;
+        }
+        html.dark .font-heading {
+            color: #FFFFFF !important;
+        }
+        html.dark .text-neutral-900 {
+            color: #F9FAFB !important;
+        }
+        html.dark .text-neutral-800,
+        html.dark .text-neutral-700 {
+            color: #E5E7EB !important;
+        }
+        html.dark .text-neutral-600,
+        html.dark .text-neutral-500 {
+            color: #9CA3AF !important;
+        }
+        html.dark .bg-neutral-50,
+        html.dark .bg-neutral-100 {
+            background-color: #1F2937 !important;
+        }
+        html.dark .bg-white {
+            background-color: #111827 !important;
+        }
+        html.dark .border-neutral-100,
+        html.dark .border-neutral-200,
+        html.dark .border-neutral-300 {
+            border-color: #1F2937 !important;
+        }
+        html.dark table thead {
+            background-color: #1F2937 !important;
+        }
+        html.dark table th {
+            color: #D1D5DB !important;
+        }
+        html.dark table tbody tr {
+            border-color: #1F2937 !important;
+        }
+        html.dark table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.03) !important;
+        }
+        html.dark #pin-modal .luxury-card {
+            background: #111827 !important;
+            border-color: #374151 !important;
+        }
+        html.dark #admin-pin-input {
+            background-color: #1F2937 !important;
+            color: #FFFFFF !important;
+            border-color: #374151 !important;
+        }
+
         .luxury-card {
             background: #FFFFFF;
             border: 1px solid #E5E7EB;
@@ -116,6 +183,17 @@
 
                 <!-- Right: Controls -->
                 <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Dark Mode / Light Mode Toggle Button -->
+                    <button 
+                        id="theme-toggle-btn" 
+                        onclick="toggleAdminTheme()" 
+                        class="px-3 py-2 rounded-xl text-xs font-bold border border-neutral-300 bg-white hover:bg-neutral-100 flex items-center gap-1.5 transition-all text-neutral-700 shadow-sm cursor-pointer"
+                        title="Dark Mode / Light Mode (रात के लिए डार्क मोड)"
+                    >
+                        <span id="theme-icon">🌙</span>
+                        <span id="theme-text" class="hidden sm:inline">Dark</span>
+                    </button>
+
                     <!-- Audio Sound Toggle -->
                     <button 
                         id="sound-toggle-btn" 
@@ -776,6 +854,47 @@
         window.addEventListener('DOMContentLoaded', () => {
             checkAuth();
         });
+
+        // ==========================================
+        // DARK MODE / LIGHT MODE TOGGLE ENGINE
+        // ==========================================
+        function toggleAdminTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('pehlwan_admin_theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        }
+
+        function updateThemeUI(isDark) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            const btn = document.getElementById('theme-toggle-btn');
+            if (icon) icon.innerText = isDark ? '☀️' : '🌙';
+            if (text) text.innerText = isDark ? 'Light' : 'Dark';
+            if (btn) {
+                if (isDark) {
+                    btn.className = "px-3 py-2 rounded-xl text-xs font-bold border border-neutral-700 bg-neutral-800 hover:bg-neutral-700 flex items-center gap-1.5 transition-all text-amber-300 shadow-sm cursor-pointer";
+                } else {
+                    btn.className = "px-3 py-2 rounded-xl text-xs font-bold border border-neutral-300 bg-white hover:bg-neutral-100 flex items-center gap-1.5 transition-all text-neutral-700 shadow-sm cursor-pointer";
+                }
+            }
+        }
+
+        // Auto initialize Theme from localStorage
+        (function initTheme() {
+            const saved = localStorage.getItem('pehlwan_admin_theme');
+            const isDark = (saved === 'dark');
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => updateThemeUI(isDark));
+            } else {
+                updateThemeUI(isDark);
+            }
+        })();
+
     </script>
 </body>
 </html>
