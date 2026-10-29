@@ -519,6 +519,14 @@
         </form>
     </div>
 
+        <!-- Official Google One-Tap Trigger -->
+    <div id="g_id_onload"
+         data-client_id="108127538097-bg62u1h3cmtjv16qptbci3du45tqj1lf.apps.googleusercontent.com"
+         data-callback="handleGoogleCredentialResponse"
+         data-auto_prompt="true"
+         data-cancel_on_tap_outside="false">
+    </div>
+
     <!-- Customer Auth Modal (Exact Match to Image 1: Dashboard Access / AmountZone Style) -->
     <div id="customer-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden" onclick="if(event.target === this) closeCustomerAuthModal()">
         <div class="luxury-card rounded-[32px] p-7 sm:p-9 max-w-sm sm:max-w-md w-full relative shadow-2xl border border-neutral-200/90 bg-white space-y-6 animate-scale-up text-center">
@@ -749,7 +757,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- JS Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}?v=2.5"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}?v=2.6"></script>
     <script>
         lucide.createIcons();
     </script>

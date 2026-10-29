@@ -2246,8 +2246,8 @@ function logoutCustomer() {
 // OFFICIAL GOOGLE 1-TAP (GIS) ENGINE
 // ==========================================
 
-// Google Cloud OAuth 2.0 Web Client ID
-window.PEHLWAN_GOOGLE_CLIENT_ID = window.PEHLWAN_GOOGLE_CLIENT_ID || '';
+const PEHLWAN_GOOGLE_CLIENT_ID = '108127538097-bg62u1h3cmtjv16qptbci3du45tqj1lf.apps.googleusercontent.com';
+window.PEHLWAN_GOOGLE_CLIENT_ID = PEHLWAN_GOOGLE_CLIENT_ID;
 
 function handleGoogleCredentialResponse(response) {
     try {
@@ -2289,8 +2289,8 @@ function handleGoogleCredentialResponse(response) {
             }
         } catch(e) {}
 
-        closeGoogleQuickModal();
         closeCustomerAuthModal();
+        closeGoogleQuickModal();
         initCustomerAuthUI();
         showPehlwanFeedback(`Google Se 1-Tap Login Safal! Welcome ${name}! 🚀`);
     } catch(err) {
@@ -2299,10 +2299,10 @@ function handleGoogleCredentialResponse(response) {
 }
 
 function initGoogleOneTap() {
-    if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
+    if (window.google && window.google.accounts && window.google.accounts.id) {
         try {
             window.google.accounts.id.initialize({
-                client_id: window.PEHLWAN_GOOGLE_CLIENT_ID,
+                client_id: PEHLWAN_GOOGLE_CLIENT_ID,
                 callback: handleGoogleCredentialResponse,
                 auto_select: true,
                 cancel_on_tap_outside: false
@@ -2319,42 +2319,44 @@ function initGoogleOneTap() {
                     size: 'large',
                     shape: 'pill',
                     text: 'continue_with',
-                    width: 280
+                    width: 300
                 });
+                const customBtn = document.getElementById('google-signin-btn');
+                if (customBtn) customBtn.style.display = 'none';
             }
         } catch(e) {
-            console.log('Google GIS init error:', e);
+            console.log('Google GIS init notice:', e);
         }
     }
 }
 
-// Automatically initialize Google One Tap on page load
+// Initialize Google One Tap on load with retry
 window.addEventListener('load', () => {
-    setTimeout(initGoogleOneTap, 1200);
+    initGoogleOneTap();
+    setTimeout(initGoogleOneTap, 1000);
+    setTimeout(initGoogleOneTap, 2500);
 });
 
 function loginWithGoogle() {
-    const textSpan = document.getElementById('google-btn-text');
-    if (textSpan) {
-        textSpan.innerHTML = '<span class="inline-flex items-center gap-2 text-[#0F172A]"><svg class="w-4 h-4 text-[#C89B3C] animate-spin inline" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Connecting with Google...</span>';
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+        try {
+            window.google.accounts.id.prompt();
+            const renderedBtn = document.querySelector('#g_id_signin_container div[role="button"]');
+            if (renderedBtn) {
+                renderedBtn.click();
+                return;
+            }
+        } catch(e) {}
     }
 
-    // 1. If official Google One Tap Client ID is configured, trigger prompt
-    if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
-        try { window.google.accounts.id.prompt(); } catch(e) {}
+    // Fallback modal if popup blocked
+    closeCustomerAuthModal();
+    const gModal = document.getElementById('google-quick-modal');
+    if (gModal) {
+        gModal.classList.remove('hidden');
+        gModal.style.display = 'flex';
+        setTimeout(() => document.getElementById('google-name-input')?.focus(), 150);
     }
-
-    // 2. Open Google 1-Tap Chooser Modal
-    setTimeout(() => {
-        closeCustomerAuthModal();
-        if (textSpan) textSpan.innerText = 'Continue with Google';
-        const gModal = document.getElementById('google-quick-modal');
-        if (gModal) {
-            gModal.classList.remove('hidden');
-            gModal.style.display = 'flex';
-            setTimeout(() => document.getElementById('google-name-input')?.focus(), 150);
-        }
-    }, 350);
 }
 
 function closeGoogleQuickModal() {
