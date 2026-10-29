@@ -278,7 +278,7 @@
 
                 <!-- MOBILE EXCLUSIVE: Badam Ragda Kundi Sota Instant Card (Visible Immediately on Mobile Open) -->
                 <div class="block lg:hidden my-4">
-                    <div class="luxury-card rounded-2xl p-3.5 shadow-md border-2 border-black bg-white" onclick="openBadamRagdaModal()">
+                    <div class="luxury-card rounded-2xl p-3.5 shadow-md border-2 border-black bg-white" >
                         <div class="relative h-56 rounded-xl overflow-hidden bg-neutral-100">
                             <img src="static/images/badam_ragda_kundi_sota.jpg" alt="Pehlwan Special Badam Ragda Kundi Sota" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
@@ -349,7 +349,7 @@
 
             <!-- Right 5 Cols: Permanent Badam Ragda with Kundi Sota Card (Desktop Showcase) -->
             <div class="lg:col-span-5 relative hidden lg:block">
-                <div class="luxury-card rounded-3xl p-5 shadow-xl relative overflow-hidden group cursor-pointer border-2 border-neutral-300 hover:border-black transition-all bg-white" onclick="openBadamRagdaModal()" title="Click to View Full Photo & Royal Story">
+                <div class="luxury-card rounded-3xl p-5 shadow-xl relative overflow-hidden group cursor-pointer border-2 border-neutral-300 hover:border-black transition-all bg-white"  >
                     <div class="relative h-72 sm:h-80 rounded-2xl overflow-hidden bg-neutral-100">
                         <img src="static/images/badam_ragda_kundi_sota.jpg" alt="Pehlwan Special Badam Ragda with Kundi Sota" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
@@ -2529,103 +2529,6 @@
 <!-- ============================================================ -->
 <!-- PEHLWAN SPECIAL BADAM RAGDA - WELCOME SPOTLIGHT MODAL -->
 <!-- Auto-opens on page load & re-openable from hero card -->
-<!-- ============================================================ -->
-<div id="badam-ragda-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm transition-all duration-300 hidden" onclick="if(event.target === this) closeBadamRagdaModal()">
-    <div class="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white border-2 border-black rounded-3xl shadow-2xl scrollbar-none animate-in fade-in zoom-in-95 duration-300 text-black">
-        
-        <!-- Header Bar -->
-        <div class="sticky top-0 z-20 bg-black px-5 py-3 flex items-center justify-between text-white shadow-md">
-            <div class="flex items-center gap-2">
-                <span class="text-base">👑</span>
-                <span class="font-classic font-black text-xs tracking-wider uppercase">
-                    PEHLWAN SPECIAL • AKHADA POWER DRINK
-                </span>
-            </div>
-            <button onclick="closeBadamRagdaModal()" class="w-7 h-7 rounded-full bg-white/20 hover:bg-white text-white hover:text-black flex items-center justify-center text-xs font-black transition-colors" title="Close">
-                ✕
-            </button>
-        </div>
-
-        <!-- Modal Content Container -->
-        <div class="p-4 sm:p-6 space-y-4">
-            
-            <!-- Big High-Resolution Image of Badam Ragda -->
-            <div class="relative rounded-2xl overflow-hidden border border-neutral-300 shadow-md bg-neutral-100">
-                <img src="static/images/badam_ragda_kundi_sota.jpg" alt="Pehlwan Special Badam Ragda Kundi Sota" class="w-full h-56 sm:h-72 object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
-
-                <!-- Floating Badges on Image -->
-                <div class="absolute top-3 left-3 bg-black/90 px-3 py-1 rounded-full text-[10px] font-bold text-white font-classic uppercase tracking-wider flex items-center gap-1.5 shadow">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                    <span>🥣 कुंडी-सोटे से घुटाई (100% Authentic Ragda)</span>
-                </div>
-
-                <div class="absolute top-3 right-3 bg-white text-black font-black text-sm px-3.5 py-1 rounded-full shadow-lg font-classic border border-neutral-300">
-                    ₹100
-                </div>
-
-                <div class="absolute bottom-3 left-3 right-3">
-                    <h2 class="font-classic font-black text-xl sm:text-2xl text-white drop-shadow-md">
-                        Pehlwan Special Badam Ragda
-                    </h2>
-                    <p class="text-xs text-neutral-200 font-medium drop-shadow mt-0.5">
-                        Traditional Stone-Ground Almond Sardai with Pure Kashmiri Saffron & Pistachio
-                    </p>
-                </div>
-            </div>
-
-            <!-- Macro Nutritional Facts Strip -->
-            <div class="grid grid-cols-4 gap-2 text-center">
-                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
-                    <span class="text-[9px] text-neutral-500 font-black uppercase block">CALORIES</span>
-                    <span class="text-base sm:text-lg font-black text-black">420</span>
-                    <span class="text-[9px] text-neutral-400 block">kcal</span>
-                </div>
-                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
-                    <span class="text-[9px] text-neutral-500 font-black uppercase block">PROTEIN</span>
-                    <span class="text-base sm:text-lg font-black text-black">18.0g</span>
-                    <span class="text-[9px] text-neutral-400 block">Pure Muscle</span>
-                </div>
-                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
-                    <span class="text-[9px] text-neutral-500 font-black uppercase block">HEALTHY FATS</span>
-                    <span class="text-base sm:text-lg font-black text-black">31.0g</span>
-                    <span class="text-[9px] text-neutral-400 block">Almond Oil</span>
-                </div>
-                <div class="bg-neutral-50 border border-neutral-200 p-2 sm:p-2.5 rounded-xl shadow-sm">
-                    <span class="text-[9px] text-neutral-500 font-black uppercase block">CARBS</span>
-                    <span class="text-base sm:text-lg font-black text-black">20.0g</span>
-                    <span class="text-[9px] text-neutral-400 block">Natural Fuel</span>
-                </div>
-            </div>
-
-            <!-- Taste Note / Speciality Story -->
-            <p class="text-xs text-neutral-700 leading-relaxed bg-neutral-50 border border-neutral-200 p-3.5 rounded-xl">
-                🥣 <strong>Silbatte (Kharal) par hath se ragda hua</strong> asli Kashmiri badam, shuddh kesar, choti elaichi aur pure buffalo milk se taiyar kiya gaya asli Pehlwan taakat ka tonic. Zero added milawat, 100% pure nutritional power!
-            </p>
-
-            <!-- Action Buttons -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                <button onclick="addToPehlwanTray('item-12'); showPehlwanFeedback('👑 Badam Ragda Diet Tray me add ho gaya!');" class="bg-black hover:bg-neutral-800 text-white font-black text-xs py-3.5 px-4 rounded-full shadow-lg transition-transform hover:scale-105 flex items-center justify-center gap-2 font-classic uppercase tracking-wider">
-                    <i data-lucide="shopping-bag" class="w-4 h-4 stroke-[3]"></i>
-                    <span>Add to Tray (₹100)</span>
-                </button>
-                
-                <a href="https://wa.me/919588351884?text=Hello%20Pehlwan%20Juice%20Corner!%20Mujhe%20Pehlwan%20Special%20Badam%20Ragda%20order%20karna%20hai." target="_blank" class="bg-white border-2 border-black hover:bg-neutral-100 text-black font-black text-xs py-3.5 px-4 rounded-full shadow-lg transition-transform hover:scale-105 flex items-center justify-center gap-2">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    <span>WhatsApp par Order Karein</span>
-                </a>
-            </div>
-
-            <!-- Explore Button (Closes Modal) -->
-            <div class="text-center pt-1 pb-1">
-                <button onclick="closeBadamRagdaModal()" class="text-xs text-neutral-500 hover:text-black font-bold transition-colors underline decoration-dotted">
-                    Website Dekhein / Explore Menu →
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 
     </main>
 
@@ -3136,7 +3039,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- JS Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="static/js/app.js?v=2.7"></script>
+    <script src="static/js/app.js?v=2.8"></script>
     <script>
         lucide.createIcons();
     </script>
