@@ -292,12 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // initGymMusicPlayer();
     initPehlwanAIChat();
 
-    // Auto-open Royal Badam Ragda Photo Spotlight on Homepage
-    if (document.getElementById('badam-ragda-modal')) {
-        setTimeout(() => {
-            openBadamRagdaModal();
-        }, 450);
-    }
+
 });
 
 // Badam Ragda Spotlight Modal Controls
