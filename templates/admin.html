@@ -632,6 +632,107 @@
                 if (!tbody) return;
 
                 if (data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-neutral-400 font-medium">No visitors recorded yet. Open the website on your phone to test!</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                data.forEach((v, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.className = idx === 0 ? "bg-emerald-50/50 hover:bg-neutral-50" : "hover:bg-neutral-50";
+                    const timeStr = v.created_at ? new Date(v.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Just now';
+                    const dateStr = v.created_at ? new Date(v.created_at).toLocaleDateString('en-IN') : '';
+
+                    tr.innerHTML = `
+                        <td class="py-3 px-4 font-bold text-black whitespace-nowrap">
+                            ${timeStr} <span class="text-[10px] text-neutral-400 block sm:inline font-normal">(${dateStr})</span>
+                        </td>
+                        <td class="py-3 px-4 whitespace-nowrap">
+                            <span class="inline-flex items-center gap-1 font-bold text-neutral-800">
+                                ${v.device || 'Mobile 📱'}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 font-semibold text-neutral-700 whitespace-nowrap">
+                            <span class="bg-neutral-100 border border-neutral-200 px-2 py-0.5 rounded-md font-mono text-[11px]">
+                                ${v.page || 'Home'}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 font-mono text-[10px] text-neutral-400 whitespace-nowrap">
+                            ${(v.session_id || 'anon').substring(0, 14)}...
+                        </td>
+                        <td class="py-3 px-4 text-right whitespace-nowrap">
+                            ${idx === 0 
+                                ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                     ● LATEST
+                                   </span>`
+                                : `<span class="text-neutral-400 text-[11px]">Recorded</span>`
+                            }
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+            } catch (err) {
+                console.log('Visitors load error:', err);
+            }
+        }
+
+        // Indian Currency Formatter
+        function formatINR(num) {
+            return '₹' + new Intl.NumberFormat('en-IN').format(Math.round(num || 0));
+        }
+
+        async function loadOrders() {
+            try {
+                const data = await fetchSupabase('orders', '?select=*&order=created_at.desc&limit=100');
+                if (lastKnownOrderCount !== -1 && data.length > lastKnownOrderCount) {
+                    playAlertTone();
+                }
+                lastKnownOrderCount = data.length;
+
+                // --- 1. Calculate Real Financial Metrics ---
+                const totalRevenue = data.reduce((sum, o) => sum + (parseFloat(o.total_price) || 0), 0);
+                
+                const todayStr = new Date().toDateString();
+                const todayOrders = data.filter(o => o.created_at && new Date(o.created_at).toDateString() === todayStr);
+                const todayRevenue = todayOrders.reduce((sum, o) => sum + (parseFloat(o.total_price) || 0), 0);
+                
+                const avgOrder = data.length > 0 ? Math.round(totalRevenue / data.length) : 0;
+                
+                const pendingOrders = data.filter(o => {
+                    const localStatus = localStorage.getItem('pehlwan_order_status_' + (o.id || (o.items && o.items.order_id)));
+                    const cur = (localStatus || o.status || '').toLowerCase();
+                    return cur !== 'delivered' && cur !== 'completed';
+                });
+                const pendingRevenue = pendingOrders.reduce((sum, o) => sum + (parseFloat(o.total_price) || 0), 0);
+
+                // --- 2. Update Revenue UI Elements ---
+                const revEl = document.getElementById('stat-total-revenue');
+                const todayRevEl = document.getElementById('stat-today-revenue');
+                const todayCountEl = document.getElementById('stat-today-orders-count');
+                const avgEl = document.getElementById('stat-avg-order');
+                const pendingCountEl = document.getElementById('stat-pending-orders');
+                const pendingRevEl = document.getElementById('stat-pending-revenue');
+                const tabBadgeRev = document.getElementById('tab-orders-revenue-badge');
+
+                if (revEl) revEl.innerText = formatINR(totalRevenue);
+                if (todayRevEl) todayRevEl.innerText = formatINR(todayRevenue);
+                if (todayCountEl) todayCountEl.innerText = `${todayOrders.length} orders today`;
+                if (avgEl) avgEl.innerText = formatINR(avgOrder);
+                if (pendingCountEl) pendingCountEl.innerText = pendingOrders.length;
+                if (pendingRevEl) pendingRevEl.innerText = `${formatINR(pendingRevenue)} pending`;
+                if (tabBadgeRev) tabBadgeRev.innerText = formatINR(totalRevenue);
+
+                // Update Counts
+                const statOrders = document.getElementById('stat-total-orders');
+                const badgeOrders = document.getElementById('tab-badge-orders');
+                if (statOrders) statOrders.innerText = data.length;
+                if (badgeOrders) badgeOrders.innerText = data.length;
+
+                const tbody = document.getElementById('orders-table-body');
+                if (!tbody) return;
+
+                if (data.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-neutral-400 font-medium">Abhi koi order nahi aaya hai. Customer ke order aate hi unka Naam, Mobile Number aur Order ID yahan live dikhenge!</td></tr>`;
                     return;
                 }
