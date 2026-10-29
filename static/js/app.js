@@ -2247,15 +2247,124 @@ function logoutCustomer() {
 
 
 // ==========================================
-// ACTIVE GOOGLE SIGN-IN ENGINE
+// OFFICIAL GOOGLE 1-TAP (GIS) ENGINE
 // ==========================================
+
+// Google Cloud OAuth 2.0 Web Client ID
+window.PEHLWAN_GOOGLE_CLIENT_ID = window.PEHLWAN_GOOGLE_CLIENT_ID || '';
+
+function handleGoogleCredentialResponse(response) {
+    try {
+        // Decode Google JWT payload
+        const base64Url = response.credential.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        const payload = JSON.parse(jsonPayload);
+        const name = payload.name || payload.given_name || 'Google User';
+        const email = payload.email || '';
+        const picture = payload.picture || '';
+
+        const googleCustomer = {
+            name: name,
+            email: email,
+            picture: picture,
+            phone: '',
+            auth_provider: 'google',
+            goal: 'Gym Muscle Building'
+        };
+
+        localStorage.setItem('pehlwan_logged_in_customer', JSON.stringify(googleCustomer));
+        if (email) {
+            localStorage.setItem('pehlwan_cust_' + email, JSON.stringify(googleCustomer));
+        }
+
+        // Sync to Supabase customers table
+        try {
+            if (supabaseClient) {
+                supabaseClient.from('customers').insert([{
+                    name: name,
+                    phone: email,
+                    pin: 'google',
+                    goal: 'Gym Muscle Building'
+                }]).then(() => {}).catch(() => {});
+            }
+        } catch(e) {}
+
+        closeGoogleQuickModal();
+        closeCustomerAuthModal();
+        initCustomerAuthUI();
+        showPehlwanFeedback(`Google Se 1-Tap Login Safal! Welcome ${name}! 🚀`);
+    } catch(err) {
+        console.error('Error parsing Google credential:', err);
+    }
+}
+
+function initGoogleOneTap() {
+    if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
+        try {
+            window.google.accounts.id.initialize({
+                client_id: window.PEHLWAN_GOOGLE_CLIENT_ID,
+                callback: handleGoogleCredentialResponse,
+                auto_select: true,
+                cancel_on_tap_outside: false
+            });
+
+            // Automatically trigger official floating 1-Tap dialog on screen
+            window.google.accounts.id.prompt();
+
+            // Render official Google button inside the modal container
+            const container = document.getElementById('g_id_signin_container');
+            if (container) {
+                window.google.accounts.id.renderButton(container, {
+                    theme: 'outline',
+                    size: 'large',
+                    shape: 'pill',
+                    text: 'continue_with',
+                    width: 280
+                });
+            }
+        } catch(e) {
+            console.log('Google GIS init error:', e);
+        }
+    }
+}
+
+// Automatically initialize Google One Tap on page load
+window.addEventListener('load', () => {
+    setTimeout(initGoogleOneTap, 1200);
+});
 
 function loginWithGoogle() {
     closeCustomerAuthModal();
+    
+    // 1. If official Google One Tap Client ID is configured, trigger Google prompt directly
+    if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
+        window.google.accounts.id.prompt();
+    }
+
+    // 2. Open Google Modal (renders official button & instant connect)
     const gModal = document.getElementById('google-quick-modal');
     if (gModal) {
         gModal.classList.remove('hidden');
         gModal.style.display = 'flex';
+        
+        // Render official button if GIS is loaded
+        if (window.google && window.google.accounts && window.PEHLWAN_GOOGLE_CLIENT_ID) {
+            const container = document.getElementById('g_id_signin_container');
+            if (container) {
+                window.google.accounts.id.renderButton(container, {
+                    theme: 'outline',
+                    size: 'large',
+                    shape: 'pill',
+                    text: 'continue_with',
+                    width: 280
+                });
+            }
+        }
+        
         setTimeout(() => document.getElementById('google-name-input')?.focus(), 150);
     }
 }
