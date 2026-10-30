@@ -425,6 +425,111 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 4. Payment Method Selection (Online UPI / QR vs Cash on Delivery) -->
+                <div class="space-y-2.5 pt-2.5 border-t border-neutral-200">
+                    <div class="flex items-center justify-between text-[11px] font-black text-black uppercase tracking-wider">
+                        <span class="flex items-center gap-1.5">
+                            <span>💳 Payment Option (भुगतान)</span>
+                        </span>
+                        <span id="payment-badge-selected" class="text-[10px] text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                            Online UPI / QR
+                        </span>
+                    </div>
+
+                    <!-- Payment Toggle Cards -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="selectPaymentMethod('upi')" id="pay-opt-upi" class="cursor-pointer border-2 border-black bg-black text-white rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm">
+                            <div class="flex items-center justify-between mb-1 w-full">
+                                <span class="text-xs font-black flex items-center gap-1">
+                                    <span>📱</span> Online UPI
+                                </span>
+                                <span id="pay-radio-upi" class="w-3.5 h-3.5 rounded-full border-2 border-white bg-white flex items-center justify-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+                                </span>
+                            </div>
+                            <span class="text-[9.5px] text-neutral-300 leading-tight">GPay / PhonePe / QR</span>
+                        </button>
+
+                        <button type="button" onclick="selectPaymentMethod('cod')" id="pay-opt-cod" class="cursor-pointer border-2 border-neutral-300 bg-white text-neutral-800 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black">
+                            <div class="flex items-center justify-between mb-1 w-full">
+                                <span class="text-xs font-black flex items-center gap-1">
+                                    <span>💵</span> Cash / Counter
+                                </span>
+                                <span id="pay-radio-cod" class="w-3.5 h-3.5 rounded-full border-2 border-neutral-400 bg-white flex items-center justify-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                                </span>
+                            </div>
+                            <span class="text-[9.5px] text-neutral-500 leading-tight">Pay on Delivery / Pickup</span>
+                        </button>
+                    </div>
+
+                    <!-- Hidden input to store chosen method -->
+                    <input type="hidden" id="order-payment-method" value="upi">
+
+                    <!-- Dynamic UPI / QR Container (visible when 'upi' is active) -->
+                    <div id="upi-payment-box" class="bg-neutral-50 border border-neutral-300 rounded-2xl p-3 space-y-2.5">
+                        <div class="flex items-center justify-between text-xs pb-1.5 border-b border-neutral-200">
+                            <span class="font-bold text-neutral-700 flex items-center gap-1">
+                                <span>⚡ Scan UPI QR Code</span>
+                            </span>
+                            <span id="upi-amount-badge" class="font-black text-black bg-white px-2 py-0.5 rounded-lg border border-neutral-200 text-xs shadow-xs">₹0</span>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <!-- Dynamic QR Code Card -->
+                            <div class="bg-white p-2 rounded-xl border border-neutral-200 shadow-sm flex flex-col items-center flex-shrink-0">
+                                <img id="dynamic-upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi%3A%2F%2Fpay%3Fpa%3D9588351884%40upi%26pn%3DPehlwan%20Juice%20Corner" alt="Pehlwan Juice Corner UPI QR Code" class="w-28 h-28 object-contain rounded-lg">
+                                <div class="text-[8.5px] text-neutral-500 font-bold mt-1">BHIM UPI Instant</div>
+                            </div>
+
+                            <!-- UPI ID & Quick Actions -->
+                            <div class="flex-grow space-y-1.5 min-w-0">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-neutral-500 uppercase tracking-wider mb-0.5">Shop UPI ID</label>
+                                    <div class="flex items-center gap-1 bg-white border border-neutral-200 rounded-xl p-1 px-2 shadow-xs">
+                                        <span id="display-upi-id" class="text-xs font-mono font-bold text-neutral-800 truncate select-all">9588351884@upi</span>
+                                        <button type="button" onclick="copyShopUpiId(this)" class="bg-neutral-100 hover:bg-black hover:text-white px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors cursor-pointer flex-shrink-0">
+                                            <span>📋 Copy</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Open UPI App Direct Deep Link (GPay/PhonePe/Paytm on mobile) -->
+                                <a id="direct-upi-pay-btn" href="#" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[11px] py-1.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1 shadow-sm">
+                                    <span>📱 Open UPI App (GPay / PhonePe)</span>
+                                </a>
+
+                                <!-- Optional UTR / Ref No. -->
+                                <div>
+                                    <input 
+                                        type="text" 
+                                        id="order-payment-utr" 
+                                        placeholder="UTR / Ref No. (Optional)" 
+                                        maxlength="25"
+                                        class="w-full bg-white border border-neutral-300 rounded-xl px-2 py-1 text-[11px] font-semibold focus:border-black focus:outline-none placeholder-neutral-400"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-50/90 border border-emerald-200/90 rounded-xl p-2 text-[10px] text-emerald-800 flex items-center gap-1.5 font-medium">
+                            <span>✅</span>
+                            <span>QR scan karke payment karein aur niche Confirm order par click karein.</span>
+                        </div>
+                    </div>
+
+                    <!-- COD Note Box (visible when 'cod' is active) -->
+                    <div id="cod-payment-box" class="hidden bg-neutral-100/90 border border-neutral-200 rounded-2xl p-3 text-xs text-neutral-700 space-y-1">
+                        <div class="font-bold flex items-center gap-1.5 text-black">
+                            <span>💵 Cash on Delivery / Counter Pickup</span>
+                        </div>
+                        <p class="text-[10.5px] text-neutral-500 leading-relaxed">
+                            Order receive karte waqt aap cash ya delivery partner ke counter scanner par pay kar sakte hain.
+                        </p>
+                    </div>
+                </div>
             </div>
             
             <button onclick="sendOrderViaWhatsApp()" class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-sm py-4 px-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2">

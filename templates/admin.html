@@ -368,6 +368,7 @@
                                     <th class="py-3.5 px-4">Customer & Contact</th>
                                     <th class="py-3.5 px-4 min-w-[200px]">📍 Delivery Address</th>
                                     <th class="py-3.5 px-4 whitespace-nowrap">💪 Health Stats</th>
+                                    <th class="py-3.5 px-4 whitespace-nowrap">💳 Payment</th>
                                     <th class="py-3.5 px-4 whitespace-nowrap">Date & Exact Time</th>
                                     <th class="py-3.5 px-4 min-w-[220px]">Items & Nutrition</th>
                                     <th class="py-3.5 px-4 whitespace-nowrap">Bill Amount</th>
@@ -376,7 +377,7 @@
                             </thead>
                             <tbody id="orders-table-body" class="divide-y divide-neutral-100">
                                 <tr>
-                                    <td colspan="8" class="py-8 text-center text-neutral-400">Loading orders...</td>
+                                    <td colspan="9" class="py-8 text-center text-neutral-400">Loading orders...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -734,7 +735,7 @@
                 if (!tbody) return;
 
                 if (data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" class="py-10 text-center text-neutral-400 font-medium">Abhi koi pre-order nahi aaya hai. Customer ke order aate hi unka Naam, Mobile Number, Address aur Health Stats yahan live dikhenge!</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="9" class="py-10 text-center text-neutral-400 font-medium">Abhi koi pre-order nahi aaya hai. Customer ke order aate hi unka Naam, Mobile Number, Address, Health Stats aur Payment Status yahan live dikhenge!</td></tr>`;
                     return;
                 }
 
@@ -821,6 +822,44 @@
                         healthHtml = `<span class="text-neutral-400 text-xs italic">Not specified</span>`;
                     }
 
+                    // Payment Method & Status Cell
+                    const rawPayMethod = (o.items && o.items.payment_method) || o.payment_method || ((o.items && o.items.payment_status && o.items.payment_status.includes('UPI')) ? 'Online UPI' : 'Cash on Delivery');
+                    const localPayStatus = localStorage.getItem('pehlwan_order_payment_' + (o.id || orderId));
+                    const rawPayStatus = localPayStatus || (o.items && o.items.payment_status) || o.payment_status || (rawPayMethod.includes('UPI') ? 'Paid - UPI' : 'Pending - COD');
+                    const custUtr = (o.items && o.items.payment_utr) || '';
+                    const isUpiPaid = rawPayStatus.toLowerCase().includes('paid') || rawPayMethod.toLowerCase().includes('upi');
+
+                    let paymentHtml = '';
+                    if (isUpiPaid) {
+                        paymentHtml = `
+                            <div class="space-y-1">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-xs">
+                                    <span>📱</span> Online UPI
+                                </span>
+                                <span class="text-[10px] text-emerald-700 font-extrabold flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    ${rawPayStatus.includes('Paid') ? rawPayStatus : 'Paid (UPI)'}
+                                </span>
+                                ${custUtr ? `<span class="text-[9px] text-neutral-500 font-mono block bg-neutral-100 px-1.5 py-0.5 rounded border border-neutral-200 truncate max-w-[130px]" title="Ref/UTR: ${custUtr}">Ref: ${custUtr}</span>` : ''}
+                            </div>
+                        `;
+                    } else {
+                        paymentHtml = `
+                            <div class="space-y-1">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-300 shadow-xs">
+                                    <span>💵</span> COD
+                                </span>
+                                <span class="text-[10px] text-amber-800 font-extrabold flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                    ${rawPayStatus}
+                                </span>
+                                <button onclick="togglePaymentStatus('${o.id || orderId}', 'Paid - Received')" class="text-[9px] text-neutral-400 hover:text-black font-bold flex items-center gap-1 cursor-pointer transition-colors" title="Click to mark as Paid">
+                                    <span>✓ Mark as Paid</span>
+                                </button>
+                            </div>
+                        `;
+                    }
+
                     // Status Badge with 1-Click Toggle
                     const statusBadgeHtml = isDelivered 
                         ? `<button onclick="toggleOrderStatus('${o.id || orderId}', 'Pending')" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 text-emerald-900 transition-all flex items-center gap-1.5 ml-auto active:scale-95 cursor-pointer shadow-sm" title="Click to mark as Pending">
@@ -844,6 +883,9 @@
                         </td>
                         <td class="py-3.5 px-4">
                             ${healthHtml}
+                        </td>
+                        <td class="py-3.5 px-4 whitespace-nowrap">
+                            ${paymentHtml}
                         </td>
                         <td class="py-3.5 px-4 font-bold text-black whitespace-nowrap">
                             ${timeStr} <span class="text-[10px] text-neutral-400 block font-normal">(${dateStr})</span>
@@ -898,7 +940,14 @@
             await loadOrders();
         }
 
-        // Quick Function to Insert Sample/Test Sale (₹200) into Supabase with full Customer Info
+                // Toggle Payment Status Helper
+        function togglePaymentStatus(orderId, newStatus) {
+            localStorage.setItem('pehlwan_order_payment_' + orderId, newStatus);
+            playAlertTone();
+            loadOrders();
+        }
+
+// Quick Function to Insert Sample/Test Sale (₹200) into Supabase with full Customer Info
         async function createSampleOrder() {
             try {
                 const samplePayload = {
@@ -910,6 +959,9 @@
                         customer_address: 'H.No 45, Near PNB Bank, Main Bus Stand Road, Israna (Panipat)',
                         customer_weight: '78 kg',
                         customer_height: '178 cm (5.10 ft)',
+                        payment_method: 'Online UPI',
+                        payment_status: 'Paid - UPI',
+                        payment_utr: 'UPI981702',
                         products: [
                             { name_en: "Pehlwan Badam Ragda", price: 100, quantity: 1, calories: 340, protein: 11 },
                             { name_en: "Paneer Grill Sandwich", price: 100, quantity: 1, calories: 380, protein: 15 }
