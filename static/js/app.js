@@ -106,7 +106,7 @@ async function loadFeedbackFromSupabase() {
 }
 
 // Log Order to Supabase
-async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt, custName = 'Walk-in Customer', custPhone = '', orderId = '#ORD-101', custAddress = '', custWeight = '', custHeight = '') {
+async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt, custName = 'Walk-in Customer', custPhone = '', orderId = '#ORD-101', custAddress = '', custWeight = '', custHeight = '', paymentMethod = 'Online UPI', paymentStatus = 'Paid - UPI', paymentUtr = '') {
     const payload = {
         customer_phone: custPhone || 'Walk-in',
         items: {
@@ -116,6 +116,9 @@ async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt, cu
             customer_address: custAddress,
             customer_weight: custWeight,
             customer_height: custHeight,
+            payment_method: paymentMethod,
+            payment_status: paymentStatus,
+            payment_utr: paymentUtr,
             products: trayItems
         },
         total_price: totalPrice,
@@ -168,7 +171,7 @@ async function trackVisitor() {
 
 let pehlwanMenu = [];
 let pehlwanCombos = [];
-let pehlwanShop = { phone: '+91 95883 51884', whatsapp: '919588351884' };
+let pehlwanShop = { phone: '+91 95883 51884', whatsapp: '919588351884', upi_id: '9588351884@upi', upi_name: 'Pehlwan Juice Corner' };
 let pehlwanTray = JSON.parse(localStorage.getItem('pehlwan_juice_tray')) || [];
 const itemSelectedSize = {};
 
@@ -284,13 +287,62 @@ const I18N = {
     whatsappOrderBtn: { en: "Direct Order on WhatsApp", hinglish: "WhatsApp par Order Bhejein", hi: "व्हाट्सएप पर ऑर्डर भेजें" }
 };
 
-// Clear legacy monochrome theme if present
-try {
-    localStorage.removeItem('pehlwan_theme');
-    document.body.classList.remove('theme-white', 'theme-black');
-} catch (e) {}
+// ============================================================
+// GLOBAL DARK MODE / LIGHT MODE ENGINE
+// ============================================================
+function toggleSiteTheme() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    const theme = isDark ? 'dark' : 'light';
+    try {
+        localStorage.setItem('pehlwan_theme', theme);
+        localStorage.setItem('pehlwan_site_theme', theme);
+        localStorage.setItem('pehlwan_admin_theme', theme);
+    } catch (e) {}
+    updateSiteThemeUI(isDark);
+}
+
+function updateSiteThemeUI(isDark) {
+    const icon = document.getElementById('theme-toggle-icon');
+    const btn = document.getElementById('theme-toggle-btn');
+    const mobileIcon = document.getElementById('mobile-drawer-theme-icon');
+    const mobileText = document.getElementById('mobile-drawer-theme-text');
+    const mobileBadge = document.getElementById('mobile-drawer-theme-badge');
+
+    if (icon) {
+        icon.innerText = isDark ? '☀️' : '🌙';
+    }
+    if (btn) {
+        btn.setAttribute('title', isDark ? 'Switch to Light Mode (दिन के लिए)' : 'Switch to Dark Mode (रात के लिए)');
+        btn.setAttribute('aria-label', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    }
+    if (mobileIcon) {
+        mobileIcon.innerText = isDark ? '☀️' : '🌙';
+    }
+    if (mobileText) {
+        mobileText.innerText = isDark ? 'Light Mode (दिन के लिए)' : 'Dark Mode (रात के लिए)';
+    }
+    if (mobileBadge) {
+        mobileBadge.innerText = isDark ? '☀️ Light' : '🌙 Dark';
+    }
+}
+
+function initSiteTheme() {
+    let saved = null;
+    try {
+        saved = localStorage.getItem('pehlwan_theme') || localStorage.getItem('pehlwan_site_theme') || localStorage.getItem('pehlwan_admin_theme');
+    } catch (e) {}
+
+    const isDark = (saved === 'dark') || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (isDark) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+    updateSiteThemeUI(isDark);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+    initSiteTheme();
     initLanguageSwitcher();
     updateShopStatus();
     setInterval(updateShopStatus, 30000);
@@ -560,6 +612,8 @@ function togglePehlwanTray() {
     if (isClosed) {
         drawer.classList.remove('translate-x-full');
         overlay.classList.remove('hidden');
+        const curTotal = pehlwanTray.reduce((acc, c) => acc + (c.price * c.quantity), 0);
+        updateDynamicUpiQr(curTotal);
     } else {
         drawer.classList.add('translate-x-full');
         overlay.classList.add('hidden');
@@ -696,6 +750,80 @@ function updatePehlwanQuantity(itemId, delta) {
     }
 }
 
+
+// Dynamic UPI QR Code & Payment Switcher Engine
+function updateDynamicUpiQr(amount) {
+    const upiId = pehlwanShop.upi_id || '9588351884@upi';
+    const upiName = pehlwanShop.upi_name || 'Pehlwan Juice Corner';
+    const amountVal = Math.max(0, parseInt(amount) || 0);
+
+    const upiAmountBadge = document.getElementById('upi-amount-badge');
+    if (upiAmountBadge) upiAmountBadge.innerText = `₹${amountVal}`;
+
+    const displayUpiId = document.getElementById('display-upi-id');
+    if (displayUpiId) displayUpiId.innerText = upiId;
+
+    // Standard NPCI UPI URI Scheme
+    const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${amountVal}&cu=INR&tn=${encodeURIComponent('Pehlwan_Order')}`;
+
+    const payBtn = document.getElementById('direct-upi-pay-btn');
+    if (payBtn) payBtn.href = upiUrl;
+
+    const qrImg = document.getElementById('dynamic-upi-qr');
+    if (qrImg) {
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
+        qrImg.src = qrUrl;
+    }
+}
+
+function selectPaymentMethod(method) {
+    const hiddenInput = document.getElementById('order-payment-method');
+    if (hiddenInput) hiddenInput.value = method;
+
+    const optUpi = document.getElementById('pay-opt-upi');
+    const optCod = document.getElementById('pay-opt-cod');
+    const radioUpi = document.getElementById('pay-radio-upi');
+    const radioCod = document.getElementById('pay-radio-cod');
+    const upiBox = document.getElementById('upi-payment-box');
+    const codBox = document.getElementById('cod-payment-box');
+    const badgeSelected = document.getElementById('payment-badge-selected');
+
+    if (method === 'upi') {
+        if (optUpi) optUpi.className = "cursor-pointer border-2 border-black bg-black text-white rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm";
+        if (optCod) optCod.className = "cursor-pointer border-2 border-neutral-300 bg-white text-neutral-800 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black";
+        if (radioUpi) radioUpi.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-black"></span>';
+        if (radioCod) radioCod.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>';
+        if (upiBox) upiBox.classList.remove('hidden');
+        if (codBox) codBox.classList.add('hidden');
+        if (badgeSelected) {
+            badgeSelected.className = "text-[10px] text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1";
+            badgeSelected.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span> Online UPI / QR';
+        }
+    } else {
+        if (optUpi) optUpi.className = "cursor-pointer border-2 border-neutral-300 bg-white text-neutral-800 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black";
+        if (optCod) optCod.className = "cursor-pointer border-2 border-black bg-black text-white rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm";
+        if (radioUpi) radioUpi.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>';
+        if (radioCod) radioCod.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-black"></span>';
+        if (upiBox) upiBox.classList.add('hidden');
+        if (codBox) codBox.classList.remove('hidden');
+        if (badgeSelected) {
+            badgeSelected.className = "text-[10px] text-amber-800 bg-amber-100/90 border border-amber-300 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1";
+            badgeSelected.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span> Cash on Delivery';
+        }
+    }
+}
+
+function copyShopUpiId(btn) {
+    const upiId = pehlwanShop.upi_id || '9588351884@upi';
+    navigator.clipboard.writeText(upiId).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span>✅ Copied!</span>';
+        setTimeout(() => btn.innerHTML = orig, 1800);
+    }).catch(() => {
+        alert('UPI ID: ' + upiId);
+    });
+}
+
 function updatePehlwanTrayUI() {
     const totalCount = pehlwanTray.reduce((acc, c) => acc + c.quantity, 0);
     const totalCal = pehlwanTray.reduce((acc, c) => acc + (c.calories * c.quantity), 0);
@@ -722,6 +850,7 @@ function updatePehlwanTrayUI() {
     if (dFats) dFats.innerText = `${totalFats}g`;
     if (dCarbs) dCarbs.innerText = `${totalCarbs}g`;
     if (dPrice) dPrice.innerText = `₹${totalPrice}`;
+    updateDynamicUpiQr(totalPrice);
 
     // Verdict in Current Language
     const verdict = document.getElementById('pehlwan-verdict-text');
@@ -788,12 +917,20 @@ function sendOrderViaWhatsApp() {
     const addrInput = document.getElementById('order-customer-address');
     const weightInput = document.getElementById('order-customer-weight');
     const heightInput = document.getElementById('order-customer-height');
+    const paymentMethodInput = document.getElementById('order-payment-method');
+    const utrInput = document.getElementById('order-payment-utr');
 
     const custName = nameInput?.value.trim() || '';
     const custPhone = phoneInput?.value.trim() || '';
     const custAddress = addrInput?.value.trim() || '';
     const custWeight = weightInput?.value.trim() || '';
     const custHeight = heightInput?.value.trim() || '';
+    const paymentMethodRaw = paymentMethodInput?.value.trim() || 'upi';
+    const paymentUtr = utrInput?.value.trim() || '';
+
+    const isUpi = paymentMethodRaw === 'upi';
+    const paymentMethod = isUpi ? 'Online UPI' : 'Cash on Delivery';
+    const paymentStatus = isUpi ? 'Paid - UPI' : 'Pending - COD';
 
     // Validation: Require Name and Phone
     if (!custName) {
@@ -840,10 +977,16 @@ function sendOrderViaWhatsApp() {
         customerInfoText += `%0A💪 *Health Stats:* ${statsArr.join(' | ')}`;
     }
 
+    let paymentInfoText = `%0A💳 *Payment Option:* ${encodeURIComponent(paymentMethod)} (${encodeURIComponent(paymentStatus)})`;
+    if (isUpi && paymentUtr) {
+        paymentInfoText += ` | Ref/UTR: ${encodeURIComponent(paymentUtr)}`;
+    }
+    customerInfoText += paymentInfoText;
+
     const msg = `*Pehlwan Juice Corner (Israna) - Pre-Order ${orderId}*%0A----------------------------${customerInfoText}%0A----------------------------${itemsText}%0A----------------------------%0A*Total Bill:* ₹${totalPrice}%0A*Nutrition:* ${totalCal} kcal | ${totalProt}g Protein | ${totalFats}g Fat%0A%0A📍 *Pickup/Delivery:* Israna (Panipat)%0APlease confirm & keep order ready!`;
 
-    // Log to Supabase Cloud with full Customer Details, Address & Health Stats
-    logOrderToSupabase(pehlwanTray, totalPrice, totalCal, totalProt, custName, custPhone, orderId, custAddress, custWeight, custHeight);
+    // Log to Supabase Cloud with full Customer Details, Address, Health Stats & Payment Info
+    logOrderToSupabase(pehlwanTray, totalPrice, totalCal, totalProt, custName, custPhone, orderId, custAddress, custWeight, custHeight, paymentMethod, paymentStatus, paymentUtr);
 
     showPehlwanFeedback(`Order ${orderId} Placed! Opening WhatsApp... 🚀`);
 
@@ -2276,6 +2419,12 @@ async function openCustomerProfileModal() {
                 }
                 if (orderWeight || orderHeight) {
                     deliveryInfo += `<div class="text-[10px] text-neutral-500 flex items-center gap-2">${orderWeight ? '<span>⚖️ ' + orderWeight + (String(orderWeight).includes('kg') ? '' : ' kg') + '</span>' : ''}${orderHeight ? '<span>📏 ' + orderHeight + '</span>' : ''}</div>`;
+                }
+                const orderPayMethod = (o.items && o.items.payment_method) ? o.items.payment_method : '';
+                const orderPayStatus = (o.items && o.items.payment_status) ? o.items.payment_status : '';
+                if (orderPayMethod) {
+                    const payBadgeColor = orderPayMethod.includes('UPI') ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-amber-800 bg-amber-50 border-amber-200';
+                    deliveryInfo += `<div class="pt-0.5"><span class="text-[9px] font-bold px-1.5 py-0.5 rounded border ${payBadgeColor}">💳 ${orderPayMethod} (${orderPayStatus || 'Done'})</span></div>`;
                 }
 
                 card.innerHTML = `
