@@ -777,26 +777,48 @@ function selectPaymentMethod(method) {
     const badgeSelected = document.getElementById('payment-badge-selected');
 
     if (method === 'upi') {
-        if (optUpi) optUpi.className = "cursor-pointer border-2 border-black bg-black text-white rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm";
-        if (optCod) optCod.className = "cursor-pointer border-2 border-neutral-300 bg-white text-neutral-800 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black";
-        if (radioUpi) radioUpi.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-black"></span>';
+        if (optUpi) {
+            optUpi.className = "pay-method-btn active cursor-pointer border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm";
+        }
+        if (optCod) {
+            optCod.className = "pay-method-btn cursor-pointer border-2 border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black dark:hover:border-white";
+        }
+        if (radioUpi) radioUpi.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-current"></span>';
         if (radioCod) radioCod.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>';
-        if (upiBox) upiBox.classList.remove('hidden');
+
+        if (upiBox) {
+            upiBox.classList.remove('hidden');
+            setTimeout(() => {
+                upiBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 60);
+        }
         if (codBox) codBox.classList.add('hidden');
+
         if (badgeSelected) {
-            badgeSelected.className = "text-[10px] text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1";
-            badgeSelected.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span> Online UPI / QR';
+            badgeSelected.className = "text-[10px] text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1";
+            badgeSelected.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Online UPI / QR';
         }
     } else {
-        if (optUpi) optUpi.className = "cursor-pointer border-2 border-neutral-300 bg-white text-neutral-800 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black";
-        if (optCod) optCod.className = "cursor-pointer border-2 border-black bg-black text-white rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm";
+        if (optUpi) {
+            optUpi.className = "pay-method-btn cursor-pointer border-2 border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black dark:hover:border-white";
+        }
+        if (optCod) {
+            optCod.className = "pay-method-btn active cursor-pointer border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm";
+        }
         if (radioUpi) radioUpi.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>';
-        if (radioCod) radioCod.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-black"></span>';
+        if (radioCod) radioCod.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-current"></span>';
+
         if (upiBox) upiBox.classList.add('hidden');
-        if (codBox) codBox.classList.remove('hidden');
+        if (codBox) {
+            codBox.classList.remove('hidden');
+            setTimeout(() => {
+                codBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 60);
+        }
+
         if (badgeSelected) {
-            badgeSelected.className = "text-[10px] text-amber-800 bg-amber-100/90 border border-amber-300 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1";
-            badgeSelected.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span> Cash on Delivery';
+            badgeSelected.className = "text-[10px] text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1";
+            badgeSelected.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Cash on Delivery';
         }
     }
 }
@@ -838,6 +860,10 @@ function updatePehlwanTrayUI() {
     if (dFats) dFats.innerText = `${totalFats}g`;
     if (dCarbs) dCarbs.innerText = `${totalCarbs}g`;
     if (dPrice) dPrice.innerText = `₹${totalPrice}`;
+    const macroSummary = document.getElementById('drawer-macros-summary');
+    if (macroSummary) {
+        macroSummary.innerText = `${Math.round(totalCal)} kcal • ${totalProt}g Protein`;
+    }
     updateDynamicUpiQr(totalPrice);
 
     // Verdict in Current Language
@@ -870,22 +896,22 @@ function updatePehlwanTrayUI() {
         pehlwanTray.forEach(item => {
             const name = currentLang === 'en' ? item.name_en : (currentLang === 'hi' ? item.name_hi : item.name_hinglish);
             const row = document.createElement('div');
-            row.className = "bg-slate-900/90 border border-slate-800 p-3 rounded-2xl flex items-center justify-between gap-3 shadow";
+            row.className = "bg-neutral-100 dark:bg-neutral-800/90 border border-neutral-200 dark:border-neutral-700 p-2.5 rounded-2xl flex items-center justify-between gap-3 shadow-xs";
             row.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <img src="${item.image}" alt="${name}" class="w-12 h-12 rounded-xl object-cover">
-                    <div>
-                        <div class="text-xs font-bold text-white leading-tight">${name}</div>
-                        <div class="text-[10px] text-black font-medium mt-0.5">
-                            ${Math.round(item.calories * item.quantity)} kcal • ${Math.round(item.protein * item.quantity * 10)/10}g P • ${Math.round(item.fats * item.quantity * 10)/10}g F
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <img src="${item.image}" alt="${name}" class="w-11 h-11 rounded-xl object-cover flex-shrink-0">
+                    <div class="min-w-0">
+                        <div class="text-xs font-bold text-black dark:text-white leading-tight truncate">${name}</div>
+                        <div class="text-[10px] text-neutral-500 dark:text-neutral-400 font-medium mt-0.5">
+                            ${Math.round(item.calories * item.quantity)} kcal &bull; ${Math.round(item.protein * item.quantity * 10)/10}g P
                         </div>
-                        <div class="text-[11px] font-black text-slate-300 mt-0.5">₹${item.price * item.quantity}</div>
+                        <div class="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5">₹${item.price * item.quantity}</div>
                     </div>
                 </div>
-                <div class="flex items-center gap-1.5 bg-slate-800 p-1 rounded-xl">
-                    <button onclick="updatePehlwanQuantity('${item.id}', -1)" class="w-6 h-6 rounded-lg bg-slate-700 hover:bg-slate-600 text-white flex items-center justify-center text-xs font-bold">-</button>
-                    <span class="w-5 text-center text-xs font-bold text-white">${item.quantity}</span>
-                    <button onclick="updatePehlwanQuantity('${item.id}', 1)" class="w-6 h-6 rounded-lg bg-slate-700 hover:bg-slate-600 text-black flex items-center justify-center text-xs font-bold">+</button>
+                <div class="flex items-center gap-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 p-1 rounded-xl flex-shrink-0">
+                    <button onclick="updatePehlwanQuantity('${item.id}', -1)" class="w-6 h-6 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-black dark:text-white flex items-center justify-center text-xs font-bold cursor-pointer">-</button>
+                    <span class="w-5 text-center text-xs font-bold text-black dark:text-white">${item.quantity}</span>
+                    <button onclick="updatePehlwanQuantity('${item.id}', 1)" class="w-6 h-6 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-black dark:text-white flex items-center justify-center text-xs font-bold cursor-pointer">+</button>
                 </div>
             `;
             container.appendChild(row);
