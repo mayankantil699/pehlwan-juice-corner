@@ -106,13 +106,16 @@ async function loadFeedbackFromSupabase() {
 }
 
 // Log Order to Supabase
-async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt, custName = 'Walk-in Customer', custPhone = '', orderId = '#ORD-101') {
+async function logOrderToSupabase(trayItems, totalPrice, totalCal, totalProt, custName = 'Walk-in Customer', custPhone = '', orderId = '#ORD-101', custAddress = '', custWeight = '', custHeight = '') {
     const payload = {
         customer_phone: custPhone || 'Walk-in',
         items: {
             order_id: orderId,
             customer_name: custName || 'Regular Customer',
             customer_phone: custPhone,
+            customer_address: custAddress,
+            customer_weight: custWeight,
+            customer_height: custHeight,
             products: trayItems
         },
         total_price: totalPrice,
@@ -780,8 +783,39 @@ function sendOrderViaWhatsApp() {
         return;
     }
 
-    const custName = document.getElementById('order-customer-name')?.value.trim() || 'Regular Customer';
-    const custPhone = document.getElementById('order-customer-phone')?.value.trim() || '';
+    const nameInput = document.getElementById('order-customer-name');
+    const phoneInput = document.getElementById('order-customer-phone');
+    const addrInput = document.getElementById('order-customer-address');
+    const weightInput = document.getElementById('order-customer-weight');
+    const heightInput = document.getElementById('order-customer-height');
+
+    const custName = nameInput?.value.trim() || '';
+    const custPhone = phoneInput?.value.trim() || '';
+    const custAddress = addrInput?.value.trim() || '';
+    const custWeight = weightInput?.value.trim() || '';
+    const custHeight = heightInput?.value.trim() || '';
+
+    // Validation: Require Name and Phone
+    if (!custName) {
+        alert(currentLang === 'en' ? "Please enter your Full Name." : "Kripya apna Poora Naam bharein.");
+        nameInput?.focus();
+        return;
+    }
+    if (!custPhone || custPhone.length < 10) {
+        alert(currentLang === 'en' ? "Please enter a valid 10-digit Mobile Number." : "Kripya apna 10-digit Mobile Number bharein.");
+        phoneInput?.focus();
+        return;
+    }
+
+    // Save details to localStorage for instant auto-fill next time
+    localStorage.setItem('pehlwan_last_order_details', JSON.stringify({
+        name: custName,
+        phone: custPhone,
+        address: custAddress,
+        weight: custWeight,
+        height: custHeight
+    }));
+
     const orderId = '#ORD-' + Math.floor(100 + Math.random() * 900);
 
     const totalCal = Math.round(pehlwanTray.reduce((acc, c) => acc + (c.calories * c.quantity), 0));
@@ -795,13 +829,23 @@ function sendOrderViaWhatsApp() {
         itemsText += `%0A${index + 1}. *${name}* x ${item.quantity} = ₹${item.price * item.quantity} (${item.calories * item.quantity} kcal, ${item.protein * item.quantity}g P)`;
     });
 
-    let customerInfoText = `%0A👤 *Customer:* ${encodeURIComponent(custName)}`;
-    if (custPhone) customerInfoText += ` | 📱 *Phone:* ${encodeURIComponent(custPhone)}`;
+    let customerInfoText = `%0A👤 *Customer:* ${encodeURIComponent(custName)} | 📱 *Phone:* ${encodeURIComponent(custPhone)}`;
+    if (custAddress) {
+        customerInfoText += `%0A📍 *Delivery Address:* ${encodeURIComponent(custAddress)}`;
+    }
+    let statsArr = [];
+    if (custWeight) statsArr.push(`Weight: ${encodeURIComponent(custWeight)} kg`);
+    if (custHeight) statsArr.push(`Height: ${encodeURIComponent(custHeight)}`);
+    if (statsArr.length > 0) {
+        customerInfoText += `%0A💪 *Health Stats:* ${statsArr.join(' | ')}`;
+    }
 
-    const msg = `*Pehlwan Juice Corner (Israna) - Pre-Order ${orderId}*%0A----------------------------${customerInfoText}%0A----------------------------${itemsText}%0A----------------------------%0A*Total Bill:* ₹${totalPrice}%0A*Nutrition:* ${totalCal} kcal | ${totalProt}g Protein | ${totalFats}g Fat%0A%0A📍 *Location:* Near Punjab National Bank, Israna (Panipat)%0APlease keep it ready for pick-up!`;
+    const msg = `*Pehlwan Juice Corner (Israna) - Pre-Order ${orderId}*%0A----------------------------${customerInfoText}%0A----------------------------${itemsText}%0A----------------------------%0A*Total Bill:* ₹${totalPrice}%0A*Nutrition:* ${totalCal} kcal | ${totalProt}g Protein | ${totalFats}g Fat%0A%0A📍 *Pickup/Delivery:* Israna (Panipat)%0APlease confirm & keep order ready!`;
 
-    // Log to Supabase Cloud with full Customer Details
-    logOrderToSupabase(pehlwanTray, totalPrice, totalCal, totalProt, custName, custPhone, orderId);
+    // Log to Supabase Cloud with full Customer Details, Address & Health Stats
+    logOrderToSupabase(pehlwanTray, totalPrice, totalCal, totalProt, custName, custPhone, orderId, custAddress, custWeight, custHeight);
+
+    showPehlwanFeedback(`Order ${orderId} Placed! Opening WhatsApp... 🚀`);
 
     const phoneNum = pehlwanShop.whatsapp || '919588351884';
     const whatsappUrl = `https://wa.me/${phoneNum}?text=${msg}`;
@@ -1997,11 +2041,23 @@ function initCustomerAuthUI() {
         if (mobileLabel) mobileLabel.innerText = `👤 ${cust.name} (Member)`;
         if (mobileDot) mobileDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
 
-        // Auto-fill in Diet Thali drawer
+        // Auto-fill in Diet Thali drawer from logged-in customer or saved order profile
         const nameInput = document.getElementById('order-customer-name');
         const phoneInput = document.getElementById('order-customer-phone');
-        if (nameInput && !nameInput.value) nameInput.value = cust.name;
-        if (phoneInput && !phoneInput.value) phoneInput.value = cust.phone;
+        const addrInput = document.getElementById('order-customer-address');
+        const weightInput = document.getElementById('order-customer-weight');
+        const heightInput = document.getElementById('order-customer-height');
+
+        let savedOrder = {};
+        try {
+            savedOrder = JSON.parse(localStorage.getItem('pehlwan_last_order_details') || '{}');
+        } catch(e) {}
+
+        if (nameInput && !nameInput.value) nameInput.value = cust.name || savedOrder.name || '';
+        if (phoneInput && !phoneInput.value) phoneInput.value = cust.phone || savedOrder.phone || '';
+        if (addrInput && !addrInput.value) addrInput.value = savedOrder.address || cust.address || '';
+        if (weightInput && !weightInput.value) weightInput.value = savedOrder.weight || cust.weight || '';
+        if (heightInput && !heightInput.value) heightInput.value = savedOrder.height || cust.height || '';
     } else {
         if (btnLabel) btnLabel.innerText = '👤 Login';
         if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-neutral-400';
@@ -2210,12 +2266,25 @@ async function openCustomerProfileModal() {
                     itemsSummary = 'Pehlwan Diet Order';
                 }
 
+                const orderAddr = (o.items && o.items.customer_address) ? o.items.customer_address : '';
+                const orderWeight = (o.items && o.items.customer_weight) ? o.items.customer_weight : '';
+                const orderHeight = (o.items && o.items.customer_height) ? o.items.customer_height : '';
+
+                let deliveryInfo = '';
+                if (orderAddr) {
+                    deliveryInfo += `<div class="text-[10px] text-neutral-600 truncate flex items-center gap-1"><span>📍</span> <span>${orderAddr}</span></div>`;
+                }
+                if (orderWeight || orderHeight) {
+                    deliveryInfo += `<div class="text-[10px] text-neutral-500 flex items-center gap-2">${orderWeight ? '<span>⚖️ ' + orderWeight + (String(orderWeight).includes('kg') ? '' : ' kg') + '</span>' : ''}${orderHeight ? '<span>📏 ' + orderHeight + '</span>' : ''}</div>`;
+                }
+
                 card.innerHTML = `
                     <div class="flex items-center justify-between text-xs">
                         <span class="font-bold text-black font-heading">₹${o.total_price || 0}</span>
                         ${statusBadge}
                     </div>
                     <div class="text-xs font-semibold text-neutral-800 truncate">${itemsSummary}</div>
+                    ${deliveryInfo}
                     <div class="flex items-center justify-between text-[10px] text-neutral-400 pt-1 border-t border-neutral-200">
                         <span>${timeStr}</span>
                         <span><b>${Math.round(o.total_calories || 0)}</b> kcal &bull; <b>${Math.round(o.total_protein || 0)}g</b> Protein</span>
@@ -2476,3 +2545,20 @@ async function confirmGoogleLogin() {
 
     await quickSelectGoogleUser(name, email, phone);
 }
+
+// Auto-fill guest order details if saved from previous visit
+window.addEventListener('DOMContentLoaded', () => {
+    try {
+        const savedOrder = JSON.parse(localStorage.getItem('pehlwan_last_order_details') || '{}');
+        const nameInput = document.getElementById('order-customer-name');
+        const phoneInput = document.getElementById('order-customer-phone');
+        const addrInput = document.getElementById('order-customer-address');
+        const weightInput = document.getElementById('order-customer-weight');
+        const heightInput = document.getElementById('order-customer-height');
+        if (nameInput && !nameInput.value && savedOrder.name) nameInput.value = savedOrder.name;
+        if (phoneInput && !phoneInput.value && savedOrder.phone) phoneInput.value = savedOrder.phone;
+        if (addrInput && !addrInput.value && savedOrder.address) addrInput.value = savedOrder.address;
+        if (weightInput && !weightInput.value && savedOrder.weight) weightInput.value = savedOrder.weight;
+        if (heightInput && !heightInput.value && savedOrder.height) heightInput.value = savedOrder.height;
+    } catch(e) {}
+});

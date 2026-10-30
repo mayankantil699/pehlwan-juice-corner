@@ -1084,26 +1084,82 @@
                 <span id="drawer-price" class="text-2xl font-black text-black font-heading">₹0</span>
             </div>
 
-            <!-- Customer Details for Fast Pick-up -->
-            <div class="space-y-2 pt-2 border-t border-neutral-200">
-                <div class="flex items-center justify-between text-[11px] font-bold text-neutral-700">
-                    <span>Customer Details (Name & Phone)</span>
-                    <span class="text-[10px] text-emerald-600 font-bold">● Direct Pre-Order</span>
+            <!-- Customer & Delivery Details for Pre-Order -->
+            <div class="space-y-3 pt-3 border-t border-neutral-200">
+                <div class="flex items-center justify-between text-[11px] font-black text-black uppercase tracking-wider">
+                    <span class="flex items-center gap-1.5">
+                        <span>📋 Customer Details & Delivery</span>
+                    </span>
+                    <span class="text-[10px] text-emerald-600 font-extrabold flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Pre-Order
+                    </span>
                 </div>
+
+                <!-- 1. Full Name & Phone Number -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <input 
-                        type="text" 
-                        id="order-customer-name" 
-                        placeholder="Aapka Naam / Name" 
-                        class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none"
-                    >
-                    <input 
-                        type="tel" 
-                        id="order-customer-phone" 
-                        placeholder="Mobile Number (10 Digits)" 
-                        maxlength="10"
-                        class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none"
-                    >
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Full Name (पूरा नाम)*</label>
+                        <input 
+                            type="text" 
+                            id="order-customer-name" 
+                            placeholder="Aapka Naam / Full Name" 
+                            required
+                            class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none transition-colors"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Phone Number (मोबाइल नंबर)*</label>
+                        <input 
+                            type="tel" 
+                            id="order-customer-phone" 
+                            placeholder="10-digit mobile number" 
+                            maxlength="10"
+                            required
+                            class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none transition-colors"
+                        >
+                    </div>
+                </div>
+
+                <!-- 2. Delivery Address (Textarea) -->
+                <div>
+                    <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Delivery Address (डिलीवरी का पता)</label>
+                    <textarea 
+                        id="order-customer-address" 
+                        rows="2" 
+                        placeholder="Makaan no., Gali / Ward, Landmark, Israna / Panipat..." 
+                        class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none transition-colors resize-none placeholder-neutral-400"
+                    ></textarea>
+                </div>
+
+                <!-- 3. Health Stats: Weight & Height -->
+                <div class="bg-neutral-100/80 border border-neutral-200/90 rounded-2xl p-2.5 space-y-1.5">
+                    <div class="flex items-center justify-between text-[10px] font-black text-neutral-700 uppercase tracking-wider">
+                        <span>💪 Health Stats (Weight & Height)</span>
+                        <span class="text-[9px] text-neutral-500 font-semibold">For fitness diet</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[9px] font-bold text-neutral-500 uppercase tracking-wider mb-0.5">Weight (kg)</label>
+                            <input 
+                                type="number" 
+                                id="order-customer-weight" 
+                                placeholder="e.g. 72" 
+                                min="20" 
+                                max="250"
+                                class="w-full bg-white border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs font-semibold focus:border-black focus:outline-none"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-neutral-500 uppercase tracking-wider mb-0.5">Height (cm / ft)</label>
+                            <input 
+                                type="text" 
+                                id="order-customer-height" 
+                                placeholder="e.g. 175 cm / 5.9 ft" 
+                                class="w-full bg-white border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs font-semibold focus:border-black focus:outline-none"
+                            >
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1526,7 +1582,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- JS Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="static/js/app.js?v=2.9"></script>
+    <script src="static/js/app.js?v=3.0"></script>
     <script>
         lucide.createIcons();
     </script>
