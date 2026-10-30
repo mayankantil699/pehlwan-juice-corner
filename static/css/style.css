@@ -607,3 +607,23 @@ html.dark ::-webkit-scrollbar-thumb:hover {
     background: #4B5563;
 }
 
+
+/* Responsive Scrollable Diet Drawer Styles */
+#pehlwan-tray-drawer {
+    height: 100vh;
+    max-height: 100vh;
+}
+html.dark #pehlwan-tray-drawer {
+    background-color: #111827 !important;
+    border-color: #1F2937 !important;
+    color: #F3F4F6 !important;
+}
+html.dark #pehlwan-tray-drawer .bg-neutral-50 {
+    background-color: #111827 !important;
+}
+html.dark #pehlwan-tray-drawer .border-neutral-200 {
+    border-color: #1F2937 !important;
+}
+#dynamic-upi-qr {
+    background-color: #FFFFFF !important;
+}

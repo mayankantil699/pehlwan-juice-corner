@@ -2565,78 +2565,77 @@
 
     </main>
 
-    <!-- Calorie / Diet Tray Drawer (Clean White & Black Slide-over) -->
-    <div id="pehlwan-tray-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white border-l border-neutral-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col text-black">
-        <!-- Drawer Header -->
-        <div class="p-6 border-b border-neutral-200 flex items-center justify-between bg-neutral-50">
+        <!-- Calorie / Diet Tray Drawer (Responsive Scrollable Drawer with Pinned Bottom Checkout) -->
+    <div id="pehlwan-tray-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white dark:bg-neutral-900 border-l border-neutral-200 dark:border-neutral-800 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col text-black dark:text-white h-screen">
+        <!-- 1. Fixed Drawer Header -->
+        <div class="p-4 sm:p-5 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between bg-neutral-50 dark:bg-neutral-900 flex-shrink-0">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-black text-white flex items-center justify-center font-bold">
+                <div class="w-10 h-10 rounded-2xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-bold shadow-sm">
                     <i data-lucide="scale" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <h3 class="font-heading font-bold text-lg text-black" data-i18n="trayTitle">Your Diet Tray</h3>
-                    <p class="text-xs text-neutral-500" data-i18n="traySubtitle">Real-time Nutrition & Macro Balance</p>
+                    <h3 class="font-heading font-bold text-base sm:text-lg text-black dark:text-white" data-i18n="trayTitle">Your Diet Tray</h3>
+                    <p class="text-xs text-neutral-500 dark:text-neutral-400" data-i18n="traySubtitle">Real-time Nutrition & Macro Balance</p>
                 </div>
             </div>
-            <button onclick="togglePehlwanTray()" class="p-2 text-neutral-500 hover:text-black rounded-lg hover:bg-neutral-100 transition-colors">
+            <button onclick="togglePehlwanTray()" class="p-2 text-neutral-500 hover:text-black dark:hover:text-white rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors cursor-pointer">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
 
-        <!-- Live Macro Meters -->
-        <div class="p-6 bg-neutral-50 border-b border-neutral-200 space-y-4">
+        <!-- 2. Scrollable Drawer Body (EVERYTHING SCROLLS SMOOTHLY) -->
+        <div class="flex-grow overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-4">
+            <!-- Live Macro Meters -->
             <div class="grid grid-cols-4 gap-2 text-center">
-                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
-                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="cal">CALORIES</div>
-                    <div id="drawer-calories" class="text-xl font-black text-black mt-0.5">0</div>
-                    <div class="text-[9px] text-neutral-400">kcal</div>
+                <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-xs">
+                    <div class="text-[9.5px] uppercase font-bold text-neutral-500 dark:text-neutral-400" data-i18n="cal">CALORIES</div>
+                    <div id="drawer-calories" class="text-lg font-black text-black dark:text-white mt-0.5">0</div>
+                    <div class="text-[8.5px] text-neutral-400">kcal</div>
                 </div>
-                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
-                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="protein">PROTEIN</div>
-                    <div id="drawer-protein" class="text-xl font-black text-black mt-0.5">0g</div>
-                    <div class="text-[9px] text-neutral-400">Muscle</div>
+                <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-xs">
+                    <div class="text-[9.5px] uppercase font-bold text-neutral-500 dark:text-neutral-400" data-i18n="protein">PROTEIN</div>
+                    <div id="drawer-protein" class="text-lg font-black text-black dark:text-white mt-0.5">0g</div>
+                    <div class="text-[8.5px] text-neutral-400">Muscle</div>
                 </div>
-                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
-                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="fats">FATS</div>
-                    <div id="drawer-fats" class="text-xl font-black text-black mt-0.5">0g</div>
-                    <div class="text-[9px] text-neutral-400">Healthy</div>
+                <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-xs">
+                    <div class="text-[9.5px] uppercase font-bold text-neutral-500 dark:text-neutral-400" data-i18n="fats">FATS</div>
+                    <div id="drawer-fats" class="text-lg font-black text-black dark:text-white mt-0.5">0g</div>
+                    <div class="text-[8.5px] text-neutral-400">Healthy</div>
                 </div>
-                <div class="bg-white p-3 rounded-2xl border border-neutral-200 shadow-sm">
-                    <div class="text-[10px] uppercase font-bold text-neutral-500" data-i18n="carbs">CARBS</div>
-                    <div id="drawer-carbs" class="text-xl font-black text-black mt-0.5">0g</div>
-                    <div class="text-[9px] text-neutral-400">Energy</div>
+                <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-xs">
+                    <div class="text-[9.5px] uppercase font-bold text-neutral-500 dark:text-neutral-400" data-i18n="carbs">CARBS</div>
+                    <div id="drawer-carbs" class="text-lg font-black text-black dark:text-white mt-0.5">0g</div>
+                    <div class="text-[8.5px] text-neutral-400">Energy</div>
                 </div>
             </div>
-            <div id="pehlwan-verdict-box" class="text-xs bg-white border border-neutral-200 rounded-2xl p-3 text-neutral-800 flex items-center gap-2.5 shadow-sm">
-                <i data-lucide="sparkles" class="w-4 h-4 text-black flex-shrink-0"></i>
+            <div id="pehlwan-verdict-box" class="text-xs bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-2.5 text-neutral-800 dark:text-neutral-200 flex items-center gap-2 shadow-xs">
+                <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0"></i>
                 <span id="pehlwan-verdict-text">Select items from the menu to balance your nutrition.</span>
             </div>
-        </div>
 
-        <!-- Tray Items List -->
-        <div id="pehlwan-tray-items" class="flex-grow overflow-y-auto p-6 space-y-3">
-            <div id="pehlwan-tray-empty" class="text-center py-14 text-neutral-400">
-                <span class="text-4xl block mb-2 opacity-50">🥤</span>
-                <p class="font-bold text-black" data-i18n="trayEmptyTitle">Your Diet Tray is Empty</p>
-                <p class="text-xs text-neutral-500 mt-1" data-i18n="trayEmptySub">Add juices, shakes or sandwiches to calculate macros.</p>
-                <a href="menu.html" onclick="togglePehlwanTray()" class="inline-block mt-4 text-xs font-bold text-black underline underline-offset-4">Explore Menu →</a>
-            </div>
-        </div>
-
-        <!-- Tray Footer -->
-        <div class="p-6 border-t border-neutral-200 bg-neutral-50 space-y-4">
-            <div class="flex items-center justify-between">
-                <span class="text-sm text-neutral-600 font-bold" data-i18n="trayTotal">Total Bill</span>
-                <span id="drawer-price" class="text-2xl font-black text-black font-heading">₹0</span>
+            <!-- Selected Items Container -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-[11px] font-black uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    <span>Selected Items (चुने हुए आइटम)</span>
+                    <a href="menu.html" onclick="togglePehlwanTray()" class="text-emerald-600 dark:text-emerald-400 hover:underline font-bold text-[10px]">+ Add More</a>
+                </div>
+                <div id="pehlwan-tray-items" class="space-y-2">
+                    <div id="pehlwan-tray-empty" class="text-center py-6 text-neutral-400">
+                        <span class="text-3xl block mb-1 opacity-50">🥤</span>
+                        <p class="font-bold text-black dark:text-white text-xs" data-i18n="trayEmptyTitle">Your Diet Tray is Empty</p>
+                        <p class="text-[11px] text-neutral-500 mt-0.5" data-i18n="trayEmptySub">Add juices, shakes or sandwiches to calculate macros.</p>
+                        <a href="menu.html" onclick="togglePehlwanTray()" class="inline-block mt-3 text-xs font-bold text-black dark:text-white underline underline-offset-4">Explore Menu →</a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Customer & Delivery Details for Pre-Order -->
-            <div class="space-y-3 pt-3 border-t border-neutral-200">
-                <div class="flex items-center justify-between text-[11px] font-black text-black uppercase tracking-wider">
+            <!-- Customer & Delivery Details Section -->
+            <div class="space-y-3 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                <div class="flex items-center justify-between text-[11px] font-black text-black dark:text-white uppercase tracking-wider">
                     <span class="flex items-center gap-1.5">
                         <span>📋 Customer Details & Delivery</span>
                     </span>
-                    <span class="text-[10px] text-emerald-600 font-extrabold flex items-center gap-1">
+                    <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-extrabold flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         Pre-Order
                     </span>
@@ -2645,42 +2644,42 @@
                 <!-- 1. Full Name & Phone Number -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Full Name (पूरा नाम)*</label>
+                        <label class="block text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider mb-1">Full Name (पूरा नाम)*</label>
                         <input 
                             type="text" 
                             id="order-customer-name" 
                             placeholder="Aapka Naam / Full Name" 
                             required
-                            class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none transition-colors"
+                            class="w-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-black dark:text-white rounded-xl px-3 py-2 text-xs font-semibold focus:border-black dark:focus:border-white focus:outline-none transition-colors"
                         >
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Phone Number (मोबाइल नंबर)*</label>
+                        <label class="block text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider mb-1">Phone Number (मोबाइल नंबर)*</label>
                         <input 
                             type="tel" 
                             id="order-customer-phone" 
                             placeholder="10-digit mobile number" 
                             maxlength="10"
                             required
-                            class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none transition-colors"
+                            class="w-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-black dark:text-white rounded-xl px-3 py-2 text-xs font-semibold focus:border-black dark:focus:border-white focus:outline-none transition-colors"
                         >
                     </div>
                 </div>
 
                 <!-- 2. Delivery Address (Textarea) -->
                 <div>
-                    <label class="block text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">Delivery Address (डिलीवरी का पता)</label>
+                    <label class="block text-[10px] font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider mb-1">Delivery Address (डिलीवरी का पता)</label>
                     <textarea 
                         id="order-customer-address" 
                         rows="2" 
                         placeholder="Makaan no., Gali / Ward, Landmark, Israna / Panipat..." 
-                        class="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-semibold focus:border-black focus:outline-none transition-colors resize-none placeholder-neutral-400"
+                        class="w-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-black dark:text-white rounded-xl px-3 py-2 text-xs font-semibold focus:border-black dark:focus:border-white focus:outline-none transition-colors resize-none placeholder-neutral-400"
                     ></textarea>
                 </div>
 
                 <!-- 3. Health Stats: Weight & Height -->
-                <div class="bg-neutral-100/80 border border-neutral-200/90 rounded-2xl p-2.5 space-y-1.5">
-                    <div class="flex items-center justify-between text-[10px] font-black text-neutral-700 uppercase tracking-wider">
+                <div class="bg-neutral-100/80 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-2.5 space-y-1.5">
+                    <div class="flex items-center justify-between text-[10px] font-black text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
                         <span>💪 Health Stats (Weight & Height)</span>
                         <span class="text-[9px] text-neutral-500 font-semibold">For fitness diet</span>
                     </div>
@@ -2693,7 +2692,7 @@
                                 placeholder="e.g. 72" 
                                 min="20" 
                                 max="250"
-                                class="w-full bg-white border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs font-semibold focus:border-black focus:outline-none"
+                                class="w-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-black dark:text-white rounded-xl px-2.5 py-1.5 text-xs font-semibold focus:border-black dark:focus:border-white focus:outline-none"
                             >
                         </div>
                         <div>
@@ -2702,48 +2701,48 @@
                                 type="text" 
                                 id="order-customer-height" 
                                 placeholder="e.g. 175 cm / 5.9 ft" 
-                                class="w-full bg-white border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs font-semibold focus:border-black focus:outline-none"
+                                class="w-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-black dark:text-white rounded-xl px-2.5 py-1.5 text-xs font-semibold focus:border-black dark:focus:border-white focus:outline-none"
                             >
                         </div>
                     </div>
                 </div>
 
                 <!-- 4. Payment Method Selection (Online UPI / QR vs Cash on Delivery) -->
-                <div class="space-y-2.5 pt-2.5 border-t border-neutral-200">
-                    <div class="flex items-center justify-between text-[11px] font-black text-black uppercase tracking-wider">
+                <div class="space-y-2.5 pt-2.5 border-t border-neutral-200 dark:border-neutral-800">
+                    <div class="flex items-center justify-between text-[11px] font-black text-black dark:text-white uppercase tracking-wider">
                         <span class="flex items-center gap-1.5">
                             <span>💳 Payment Option (भुगतान)</span>
                         </span>
-                        <span id="payment-badge-selected" class="text-[10px] text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                        <span id="payment-badge-selected" class="text-[10px] text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 px-2 py-0.5 rounded-full font-extrabold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             Online UPI / QR
                         </span>
                     </div>
 
                     <!-- Payment Toggle Cards -->
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="selectPaymentMethod('upi')" id="pay-opt-upi" class="cursor-pointer border-2 border-black bg-black text-white rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm">
+                        <button type="button" onclick="selectPaymentMethod('upi')" id="pay-opt-upi" class="pay-method-btn active cursor-pointer border-2 border-black dark:border-white bg-black dark:bg-white text-white dark:text-black rounded-xl p-2.5 flex flex-col justify-between text-left transition-all shadow-sm">
                             <div class="flex items-center justify-between mb-1 w-full">
                                 <span class="text-xs font-black flex items-center gap-1">
                                     <span>📱</span> Online UPI
                                 </span>
-                                <span id="pay-radio-upi" class="w-3.5 h-3.5 rounded-full border-2 border-white bg-white flex items-center justify-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+                                <span id="pay-radio-upi" class="w-3.5 h-3.5 rounded-full border-2 border-current flex items-center justify-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
                                 </span>
                             </div>
-                            <span class="text-[9.5px] text-neutral-300 leading-tight">GPay / PhonePe / QR</span>
+                            <span class="text-[9.5px] opacity-80 leading-tight">GPay / PhonePe / QR</span>
                         </button>
 
-                        <button type="button" onclick="selectPaymentMethod('cod')" id="pay-opt-cod" class="cursor-pointer border-2 border-neutral-300 bg-white text-neutral-800 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black">
+                        <button type="button" onclick="selectPaymentMethod('cod')" id="pay-opt-cod" class="pay-method-btn cursor-pointer border-2 border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-xl p-2.5 flex flex-col justify-between text-left transition-all hover:border-black dark:hover:border-white">
                             <div class="flex items-center justify-between mb-1 w-full">
                                 <span class="text-xs font-black flex items-center gap-1">
                                     <span>💵</span> Cash / Counter
                                 </span>
-                                <span id="pay-radio-cod" class="w-3.5 h-3.5 rounded-full border-2 border-neutral-400 bg-white flex items-center justify-center">
+                                <span id="pay-radio-cod" class="w-3.5 h-3.5 rounded-full border-2 border-current flex items-center justify-center">
                                     <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
                                 </span>
                             </div>
-                            <span class="text-[9.5px] text-neutral-500 leading-tight">Pay on Delivery / Pickup</span>
+                            <span class="text-[9.5px] opacity-80 leading-tight">Pay on Delivery / Pickup</span>
                         </button>
                     </div>
 
@@ -2751,74 +2750,90 @@
                     <input type="hidden" id="order-payment-method" value="upi">
 
                     <!-- Dynamic UPI / QR Container (visible when 'upi' is active) -->
-                    <div id="upi-payment-box" class="bg-neutral-50 border border-neutral-300 rounded-2xl p-3 space-y-2.5">
-                        <div class="flex items-center justify-between text-xs pb-1.5 border-b border-neutral-200">
-                            <span class="font-bold text-neutral-700 flex items-center gap-1">
-                                <span>⚡ Scan UPI QR Code</span>
+                    <div id="upi-payment-box" class="bg-neutral-50 dark:bg-neutral-800/90 border border-neutral-300 dark:border-neutral-700 rounded-2xl p-3 space-y-3">
+                        <div class="flex items-center justify-between text-xs pb-1.5 border-b border-neutral-200 dark:border-neutral-700">
+                            <span class="font-bold text-neutral-700 dark:text-neutral-200 flex items-center gap-1">
+                                <span>⚡ Scan UPI QR Code to Pay</span>
                             </span>
-                            <span id="upi-amount-badge" class="font-black text-black bg-white px-2 py-0.5 rounded-lg border border-neutral-200 text-xs shadow-xs">₹0</span>
+                            <span id="upi-amount-badge" class="font-black text-black dark:text-white bg-white dark:bg-neutral-900 px-2 py-0.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-xs shadow-xs">₹0</span>
                         </div>
 
-                        <div class="flex items-center gap-3">
+                        <div class="flex flex-col sm:flex-row items-center gap-3">
                             <!-- Dynamic QR Code Card -->
-                            <div class="bg-white p-2 rounded-xl border border-neutral-200 shadow-sm flex flex-col items-center flex-shrink-0">
-                                <img id="dynamic-upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi%3A%2F%2Fpay%3Fpa%3D9588351884%40upi%26pn%3DPehlwan%20Juice%20Corner" alt="Pehlwan Juice Corner UPI QR Code" class="w-28 h-28 object-contain rounded-lg">
-                                <div class="text-[8.5px] text-neutral-500 font-bold mt-1">BHIM UPI Instant</div>
+                            <div class="bg-white p-2.5 rounded-2xl border border-neutral-200 shadow-sm flex flex-col items-center flex-shrink-0">
+                                <img id="dynamic-upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3D9588351884%40upi%26pn%3DPehlwan%20Juice%20Corner" alt="Pehlwan Juice Corner UPI QR Code" class="w-32 h-32 object-contain rounded-lg">
+                                <div class="text-[9px] text-neutral-600 font-bold mt-1 flex items-center gap-1">
+                                    <span>⚡ BHIM UPI Instant</span>
+                                </div>
                             </div>
 
                             <!-- UPI ID & Quick Actions -->
-                            <div class="flex-grow space-y-1.5 min-w-0">
+                            <div class="flex-grow space-y-2 w-full">
                                 <div>
                                     <label class="block text-[9px] font-bold text-neutral-500 uppercase tracking-wider mb-0.5">Shop UPI ID</label>
-                                    <div class="flex items-center gap-1 bg-white border border-neutral-200 rounded-xl p-1 px-2 shadow-xs">
-                                        <span id="display-upi-id" class="text-xs font-mono font-bold text-neutral-800 truncate select-all">9588351884@upi</span>
-                                        <button type="button" onclick="copyShopUpiId(this)" class="bg-neutral-100 hover:bg-black hover:text-white px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors cursor-pointer flex-shrink-0">
+                                    <div class="flex items-center gap-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl p-1 px-2 shadow-xs">
+                                        <span id="display-upi-id" class="text-xs font-mono font-bold text-neutral-800 dark:text-neutral-200 truncate select-all flex-grow">9588351884@upi</span>
+                                        <button type="button" onclick="copyShopUpiId(this)" class="bg-neutral-100 hover:bg-black hover:text-white dark:bg-neutral-800 dark:hover:bg-white dark:hover:text-black px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors cursor-pointer flex-shrink-0">
                                             <span>📋 Copy</span>
                                         </button>
                                     </div>
                                 </div>
 
                                 <!-- Open UPI App Direct Deep Link (GPay/PhonePe/Paytm on mobile) -->
-                                <a id="direct-upi-pay-btn" href="#" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[11px] py-1.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1 shadow-sm">
+                                <a id="direct-upi-pay-btn" href="#" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-2 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm text-center">
                                     <span>📱 Open UPI App (GPay / PhonePe)</span>
                                 </a>
 
                                 <!-- Optional UTR / Ref No. -->
                                 <div>
+                                    <label class="block text-[9px] font-bold text-neutral-500 uppercase tracking-wider mb-0.5">UTR / Ref No. (Optional)</label>
                                     <input 
                                         type="text" 
                                         id="order-payment-utr" 
-                                        placeholder="UTR / Ref No. (Optional)" 
+                                        placeholder="e.g. 429381xxxx or last 4 digits" 
                                         maxlength="25"
-                                        class="w-full bg-white border border-neutral-300 rounded-xl px-2 py-1 text-[11px] font-semibold focus:border-black focus:outline-none placeholder-neutral-400"
+                                        class="w-full bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-black dark:text-white rounded-xl px-2.5 py-1 text-xs font-semibold focus:border-black dark:focus:border-white focus:outline-none placeholder-neutral-400"
                                     >
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-emerald-50/90 border border-emerald-200/90 rounded-xl p-2 text-[10px] text-emerald-800 flex items-center gap-1.5 font-medium">
+                        <div class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl p-2 text-[10.5px] text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5 font-medium leading-tight">
                             <span>✅</span>
-                            <span>QR scan karke payment karein aur niche Confirm order par click karein.</span>
+                            <span>QR scan karke payment karne ke baad niche 'Confirm & Send' par click karein.</span>
                         </div>
                     </div>
 
                     <!-- COD Note Box (visible when 'cod' is active) -->
-                    <div id="cod-payment-box" class="hidden bg-neutral-100/90 border border-neutral-200 rounded-2xl p-3 text-xs text-neutral-700 space-y-1">
-                        <div class="font-bold flex items-center gap-1.5 text-black">
+                    <div id="cod-payment-box" class="hidden bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-3 text-xs text-neutral-700 dark:text-neutral-300 space-y-1">
+                        <div class="font-bold flex items-center gap-1.5 text-black dark:text-white">
                             <span>💵 Cash on Delivery / Counter Pickup</span>
                         </div>
-                        <p class="text-[10.5px] text-neutral-500 leading-relaxed">
+                        <p class="text-[11px] text-neutral-500 dark:text-neutral-400 leading-relaxed">
                             Order receive karte waqt aap cash ya delivery partner ke counter scanner par pay kar sakte hain.
                         </p>
                     </div>
                 </div>
             </div>
-            
-            <button onclick="sendOrderViaWhatsApp()" class="w-full bg-black hover:bg-neutral-800 text-white font-extrabold text-sm py-4 px-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2">
+        </div>
+
+        <!-- 3. Fixed Bottom Checkout Footer (Always Visible on Screen!) -->
+        <div class="p-4 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex-shrink-0 shadow-2xl space-y-2.5 z-10">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-neutral-500 dark:text-neutral-400 tracking-wider block">Total Bill</span>
+                    <span id="drawer-price" class="text-2xl font-black text-black dark:text-white font-heading leading-tight">₹0</span>
+                </div>
+                <div id="drawer-macros-summary" class="text-right text-[11px] text-neutral-500 dark:text-neutral-400 font-semibold">
+                    0 kcal • 0g Protein
+                </div>
+            </div>
+
+            <button onclick="sendOrderViaWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 active:scale-98 cursor-pointer">
                 <i data-lucide="message-circle" class="w-5 h-5"></i>
-                <span data-i18n="trayOrderBtn">Confirm & Send via WhatsApp</span>
+                <span data-i18n="trayOrderBtn">Confirm & Send via WhatsApp 🚀</span>
             </button>
-            <p class="text-[11px] text-center text-neutral-500" data-i18n="trayPickupNote">Freshly prepared and packed upon your arrival.</p>
+            <p class="text-[10px] text-center text-neutral-400 dark:text-neutral-500" data-i18n="trayPickupNote">Freshly prepared & packed upon your arrival.</p>
         </div>
     </div>
     <!-- Tray Overlay -->
