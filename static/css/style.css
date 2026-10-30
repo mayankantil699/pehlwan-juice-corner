@@ -328,3 +328,282 @@ h1, h2, h3, h4, .font-heading {
 #badam-ragda-modal {
     background-color: rgba(0, 0, 0, 0.75);
 }
+
+/* ============================================================
+   LUXURY DARK MODE ENGINE & PALETTE (PEHLWAN JUICE CORNER)
+   ============================================================ */
+body, header, .luxury-card, #pehlwan-tray-drawer, #mobile-nav, footer {
+    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                color 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark body {
+    background-color: #0B0E14 !important;
+    color: #F3F4F6 !important;
+}
+
+html.dark body::selection {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+}
+
+/* Header in Dark Mode */
+html.dark header {
+    background-color: rgba(11, 14, 20, 0.95) !important;
+    border-color: #1F2937 !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark header .bg-neutral-50 {
+    background-color: #111827 !important;
+    border-color: #1F2937 !important;
+}
+
+html.dark nav a:not(.bg-black) {
+    color: #D1D5DB !important;
+}
+
+html.dark nav a:not(.bg-black):hover {
+    color: #FFFFFF !important;
+    background-color: #1F2937 !important;
+}
+
+html.dark nav a.bg-black {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Brand Logo Text */
+html.dark header h1,
+html.dark header .text-black,
+html.dark .font-classic.text-black {
+    color: #FFFFFF !important;
+}
+
+/* Luxury Cards */
+html.dark .luxury-card {
+    background: #111827 !important;
+    border-color: #1F2937 !important;
+    color: #F3F4F6 !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark .luxury-card:hover {
+    border-color: #374151 !important;
+    box-shadow: 0 16px 35px -5px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Headings and Classic Typography in Dark Mode */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark .font-heading,
+html.dark .font-classic {
+    color: #FFFFFF !important;
+}
+
+html.dark .classic-ornament {
+    color: #D1D5DB !important;
+}
+html.dark .classic-ornament::before,
+html.dark .classic-ornament::after {
+    background: #374151 !important;
+}
+
+/* Text Colors */
+html.dark .text-black {
+    color: #FFFFFF !important;
+}
+html.dark .text-neutral-900 {
+    color: #F9FAFB !important;
+}
+html.dark .text-neutral-800,
+html.dark .text-neutral-700 {
+    color: #E5E7EB !important;
+}
+html.dark .text-neutral-600,
+html.dark .text-neutral-500 {
+    color: #9CA3AF !important;
+}
+html.dark .text-neutral-400 {
+    color: #6B7280 !important;
+}
+
+/* Backgrounds */
+html.dark .bg-white {
+    background-color: #111827 !important;
+}
+html.dark .bg-neutral-50 {
+    background-color: #0B0E14 !important;
+}
+html.dark .bg-neutral-100 {
+    background-color: #1F2937 !important;
+}
+html.dark .bg-neutral-200 {
+    background-color: #374151 !important;
+}
+
+/* Borders */
+html.dark .border-neutral-100,
+html.dark .border-neutral-200,
+html.dark .border-neutral-300 {
+    border-color: #1F2937 !important;
+}
+html.dark .border-black {
+    border-color: #374151 !important;
+}
+
+/* Sections */
+html.dark section {
+    border-color: #1F2937 !important;
+}
+
+/* Mobile Nav Drawer */
+html.dark #mobile-nav {
+    background-color: rgba(11, 14, 20, 0.98) !important;
+    border-color: #1F2937 !important;
+}
+html.dark #mobile-nav a:not(.bg-black) {
+    color: #E5E7EB !important;
+}
+html.dark #mobile-nav a:not(.bg-black):hover {
+    background-color: #1F2937 !important;
+    color: #FFFFFF !important;
+}
+html.dark #mobile-nav a.bg-black {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+}
+html.dark #mobile-cust-auth-btn {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+    color: #FFFFFF !important;
+}
+
+/* Tray Drawer */
+html.dark #pehlwan-tray-drawer {
+    background-color: #111827 !important;
+    border-color: #1F2937 !important;
+    color: #F3F4F6 !important;
+}
+
+/* Customer Buttons in Header */
+html.dark #cust-auth-btn {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+    color: #FFFFFF !important;
+}
+html.dark #cust-auth-btn:hover {
+    background-color: #374151 !important;
+    border-color: #6B7280 !important;
+}
+
+/* AI Chat Modal */
+html.dark #pehlwan-ai-modal {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+    color: #F3F4F6 !important;
+}
+html.dark #pehlwan-ai-chat-body {
+    background-color: #0B0E14 !important;
+}
+html.dark .ai-bubble-bot {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+    color: #F3F4F6 !important;
+}
+html.dark .ai-bubble-user {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+}
+html.dark #pehlwan-ai-input {
+    background-color: #1F2937 !important;
+    color: #FFFFFF !important;
+    border-color: #374151 !important;
+}
+
+/* Customer Account & Profile Modals */
+html.dark #customer-auth-modal .luxury-card,
+html.dark #customer-profile-modal .luxury-card,
+html.dark #google-auth-modal .luxury-card,
+html.dark #pehlwan-feedback-modal .luxury-card {
+    background-color: #111827 !important;
+    border-color: #374151 !important;
+    color: #F3F4F6 !important;
+}
+
+/* Form Inputs, Selects, Textareas */
+html.dark input,
+html.dark select,
+html.dark textarea {
+    background-color: #1F2937 !important;
+    color: #FFFFFF !important;
+    border-color: #374151 !important;
+}
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+    border-color: #FFFFFF !important;
+    outline: none;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+    color: #6B7280 !important;
+}
+
+/* Language Switcher in Dark Mode */
+html.dark .glossy-switch-track {
+    background: #1F2937 !important;
+    border-color: #374151 !important;
+}
+html.dark .glossy-thumb {
+    background: #FFFFFF !important;
+}
+html.dark .glossy-switch-track .switch-segment {
+    color: #9CA3AF !important;
+}
+html.dark .glossy-switch-track[data-pos="left"] .segment-en,
+html.dark .glossy-switch-track[data-pos="center"] .segment-hinglish,
+html.dark .glossy-switch-track[data-pos="right"] .segment-hi {
+    color: #000000 !important;
+    font-weight: 900 !important;
+}
+
+/* Custom Shake Virtual Glass & Chips in Dark Mode */
+html.dark .pehlwan-builder-chip {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+    color: #E5E7EB !important;
+}
+html.dark .pehlwan-builder-chip:hover {
+    border-color: #6B7280 !important;
+}
+html.dark .pehlwan-builder-chip.selected {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border-color: #FFFFFF !important;
+}
+html.dark .pehlwan-builder-chip.selected * {
+    color: #000000 !important;
+}
+html.dark .pehlwan-glass-cup {
+    border-color: #FFFFFF;
+}
+
+/* Scrollbar in Dark Mode */
+html.dark ::-webkit-scrollbar-track {
+    background: #0B0E14;
+}
+html.dark ::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-color: #0B0E14;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
+}
+

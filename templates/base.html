@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -39,6 +40,19 @@
                 }
             }
         }
+    </script>
+    <script>
+        // Immediate Theme Check (Prevents Flash of Light Mode)
+        (function() {
+            try {
+                var saved = localStorage.getItem('pehlwan_theme') || localStorage.getItem('pehlwan_site_theme') || localStorage.getItem('pehlwan_admin_theme');
+                if (saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch(e) {}
+        })();
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -145,6 +159,17 @@
                         </div>
                     </div>
 
+                    <!-- Dark Mode / Light Mode Toggle Button -->
+                    <button 
+                        id="theme-toggle-btn" 
+                        onclick="toggleSiteTheme()" 
+                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-neutral-300 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-sm flex-shrink-0 cursor-pointer"
+                        title="Dark Mode / Light Mode (रात/दिन मोड)"
+                        aria-label="Toggle Dark / Light Mode"
+                    >
+                        <span id="theme-toggle-icon" class="text-xs sm:text-sm select-none">🌙</span>
+                    </button>
+
                     <!-- Diet Tray Trigger (Icon on Phone, Metric Pill on Laptop) -->
                     <button onclick="togglePehlwanTray()" class="relative flex items-center gap-1.5 sm:gap-2 bg-neutral-100 hover:bg-neutral-200 text-black p-1.5 sm:px-2.5 sm:py-1 rounded-full border border-neutral-300 hover:border-black transition-all shadow-sm" title="View Diet Tray">
                         <div class="relative">
@@ -183,6 +208,14 @@
 
         <!-- Mobile Navigation Menu Drawer (Clean Modern White & Black App Drawer) -->
         <div id="mobile-nav" class="hidden lg:hidden bg-white/98 backdrop-blur-2xl border-b-2 border-black px-4 pt-4 pb-6 space-y-4 shadow-2xl">
+            <!-- Dark Mode / Light Mode Toggle in Mobile Drawer -->
+            <button onclick="toggleSiteTheme()" class="w-full bg-neutral-100 border border-neutral-300 text-neutral-800 font-extrabold text-xs py-2.5 px-3.5 rounded-xl flex items-center justify-between shadow-sm transition-colors cursor-pointer">
+                <span class="flex items-center gap-2.5">
+                    <span id="mobile-drawer-theme-icon" class="text-sm select-none">🌙</span>
+                    <span id="mobile-drawer-theme-text">Dark Mode (रात के लिए)</span>
+                </span>
+                <span id="mobile-drawer-theme-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-neutral-200 text-black">🌙 Dark</span>
+            </button>
             <!-- Customer Login in Mobile Drawer -->
             <button onclick="toggleMobileNav(); handleCustomerAuthClick();" id="mobile-cust-auth-btn" class="w-full bg-neutral-100 border border-neutral-300 hover:border-black text-black font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between shadow-sm">
                 <span class="flex items-center gap-2">

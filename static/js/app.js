@@ -272,13 +272,62 @@ const I18N = {
     whatsappOrderBtn: { en: "Direct Order on WhatsApp", hinglish: "WhatsApp par Order Bhejein", hi: "व्हाट्सएप पर ऑर्डर भेजें" }
 };
 
-// Clear legacy monochrome theme if present
-try {
-    localStorage.removeItem('pehlwan_theme');
-    document.body.classList.remove('theme-white', 'theme-black');
-} catch (e) {}
+// ============================================================
+// GLOBAL DARK MODE / LIGHT MODE ENGINE
+// ============================================================
+function toggleSiteTheme() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    const theme = isDark ? 'dark' : 'light';
+    try {
+        localStorage.setItem('pehlwan_theme', theme);
+        localStorage.setItem('pehlwan_site_theme', theme);
+        localStorage.setItem('pehlwan_admin_theme', theme);
+    } catch (e) {}
+    updateSiteThemeUI(isDark);
+}
+
+function updateSiteThemeUI(isDark) {
+    const icon = document.getElementById('theme-toggle-icon');
+    const btn = document.getElementById('theme-toggle-btn');
+    const mobileIcon = document.getElementById('mobile-drawer-theme-icon');
+    const mobileText = document.getElementById('mobile-drawer-theme-text');
+    const mobileBadge = document.getElementById('mobile-drawer-theme-badge');
+
+    if (icon) {
+        icon.innerText = isDark ? '☀️' : '🌙';
+    }
+    if (btn) {
+        btn.setAttribute('title', isDark ? 'Switch to Light Mode (दिन के लिए)' : 'Switch to Dark Mode (रात के लिए)');
+        btn.setAttribute('aria-label', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    }
+    if (mobileIcon) {
+        mobileIcon.innerText = isDark ? '☀️' : '🌙';
+    }
+    if (mobileText) {
+        mobileText.innerText = isDark ? 'Light Mode (दिन के लिए)' : 'Dark Mode (रात के लिए)';
+    }
+    if (mobileBadge) {
+        mobileBadge.innerText = isDark ? '☀️ Light' : '🌙 Dark';
+    }
+}
+
+function initSiteTheme() {
+    let saved = null;
+    try {
+        saved = localStorage.getItem('pehlwan_theme') || localStorage.getItem('pehlwan_site_theme') || localStorage.getItem('pehlwan_admin_theme');
+    } catch (e) {}
+
+    const isDark = (saved === 'dark') || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (isDark) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+    updateSiteThemeUI(isDark);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+    initSiteTheme();
     initLanguageSwitcher();
     updateShopStatus();
     setInterval(updateShopStatus, 30000);
